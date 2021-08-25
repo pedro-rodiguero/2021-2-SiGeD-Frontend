@@ -27,7 +27,8 @@ const StatisticScreen = () => {
   const [categoryID, setCategoryID] = useState('');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
-
+  const [active, setActive] = useState('Todas');
+  const [query, setQuery] = useState('all');
   const getSectorsFromApi = async () => {
     await getSectors(startModal)
       .then((response) => {
@@ -45,6 +46,17 @@ const StatisticScreen = () => {
         console.error(`An unexpected error ocourred while getting categories.${error}`);
       });
   };
+
+  useEffect(() => {
+    if (active === 'Inativas') {
+      setQuery(false);
+    } else if (active === 'Ativas') {
+      setQuery(true);
+    } else {
+      setQuery('all');
+    }
+    console.log(query);
+  }, [active]);
 
   useEffect(() => {
     if (sectorActive !== 'Todos') {
@@ -131,6 +143,19 @@ const StatisticScreen = () => {
             <Title>Estatísticas</Title>
             <FiltersDiv>
               <SearchDiv style={{ justifyContent: 'flex-start' }}>
+                <DropdownDiv>
+                  <TextLabel>
+                    Demandas:
+                  </TextLabel>
+                  <DropdownComponent
+                    OnChangeFunction={(Option) => setActive(Option.target.value)}
+                    style={styles.dropdownComponentStyle}
+                    optionStyle={{
+                      backgroundColor: `${colors.secondary}`,
+                    }}
+                    optionList={['Todas', 'Ativas', 'Inativas']}
+                  />
+                </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Setor:
