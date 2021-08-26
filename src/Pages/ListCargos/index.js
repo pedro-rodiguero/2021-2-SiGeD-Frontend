@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import PersonalData from '../../Components/PersonalData';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
   H1, TableHeader, P, Bar, TableTitle,
 } from './Style';
 import { getUser } from '../../Services/Axios/userServices';
 import { useProfileUser } from '../../Context';
+import CargosData from '../../Components/CargosData';
 
 const ListCargos = ({ newUser }) => {
   const { user, startModal } = useProfileUser();
@@ -44,7 +44,7 @@ const ListCargos = ({ newUser }) => {
       return <H1>Sem resultados</H1>;
     }
     return filterUsers?.map((User) => (
-      <PersonalData
+      <CargosData
         user={User}
         key={User._id}
         getUsers={getUsers}
@@ -62,8 +62,8 @@ const ListCargos = ({ newUser }) => {
           {user.role === 'admin'
             ? (
               <GenericListScreen
-                ButtonTitle="Novo Usuário"
-                PageTitle="Usuários"
+                ButtonTitle="Novo Cargo"
+                PageTitle="Cargos"
                 SearchWord={word}
                 setWord={setWord}
                 ListType={listUsers()}
@@ -75,21 +75,11 @@ const ListCargos = ({ newUser }) => {
                   </TableTitle>
                   <Bar />
                   <TableTitle width={25}>
-                    <P>Email</P>
+                    <P>Identificador</P>
                   </TableTitle>
                   <Bar />
-
-                  <TableTitle width={20}>
-                    <P>Cargo</P>
-                  </TableTitle>
-                  <Bar />
-
-                  <TableTitle width={15}>
-                    <P>Setor</P>
-                  </TableTitle>
-                  <Bar />
-                  <TableTitle width={15}>
-                    <P>Ult. Atualização</P>
+                  <TableTitle width={50}>
+                    <P>Descrição</P>
                   </TableTitle>
                 </TableHeader>
                 <div style={{ display: 'none' }} />
