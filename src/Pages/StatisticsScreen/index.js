@@ -53,7 +53,7 @@ const StatisticScreen = () => {
     } else if (active === 'Ativas') {
       setQuery(true);
     } else {
-      setQuery('all');
+      setQuery(null);
     }
     console.log(query);
   }, [active]);
@@ -78,7 +78,7 @@ const StatisticScreen = () => {
 
   const getCategoriesStatistics = async (idSector, idCategory) => {
     await getDemandsStatistics(
-      `statistic/category?idSector=${idSector}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/category?isDemandActive=${query}&idSector=${idSector}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
       startModal,
     )
       .then((response) => {
@@ -88,7 +88,7 @@ const StatisticScreen = () => {
 
   const getSectorStatistics = async (idCategory) => {
     await getDemandsStatistics(
-      `statistic/sector?idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/sector?isDemandActive=${query}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
       startModal,
     )
       .then((response) => {
@@ -126,12 +126,12 @@ const StatisticScreen = () => {
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
-  }, [sectorID, finalDate, initialDate]);
+  }, [query, sectorID, finalDate, initialDate]);
 
   useEffect(() => {
     getSectorStatistics(categoryID);
     getCategoriesStatistics(sectorID, categoryID);
-  }, [categoryID, finalDate, initialDate]);
+  }, [query, categoryID, finalDate, initialDate]);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
