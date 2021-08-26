@@ -92,8 +92,8 @@ const NavbarComp = () => {
                     Estatísticas
                   </Nav.Link>
                   <NavDropdown title="Cargos" style={styles.navbarText}>
-                    <NavDropdown.Item><Nav.Link as={Link} to="/cadastro" style={{ color: 'black' }}>Cadastro</Nav.Link></NavDropdown.Item>
-                    <NavDropdown.Item><Nav.Link as={Link} to="/usuarios" style={{ color: 'black' }}>Lista de Cargos</Nav.Link></NavDropdown.Item>
+                    <NavDropdown.Item><Nav.Link as={Link} to="/cadastro-cargos" style={{ color: 'black' }}>Cadastro</Nav.Link></NavDropdown.Item>
+                    <NavDropdown.Item><Nav.Link as={Link} to="/cargos" style={{ color: 'black' }}>Lista de Cargos</Nav.Link></NavDropdown.Item>
                   </NavDropdown>
                   <Navbar.Brand style={{ cursor: 'pointer' }} onClick={() => { handleShow(); getAlertsApi(); }}>
                     <BsBell />
