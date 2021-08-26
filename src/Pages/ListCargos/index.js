@@ -67,7 +67,7 @@ const ListCargos = ({ newUser }) => {
                 SearchWord={word}
                 setWord={setWord}
                 ListType={listUsers()}
-                redirectTo="/cadastro"
+                redirectTo="/cadastro-cargos"
               >
                 <TableHeader>
                   <TableTitle width={25}>

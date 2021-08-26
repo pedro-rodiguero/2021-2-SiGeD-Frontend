@@ -11,7 +11,7 @@ const RegisterCargos = () => {
   const history = useHistory();
   const [inputRegisterUserName, setRegisterUserInputName] = useState('');
   const [inputRegisterUserEmail, setRegisterUserInputEmail] = useState('');
-  const [inputRegisterUserRole, setRegisterUserInputRole] = useState('Administrador(a)');
+  const [inputRegisterUserRole, setRegisterUserInputRole] = useState('Novo Cargo');
   const [inputRegisterUserSector, setRegisterUserInputSector] = useState('');
   const [inputRegisterUserImage, setRegisterUserInputImage] = useState('');
   const [sectors, setSectors] = useState([]);
