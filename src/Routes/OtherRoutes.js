@@ -23,6 +23,8 @@ import { useProfileUser } from '../Context';
 import StatisticScreen from '../Pages/StatisticsScreen';
 import ProfessionalHomepage from '../Pages/ProfessionalHomepage';
 import ClientFeaturesScreen from '../Pages/ClientFeaturesScreen';
+import CargosScreen from '../Pages/ListCargos';
+import RegisterCargosScreen from '../Pages/RegisterCargos';
 
 const OtherRoutes = () => {
   const { user } = useProfileUser();
@@ -38,6 +40,8 @@ const OtherRoutes = () => {
             </Switch>
           ) : (
             <Switch>
+              <Route path="/cargos" exact component={CargosScreen} />
+              <Route path="/cadastro-cargos" exact component={RegisterCargosScreen} />
               <Route path="/cadastro" exact component={RegisterScreen} />
               <Route path="/usuarios/editar/:id" exact component={UserUpdateScreen} />
               <Route path="/usuarios" exact component={ListScreen} />
