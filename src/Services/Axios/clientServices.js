@@ -196,3 +196,58 @@ export const deleteFeature = async (id, startModal) => {
   }
   return false;
 };
+
+export async function createWorkspace(name, description, startModal) {
+  try {
+    const response = await APIClients.post('lotacao/create', {
+      name,
+      description,
+    });
+    if (response.data.status) {
+      startModal('Preencha todos os campos para poder criar uma nova lotação');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível criar a nova lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while creating a new workspace.${error}`);
+  }
+}
+
+export const updateWorkspace = async (
+  name, description, id, startModal,
+) => {
+  try {
+    const res = await APIClients.put(`lotacao/update/${id}`, {
+      name,
+      description,
+    });
+    if (res.data.status) {
+      startModal('Preencha todos os campos para poder editar uma lotação');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível atualizar a lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while updating an already created workspace.${error}`);
+  }
+};
+
+export const deleteWorkspace = async (id, startModal) => {
+  try {
+    const res = await APIClients.delete(`/lotacao/delete/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
