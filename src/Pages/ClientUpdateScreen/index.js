@@ -38,7 +38,10 @@ const ClientUpdateScreen = () => {
         setupdateClientInputSecondaryPhone(data?.secondaryPhone);
         setupdateClientInputAddress(data?.address);
         setOfficeOption(data?.office);
-        setupdateLocation(data?.location);
+        if (data.location == null) {
+          data.location = 'location';
+        }
+        setupdateLocation(data?.location.name);
         setClientFeaturesID(data?.features);
         setRegisterClientInputImage(data?.image);
       });

@@ -53,6 +53,7 @@ const ClientProfileScreen = () => {
   const getClientFromApi = async () => {
     getClients(`clients/${id}`, startModal)
       .then((response) => {
+        console.log(response.data);
         const { data } = response;
         setInputName(data.name);
         setInputEmail(data.email);
@@ -60,7 +61,11 @@ const ClientProfileScreen = () => {
         setInputPhone(data.phone);
         setInputSecondaryPhone(data.secondaryPhone); // sec phone
         setOfficeOption(data.office);
-        setLocation(data.location); // location
+        if (!data.location) {
+          data.location = 'location';
+          setLocation('Location');
+        }
+        setLocation(data.location.name);
         setAddress(data.address);
         setClient(data);
         setClientFeaturesID(data?.features);
