@@ -53,7 +53,6 @@ const ClientProfileScreen = () => {
   const getClientFromApi = async () => {
     getClients(`clients/${id}`, startModal)
       .then((response) => {
-        console.log(response.data);
         const { data } = response;
         setInputName(data.name);
         setInputEmail(data.email);
