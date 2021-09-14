@@ -418,10 +418,14 @@ export async function getAlertsByDemand(id, startModal) {
 }
 
 export async function getAlertsBySector(id, startModal) {
+  if (!id) {
+    return null;
+  }
   try {
     const response = await APIDemands.get(`alert/sector/${id}`);
     return response.data;
   } catch (error) {
+    console.log(error.response.status);
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response.status !== 401) {
