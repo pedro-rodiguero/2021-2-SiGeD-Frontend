@@ -32,7 +32,7 @@ export async function getFourClients(startModal) {
 
 export async function postClient(
   inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, inputLocation, selectedFeatures,
+  inputAddress, officeOption, locationOption, selectedFeatures,
   startModal, userContext, baseImage,
 ) {
   try {
@@ -44,7 +44,7 @@ export async function postClient(
       secondaryPhone: inputSecondaryPhone,
       address: inputAddress,
       office: officeOption,
-      location: inputLocation,
+      location: locationOption,
       features: selectedFeatures,
       userID: userContext,
       image: baseImage,

@@ -60,7 +60,11 @@ const ClientProfileScreen = () => {
         setInputPhone(data.phone);
         setInputSecondaryPhone(data.secondaryPhone); // sec phone
         setOfficeOption(data.office);
-        setLocation(data.location); // location
+        if (!data.location) {
+          data.location = 'location';
+          setLocation('Location');
+        }
+        setLocation(data.location.name);
         setAddress(data.address);
         setClient(data);
         setClientFeaturesID(data?.features);
