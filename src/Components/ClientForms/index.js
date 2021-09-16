@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import RegisterInput from '../RegisterInput';
@@ -7,6 +7,7 @@ import {
   ClientFormsColumnText, Container, Label, styles,
 } from './Style';
 import colors from '../../Constants/colors';
+import { getClients } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
   setInputName,
@@ -23,7 +24,7 @@ const ClientForms = ({
   inputAddress,
   setOfficeOption,
   setLocationOption,
-  locationOption,
+  //  locationOption,
   featuresList,
   setSelectedFeatures,
   selectedFeatures,
@@ -36,6 +37,15 @@ const ClientForms = ({
     setSelectedFeaturesID(featuresID);
   };
 
+  const [lotacao, setLotacao] = useState([]);
+  useEffect(() => {
+    async function loadLotacao() {
+      const response = await getClients('/lotacao');
+      setLotacao(response.data);
+    }
+
+    loadLotacao();
+  }, []);
   return (
     <ClientFormsColumnText>
       <RegisterInput long type="text" title="Nome" setText={setInputName} value={inputName} />
@@ -66,7 +76,20 @@ const ClientForms = ({
           </Dropdown>
         </div>
       </Form.Group>
-      <RegisterInput type="text" title="Lotação" setText={setLocationOption} value={locationOption} />
+      <Form.Group style={styles.formGroup}>
+        <Form.Label style={styles.formLabel}>Lotacao:</Form.Label>
+        <div style={styles.roleDiv}>
+          <Dropdown
+            as="select"
+            onChange={(Option) => setLocationOption(Option.target.value)}
+            style={{ border: '0' }}
+          >
+            {lotacao.map((lot) => (
+              <option value={lot._id}>{lot.name}</option>
+            ))}
+          </Dropdown>
+        </div>
+      </Form.Group>
       <Container long>
         <Label>
           Caracteristicas:
