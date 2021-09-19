@@ -215,6 +215,21 @@ const ViewDemandsScreen = () => {
           <ButtonDiv>
             <TinyButton
               type="primary"
+              title="Imprimir prontuário"
+              click={() => alert('Imprimir prontuário')}
+              style={{
+                backgroundColor: '#FFF',
+                color: `${colors.text}`,
+                border: `1px solid ${buttonColor}`,
+                height: 'min-content',
+                width: '45%',
+                display: 'flex',
+                margin: '0%',
+                fontWeight: 'bold',
+              }}
+            />
+            <TinyButton
+              type="primary"
               title={buttonTitle}
               click={handleShow}
               style={{
@@ -222,7 +237,7 @@ const ViewDemandsScreen = () => {
                 color: `${colors.secondary}`,
                 border: `1px solid ${buttonColor}`,
                 height: 'min-content',
-                width: '100%',
+                width: '45%',
                 display: 'flex',
                 margin: '0%',
               }}
