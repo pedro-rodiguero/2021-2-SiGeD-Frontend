@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
 import moment from 'moment-timezone';
+import { FaPrint } from 'react-icons/fa';
 import {
   DemandCard, DemandTitle, ClientName, SectorName, ProcessNumber,
-  DemandCreatedAt, CategoryField, CategoryName,
+  DemandCreatedAt, CategoryField, CategoryName, Icon, Button,
 } from './Style';
 import colors from '../../Constants/colors';
 
@@ -36,6 +37,12 @@ const DemandData = ({ demand, sectors }) => {
       to={`/visualizar/${demand._id}`}
       style={styles.demandCard}
     >
+      <Button onClick={() => {}}>
+        <Icon color="#000">
+          <FaPrint />
+        </Icon>
+      </Button>
+
       <DemandTitle>
         {demand.name}
       </DemandTitle>
