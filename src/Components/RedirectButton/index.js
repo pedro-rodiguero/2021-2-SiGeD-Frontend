@@ -7,12 +7,13 @@ const RedirectListButton = ({
   title,
   redirectTo,
   style,
+  fontColor,
 }) => (
   <Button
     as={Link}
     style={{
       ...style,
-      color: 'white',
+      color: fontColor ? String(fontColor) : 'white',
       textDecorationLine: 'none',
       fontSize: '100%',
     }}
