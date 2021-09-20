@@ -12,6 +12,7 @@ import ViewDemandCard from '../../Components/ViewDemandCard';
 import UpdateCard from '../../Components/UpdateCard';
 import NewUpdateCard from '../../Components/NewUpdateCard';
 import TinyButton from '../../Components/TinyButton';
+import RedirectListButton from '../../Components/RedirectButton';
 import CloseDemandModal from '../../Components/CloseDemandModal';
 import { useProfileUser } from '../../Context';
 import {
@@ -213,18 +214,17 @@ const ViewDemandsScreen = () => {
             </div>
           </TimelineDiv>
           <ButtonDiv>
-            <TinyButton
-              type="primary"
+            <RedirectListButton
+              redirectTo={`/relatorio-demanda/${demand._id}`}
+              type="secondary"
               title="Imprimir prontuário"
-              click={() => alert('Imprimir prontuário')}
+              fontColor="#000"
               style={{
                 backgroundColor: '#FFF',
-                color: `${colors.text}`,
-                border: `1px solid ${buttonColor}`,
+                border: '1px solid #000',
                 height: 'min-content',
                 width: '45%',
                 display: 'flex',
-                margin: '0%',
                 fontWeight: 'bold',
               }}
             />
