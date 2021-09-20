@@ -26,6 +26,7 @@ import ClientFeaturesScreen from '../Pages/ClientFeaturesScreen';
 import CargosScreen from '../Pages/ListCargos';
 import RegisterCargosScreen from '../Pages/RegisterCargos';
 import WorkspaceListScreen from '../Pages/WorkplaceScreen';
+import DemandReport from '../Pages/PrintDemandReport';
 
 const OtherRoutes = () => {
   const { user } = useProfileUser();
@@ -63,6 +64,7 @@ const OtherRoutes = () => {
               <Route path="/recuperar-senha" exact component={RecoverPasswordScreen} />
               <Route path="/estatisticas/" exact component={StatisticScreen} />
               <Route path="/lotacoes/" exact component={WorkspaceListScreen} />
+              <Route path="/relatorio-demanda/:id" exact component={DemandReport} />
               <Redirect path="*" to="/" />
             </Switch>
           )
