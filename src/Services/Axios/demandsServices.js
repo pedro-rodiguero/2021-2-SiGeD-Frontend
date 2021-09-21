@@ -317,6 +317,21 @@ export async function updateDemandUpdate(
   }
 }
 
+export async function getDemandData(id, startModal) {
+  try {
+    const response = await APIDemands.get(`demand/${id}`);
+    return response?.data;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente.');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível pegar dados sobre uma demanda, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while gettint a demand.${error}`);
+    return null;
+  }
+}
+
 export async function createAlert(
   name, description, date, alertClient, checkbox, demandID, sectorID, startModal,
 ) {
