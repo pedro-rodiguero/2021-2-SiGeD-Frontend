@@ -15,6 +15,21 @@ export async function getClients(url, startModal) {
   return false;
 }
 
+export async function getClientData(id, startModal) {
+  try {
+    const response = await APIClients.get(`clients/${id}`);
+    return response;
+  } catch (error) {
+    if (error.response?.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response?.status !== 401) {
+      startModal('Não foi possível obter dados sobre o cliente, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while retrieving the client data.${error}`);
+  }
+  return false;
+}
+
 export async function getFourClients(startModal) {
   try {
     const response = await APIClients.get('/clients/newest-four');
