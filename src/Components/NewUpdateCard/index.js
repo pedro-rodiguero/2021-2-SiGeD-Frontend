@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
-import { createDemandUpdate } from '../../Services/Axios/demandsServices';
+import { createDemandUpdate, DemandUploadFile } from '../../Services/Axios/demandsServices';
 import TinyButton from '../TinyButton';
 import {
   Card, TopSide, BottomSide, TextareaComp,
@@ -19,7 +19,7 @@ const NewUpdateCard = ({
   const [description, setDescription] = useState('');
   const [visibilityRestriction, setVisibilityRestriction] = useState(true);
   const [important, setImportant] = useState(false);
-  const [uploadFile, setUploadFile] = useState([]);
+  const [uploadFile, setUploadFile] = useState();
   const [openModal, setOpenModal] = useState(false);
   const { user, startModal } = useProfileUser();
 
@@ -30,36 +30,22 @@ const NewUpdateCard = ({
     setDescription('');
   };
 
-  // const uploadFileHanddler = () => {
-  //   alert('Upload file');
-  //   setOpenModal(!openModal);
-  // };
-
-  const submitForm = () => {
-    console.log('Foi');
+  const submitForm = (event) => {
+    event.preventDefault();
+    if (uploadFile) {
+      DemandUploadFile(demand._id, important, startModal, uploadFile);
+      setUploadFile();
+      setOpenModal(false);
+      setDescription('');
+    }
+    setOpenModal(true);
   };
-
-  // const [uploadFile, setUploadFile] = React.useState();
-  // const submitForm = (event) => {
-  //   event.preventDefault();
-
-  //   const dataArray = new FormData();
-  //   dataArray.append('uploadFile', uploadFile);
-
-  //   axios
-  //     .post('api_url_here', dataArray, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     })
-  //     .then((response) => {
-  //       alert('PDF anexado com sucesso!');
-  //     })
-  //     .catch((error) => {
-  //       // error response
-  //       alert('Erro ao anexar PDF!');
-  //     });
-  // };
+  const cancelSubmitForm = (event) => {
+    event.preventDefault();
+    setOpenModal(false);
+    setUploadFile();
+    setDescription('');
+  };
 
   return (
     <Card>
@@ -111,11 +97,11 @@ const NewUpdateCard = ({
           && (
           <ModalContainer>
             <Form onSubmit={submitForm}>
-              {console.log(uploadFile)}
-              <UploadInput accept=".pdf" fileName={uploadFile.length > 0 ? uploadFile[0].name : ''} type="file" onChange={(e) => setUploadFile(e.target.files)} />
+              <UploadInput accept=".pdf" fileName={uploadFile ? uploadFile.name : ''} type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
               <ButtonsContainer>
                 <AlternativeButton
-                  click={() => setOpenModal(false)}
+                  type="button"
+                  onClick={cancelSubmitForm}
                   style={{
                     background: `${colors.alertMessages}`,
                     width: '100%',
