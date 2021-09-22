@@ -32,6 +32,7 @@ const ListDemandsScreen = () => {
 
   const getDemandsFromApi = async () => {
     console.log(active, sectorActive);
+    //Por default, traz como resultado somente as demandas ativas, de todos os setores, de todas as categorias.
     await getDemandsWithClientsNames(`clientsNames?open=${query}?sectorActive=${sectorActive}`, startModal)
       .then((response) => setDemands(response.data));
   };
