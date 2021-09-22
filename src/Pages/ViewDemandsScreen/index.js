@@ -12,7 +12,6 @@ import ViewDemandCard from '../../Components/ViewDemandCard';
 import UpdateCard from '../../Components/UpdateCard';
 import NewUpdateCard from '../../Components/NewUpdateCard';
 import TinyButton from '../../Components/TinyButton';
-import RedirectListButton from '../../Components/RedirectButton';
 import CloseDemandModal from '../../Components/CloseDemandModal';
 import { useProfileUser } from '../../Context';
 import {
@@ -23,6 +22,7 @@ import { getClients } from '../../Services/Axios/clientServices';
 import { getUser } from '../../Services/Axios/userServices';
 import colors from '../../Constants/colors';
 import DemandHistory from '../../Components/DemandHistory';
+import DemandReport from '../../Utils/reports/printDemandReport';
 
 const ViewDemandsScreen = () => {
   const [client, setClient] = useState('');
@@ -214,10 +214,24 @@ const ViewDemandsScreen = () => {
             </div>
           </TimelineDiv>
           <ButtonDiv>
-            <RedirectListButton
+            {/* <RedirectListButton
               redirectTo={`/relatorio-demanda/${demand._id}`}
               type="secondary"
               title="Imprimir prontuário"
+              fontColor="#000"
+              style={{
+                backgroundColor: '#FFF',
+                border: '1px solid #000',
+                height: 'min-content',
+                width: '45%',
+                display: 'flex',
+                fontWeight: 'bold',
+              }}
+            /> */}
+            <TinyButton
+              type="secondary"
+              title="Imprimir prontuário"
+              click={() => DemandReport(demand._id, user, startModal)}
               fontColor="#000"
               style={{
                 backgroundColor: '#FFF',

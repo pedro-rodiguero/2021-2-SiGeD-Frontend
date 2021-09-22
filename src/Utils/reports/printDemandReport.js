@@ -1,9 +1,6 @@
-/* eslint-disable */
-import { useParams } from 'react-router-dom';
 import * as pdfMake from 'pdfmake/build/pdfmake';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 import moment from 'moment-timezone';
-import { useProfileUser } from '../../Context';
 import { getDemandData } from '../../Services/Axios/demandsServices';
 import { getClientData, getClientFeatures } from '../../Services/Axios/clientServices';
 import { getSectors } from '../../Services/Axios/sectorServices';
@@ -22,26 +19,29 @@ const splitList = (myList) => {
 };
 
 const updatesList = (updates) => {
-  let new_list = [[{text: 'Data', style: 'tableTitle'}, {text: 'Atualização', style: 'tableTitle'}]];
+  const newList = [
+    [
+      { text: 'Data', style: 'tableTitle' },
+      { text: 'Atualização', style: 'tableTitle' },
+    ],
+  ];
   updates.map((update) => {
-    let list = [{text: `${moment.parseZone(update.createdAt).local(true).format('DD/MM/YYYY')}\n ${moment.parseZone(update.createdAt).local(true).format('HH:mm')}`, style: 'tableLeftInfo'}];
-    if (update.type === "sector") {
-      list.push({text: `Encaminhado para o setor: ${update.sectorName}`, style: 'sessionStyle'})
+    const list = [{ text: `${moment.parseZone(update.createdAt).local(true).format('DD/MM/YYYY')}\n ${moment.parseZone(update.createdAt).local(true).format('HH:mm')}`, style: 'tableLeftInfo' }];
+    if (update.type === 'sector') {
+      list.push({ text: `Encaminhado para o setor: ${update.sectorName}`, style: 'sessionStyle' });
+    } else if (update.type === 'update') {
+      list.push({ text: [{ text: update.important ? '*' : '  ', style: 'important' }, `(${update.userName}): ${update.description}`] });
     }
-    else if (update.type === "update")
-      list.push({text:[{text: update.important ? '*' : '  ', style: 'important'}, `(${update.userName}): ${update.description}`]});
 
+    newList.push(list);
 
-    new_list.push(list);
-
+    return null;
   });
-  return new_list;
+  return newList;
 };
-
-const DemandReport = async () => {
+/* eslint no-param-reassign: "error" */
+const DemandReport = async (id, user, startModal) => {
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  const { id } = useParams();
-  const { user, startModal } = useProfileUser();
   const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
   const demandData = await getDemandData(id, startModal);
   const clientData = await getClientData(demandData.clientID, startModal)
@@ -51,20 +51,26 @@ const DemandReport = async () => {
   const sectors = await getSectors(startModal)
     .then((response) => response.data);
   demandData.updateList.map((element) => {
-    element.type = "update";
+    element.type = 'update';
+
+    return null;
   });
   demandData.sectorHistory.map((element) => {
-    element.type = "sector";
-    for(let i = 0; i < sectors.length; i += 1) {
-      if (sectors[i]._id === element.sectorID) 
+    element.type = 'sector';
+    for (let i = 0; i < sectors.length; i += 1) {
+      if (sectors[i]._id === element.sectorID) {
         element.sectorName = sectors[i].name;
+      }
     }
+
+    return null;
   });
   console.log(demandData);
-  var updates = demandData.sectorHistory.concat(demandData.updateList)
+  const updates = demandData.sectorHistory.concat(demandData.updateList);
   updates.sort((a, b) => {
-    if (a.createdAt < b.createdAt)
+    if (a.createdAt < b.createdAt) {
       return 1;
+    }
     return -1;
   });
   console.log(updates);
@@ -73,26 +79,25 @@ const DemandReport = async () => {
       { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
       { text: '\nRelatório de Atendimento', style: 'subTitle' },
       { text: '\nInformações da demanda\n\n', style: 'subTitleLeft' },
-      { columns: [{text: [{text: 'Usuário:  ', style: 'title'}, {text:`${user.name}`, style: 'leftAlign'}]}, {text:`Data: ${date}`, style: 'dateStyle'}]},
-      { text: [{text:'Demanda:  ', style: 'title' }, `${demandData.name}`]},
-      { text: [{text:'Categorias:  ', style: 'title' }, `${splitList(demandData.categoryID)}`]},
-      { text: [{text:'Processos:  ', style: 'title' }, `${demandData.process}`]},
-      { text: [{text:'Cliente:  ', style: 'title' }, `${clientData.name}`]},
-      { text: [{text:'Características do cliente:  ', style: 'title' }, `${clientsFeatures.length == 0? '~Não possui' : splitList(clientsFeatures)}`]},
+      { columns: [{ text: [{ text: 'Usuário:  ', style: 'title' }, { text: `${user.name}`, style: 'leftAlign' }] }, { text: `Data: ${date}`, style: 'dateStyle' }] },
+      { text: [{ text: 'Demanda:  ', style: 'title' }, `${demandData.name}`] },
+      { text: [{ text: 'Categorias:  ', style: 'title' }, `${splitList(demandData.categoryID)}`] },
+      { text: [{ text: 'Processos:  ', style: 'title' }, `${demandData.process}`] },
+      { text: [{ text: 'Cliente:  ', style: 'title' }, `${clientData.name}`] },
+      { text: [{ text: 'Características do cliente:  ', style: 'title' }, `${clientsFeatures.length === 0 ? '~Não possui' : splitList(clientsFeatures)}`] },
       { text: '\nTabela de atualizações\n\n', style: 'subTitleLeft' },
-      ,
       {
         style: 'tableExample',
         table: {
           body: updatesList(updates),
-        }
+        },
       },
     ],
     styles: {
       header: {
         fontSize: 30,
         bold: true,
-        alignment: 'center'
+        alignment: 'center',
       },
       subTitle: {
         fontSize: 22,
@@ -106,20 +111,20 @@ const DemandReport = async () => {
         alignment: 'left',
       },
       sessionStyle: {
-        background: '#ccc'
+        background: '#ccc',
       },
       tableTitle: {
         bold: true,
-        alignment: 'center'
+        alignment: 'center',
       },
       tableLeftInfo: {
-        alignment: 'center'
+        alignment: 'center',
       },
       dateStyle: {
-        alignment: 'right'
+        alignment: 'right',
       },
       leftAlign: {
-        alignment: 'left'
+        alignment: 'left',
       },
       title: {
         bold: true,
@@ -129,9 +134,9 @@ const DemandReport = async () => {
       },
     },
     defaultStyle: {
-      alignment: 'justify'
-    }
-    
+      alignment: 'justify',
+    },
+
   };
   const docDefinitions = {
     pageSize: 'A4',
@@ -140,7 +145,8 @@ const DemandReport = async () => {
     styles: document.styles,
     defaultStyle: document.defaultStyle,
   };
-  pdfMake.createPdf(docDefinitions).open();
+
+  pdfMake.createPdf(docDefinitions).print();
 
   return (null);
 };
