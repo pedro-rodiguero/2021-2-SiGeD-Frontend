@@ -24,14 +24,16 @@ const ListDemandsScreen = () => {
   const [dropdownYears, setDropdownYears] = useState([]);
   const [filterYear, setFilterYear] = useState('Sem filtro');
   const [categories, setCategories] = useState([]);
-  const [sectorActive, setSectorActive] = useState('');
+  const [sectorActive, setSectorActive] = useState('Todos');
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [active, setActive] = useState('Ativos');
   const [query, setQuery] = useState(true);
   const { startModal } = useProfileUser();
 
   const getDemandsFromApi = async () => {
-    await getDemandsWithClientsNames(`clientsNames?open=${query}`, startModal)
+    console.log(active, sectorActive);
+    //Por default, traz como resultado somente as demandas ativas, de todos os setores, de todas as categorias.
+    await getDemandsWithClientsNames(`clientsNames?open=${query}?sectorActive=${sectorActive}`, startModal)
       .then((response) => setDemands(response.data));
   };
 
@@ -132,12 +134,15 @@ const ListDemandsScreen = () => {
 
   const listDemands = () => {
     if (demands?.length === 0 || filterDemands?.length === 0) {
-      return <h1>Sem resultados</h1>;
+      return <h1>Sem resultados para esses filtros</h1>;
     }
     return filterDemands?.map((demand) => {
       const sector = filterSector?.filter(
         (listSector) => (listSector.name === sectorActive ? listSector : false),
       );
+      if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
+        return false;
+      }
       if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
         return false;
       }
@@ -192,7 +197,7 @@ const ListDemandsScreen = () => {
                 />
               </DropdownField>
               <DropdownField width="25%">
-                <p style={{ marginBottom: '0' }}>Setores: </p>
+                <p style={{ marginBottom: '0' }}>Setores:</p>
                 <DropdownComponent
                   OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
                   style={styles.dropdownComponentStyle}
