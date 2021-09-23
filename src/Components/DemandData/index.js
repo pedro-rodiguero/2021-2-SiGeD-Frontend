@@ -6,8 +6,11 @@ import {
   DemandCreatedAt, CategoryField, CategoryName, Icon, Button,
 } from './Style';
 import colors from '../../Constants/colors';
+import DemandReport from '../../Utils/reports/printDemandReport';
+import { useProfileUser } from '../../Context';
 
 const DemandData = ({ demand, sectors }) => {
+  const { user, startModal } = useProfileUser();
   const sectorName = sectors?.filter((sectorByID) => (sectorByID._id
     === demand.sectorHistory[demand.sectorHistory.length - 1].sectorID));
 
@@ -37,7 +40,7 @@ const DemandData = ({ demand, sectors }) => {
       to={`/visualizar/${demand._id}`}
       style={styles.demandCard}
     >
-      <Button onClick={() => {}}>
+      <Button onClick={() => DemandReport(demand._id, user, startModal)}>
         <Icon color="#000">
           <FaPrint />
         </Icon>
@@ -66,7 +69,7 @@ const DemandData = ({ demand, sectors }) => {
           {demand.process}
         </ProcessNumber>
         <DemandCreatedAt>
-          { moment.parseZone(demand.createdAt).local(true).format('DD/MM/YYYY')}
+          {moment.parseZone(demand.createdAt).local(true).format('DD/MM/YYYY')}
         </DemandCreatedAt>
       </div>
       <CategoryField>
