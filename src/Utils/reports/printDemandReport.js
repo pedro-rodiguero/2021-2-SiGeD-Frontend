@@ -50,8 +50,15 @@ const DemandReport = async (id, user, startModal) => {
     .then((response) => response.data);
   const sectors = await getSectors(startModal)
     .then((response) => response.data);
+  const updates = [];
   demandData.updateList.map((element) => {
     element.type = 'update';
+
+    if (user.role === 'admin' || !element.visibilityRestriction) {
+      updates.push(element);
+    } else if (element.visibilityRestriction && element.userSector === user.sector) {
+      updates.push(element);
+    }
 
     return null;
   });
@@ -60,19 +67,22 @@ const DemandReport = async (id, user, startModal) => {
     for (let i = 0; i < sectors.length; i += 1) {
       if (sectors[i]._id === element.sectorID) {
         element.sectorName = sectors[i].name;
+        break;
       }
     }
+    updates.push(element);
 
     return null;
   });
   console.log(demandData);
-  const updates = demandData.sectorHistory.concat(demandData.updateList);
+  // const updates = demandData.sectorHistory.concat(demandData.updateList);
   updates.sort((a, b) => {
     if (a.createdAt < b.createdAt) {
       return 1;
     }
     return -1;
   });
+  console.log(user);
   console.log(updates);
   const document = {
     content: [
