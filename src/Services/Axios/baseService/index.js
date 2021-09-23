@@ -1,7 +1,7 @@
 import {
-  APIUsers, APIClients, APIDemands, APISectors,
+  APIUsers, APIClients, APIDemands, APISectors, APICargos,
 } from './baseService';
 
 export {
-  APIUsers, APIClients, APIDemands, APISectors,
+  APIUsers, APIClients, APIDemands, APISectors, APICargos,
 };
