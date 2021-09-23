@@ -64,7 +64,7 @@ const DemandReport = async (id, user, startModal) => {
   });
   demandData.sectorHistory.map((element) => {
     const typeField = element;
-    typeField.type = 'update';
+    typeField.type = 'sector';
     for (let i = 0; i < sectors.length; i += 1) {
       if (sectors[i]._id === element.sectorID) {
         typeField.sectorName = sectors[i].name;
