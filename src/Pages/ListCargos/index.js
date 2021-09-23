@@ -2,52 +2,59 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
-  H1, TableHeader, P, Bar, TableTitle,
+  TableHeader, TableTitle, P, Bar,
 } from './Style';
-import { getUser } from '../../Services/Axios/userServices';
+import {
+  getCargos, createCargo, updateCargo, deleteCargo,
+} from '../../Services/Axios/clientServices';
 import { useProfileUser } from '../../Context';
-import CargosData from '../../Components/CargosData';
+import DataList from '../../Components/DataList';
+import ModalComp from '../../Components/ModalComp';
 
-const ListCargos = ({ newUser }) => {
-  const { user, startModal } = useProfileUser();
+const WorkspaceListScreen = () => {
+  const { token, startModal } = useProfileUser();
   const [word, setWord] = useState();
-  const [filterUsers, setFilterUsers] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [filterWorkspaces, setFilterWorkspaces] = useState([]);
+  const [workspaces, setWorkspaces] = useState([]);
+  const [statusModal, setStatusModal] = useState(false);
 
-  const getUsers = async () => {
-    await getUser('users', startModal)
-      .then((response) => setUsers(response.data))
-      .catch((err) => {
-        console.error(`An unexpected error ocourred while getting users. ${err}`);
-      });
+  const toggleModal = () => setStatusModal(!statusModal);
+
+  const getWorkspacesFromApi = async () => {
+    await getCargos('role', startModal)
+      .then((response) => setWorkspaces(response.data));
   };
 
   useEffect(() => {
-    getUsers();
-  }, [user, newUser]);
+    getWorkspacesFromApi();
+    console.log('workspace screen');
+  }, [token]);
 
   useEffect(() => {
-    setFilterUsers(
-      users.filter((User) => User.name.toLowerCase().includes(word?.toLowerCase())),
+    setFilterWorkspaces(workspaces);
+  }, [workspaces]);
+
+  useEffect(() => {
+    setFilterWorkspaces(
+      workspaces.filter((workspace) => workspace.name.toLowerCase().includes(word?.toLowerCase())),
     );
   }, [word]);
 
-  useEffect(() => {
-    setFilterUsers(users);
-  }, [users]);
-
-  const listUsers = () => {
-    if (users?.length === 0) {
-      return <H1>Sem resultados</H1>;
+  const listWorkspaces = () => {
+    if (workspaces?.length === 0) {
+      return <h1>Sem resultados</h1>;
     }
-    if (filterUsers?.length === 0) {
-      return <H1>Sem resultados</H1>;
+    if (filterWorkspaces?.length === 0) {
+      return <h1>Sem resultados</h1>;
     }
-    return filterUsers?.map((User) => (
-      <CargosData
-        user={User}
-        key={User._id}
-        getUsers={getUsers}
+    return filterWorkspaces?.map((workspace) => (
+      <DataList
+        content={workspace}
+        getContent={getWorkspacesFromApi}
+        color="black"
+        axiosDelete={deleteCargo}
+        updateContent={updateCargo}
+        type="Cargos"
       />
     ));
   };
@@ -55,42 +62,34 @@ const ListCargos = ({ newUser }) => {
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
   }
+
   return (
-    <>
-      {user ? (
-        <>
-          {user.role === 'admin'
-            ? (
-              <GenericListScreen
-                ButtonTitle="Novo Cargo"
-                PageTitle="Cargos"
-                SearchWord={word}
-                setWord={setWord}
-                ListType={listUsers()}
-                redirectTo="/cadastro-cargos"
-              >
-                <TableHeader>
-                  <TableTitle width={25}>
-                    <P>Nome</P>
-                  </TableTitle>
-                  <Bar />
-                  <TableTitle width={25}>
-                    <P>Identificador</P>
-                  </TableTitle>
-                  <Bar />
-                  <TableTitle width={50}>
-                    <P>Descrição</P>
-                  </TableTitle>
-                </TableHeader>
-                <div style={{ display: 'none' }} />
-              </GenericListScreen>
-            )
-            : <Redirect to="/nao-autorizado" />}
-        </>
-      )
-        : <h1>Carregando...</h1>}
-    </>
+    <GenericListScreen
+      ButtonTitle="Novo Cargo"
+      ButtonFunction={toggleModal}
+      PageTitle="Cargos"
+      SearchWord={word}
+      setWord={setWord}
+      ListType={listWorkspaces()}
+      redirectTo="/cargos"
+    >
+      <TableHeader>
+        <TableTitle width={24}>
+          <P>Nome</P>
+        </TableTitle>
+        <Bar />
+        <TableTitle width={50}>
+          <P>Descrição</P>
+        </TableTitle>
+        <Bar />
+        <TableTitle width={24}>
+          <P>Ult. Atualização</P>
+        </TableTitle>
+        <TableTitle width={2} />
+      </TableHeader>
+      { statusModal ? <ModalComp show={statusModal} type="Cargos" operation="Nova " idName="" idDescription="" idColor="#000000" getContent={getWorkspacesFromApi} handleClose={toggleModal} createContent={createCargo} /> : null}
+    </GenericListScreen>
   );
 };
 
-export default ListCargos;
+export default WorkspaceListScreen;
