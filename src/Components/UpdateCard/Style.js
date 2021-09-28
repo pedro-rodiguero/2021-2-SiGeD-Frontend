@@ -16,6 +16,44 @@ export const Card = styled.div`
     }
 `;
 
+export const PDFViwerContainer = styled.div`
+    z-index: 100;
+    width: 100%;
+    height: 90%;
+    display: flex;
+    position: fixed;
+    top: 10%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    @media(max-width: 750px){
+        width: 100%;
+        padding: 0;
+        z-index: 100;
+    }
+`;
+
+export const PDFViwer = styled.iframe`
+    height: 90%;
+    width: 90%;
+`;
+
+export const PDFViwerCloseButton = styled.div`
+  float: right;
+  font-size: 100%;
+  display: flex;
+  width: 100%;
+  margin-left: 5%;
+  margin-right: 5%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  @media(max-width: 750px){
+    font-size: 100%;
+}
+`;
+
 export const TopSide = styled.div`
     height: max-content;
     display: flex;
