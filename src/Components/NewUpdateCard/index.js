@@ -32,13 +32,24 @@ const NewUpdateCard = ({
 
   const submitForm = (event) => {
     event.preventDefault();
+
     if (uploadFile) {
-      DemandUploadFile(demand._id, important, startModal, uploadFile);
+      const info = {
+        userName: user.name,
+        userSector: user.sector,
+        userId: user._id,
+        description: uploadFile.name,
+        important,
+        visibility: visibilityRestriction,
+      };
+
+      DemandUploadFile(demand._id, startModal, uploadFile, info);
       setUploadFile();
       setOpenModal(false);
       setDescription('');
+    } else {
+      setOpenModal(true);
     }
-    setOpenModal(true);
   };
   const cancelSubmitForm = (event) => {
     event.preventDefault();
