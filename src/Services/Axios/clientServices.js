@@ -1,4 +1,4 @@
-import { APIClients } from './baseService/index';
+import { APIClients, APICargos } from './baseService/index';
 
 export async function getClients(url, startModal) {
   try {
@@ -32,7 +32,7 @@ export async function getFourClients(startModal) {
 
 export async function postClient(
   inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, inputLocation, selectedFeatures,
+  inputAddress, officeOption, locationOption, selectedFeatures,
   startModal, userContext, baseImage,
 ) {
   try {
@@ -44,7 +44,7 @@ export async function postClient(
       secondaryPhone: inputSecondaryPhone,
       address: inputAddress,
       office: officeOption,
-      location: inputLocation,
+      location: locationOption,
       features: selectedFeatures,
       userID: userContext,
       image: baseImage,
@@ -191,6 +191,131 @@ export const deleteFeature = async (id, startModal) => {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response.status !== 401) {
       startModal(`Não foi possivel deletar a categoria.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
+
+export async function createWorkspace(name, description, startModal) {
+  try {
+    const response = await APIClients.post('lotacao/create', {
+      name,
+      description,
+    });
+    if (response.data.status) {
+      startModal('Preencha todos os campos para poder criar uma nova lotação');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível criar a nova lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while creating a new workspace.${error}`);
+  }
+}
+
+export const updateWorkspace = async (
+  name, description, id, startModal,
+) => {
+  try {
+    const res = await APIClients.put(`lotacao/update/${id}`, {
+      name,
+      description,
+    });
+    if (res.data.status) {
+      startModal('Preencha todos os campos para poder editar uma lotação');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível atualizar a lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while updating an already created workspace.${error}`);
+  }
+};
+
+export const deleteWorkspace = async (id, startModal) => {
+  try {
+    const res = await APIClients.delete(`/lotacao/delete/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
+
+export async function getCargos(url, startModal) {
+  try {
+    const response = await APICargos.get(url);
+    return response;
+  } catch (error) {
+    if (error.response?.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response?.status !== 401) {
+      startModal('Não foi possível obter a lista de clientes, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while retrieving the clients list.${error}`);
+  }
+  return false;
+}
+
+export async function createCargo(name, description, startModal) {
+  try {
+    const response = await APICargos.post('role', {
+      name,
+      description,
+    });
+    if (response.data.status) {
+      startModal('Preencha todos os campos para poder criar um novo cargo');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível criar a nova lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while creating a new workspace.${error}`);
+  }
+}
+
+export const updateCargo = async (
+  name, description, id, startModal,
+) => {
+  try {
+    const res = await APICargos.patch(`role/${id}`, {
+      name,
+      description,
+    });
+    if (res.data.status) {
+      startModal('Preencha todos os campos para poder editar um cargo');
+    }
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível atualizar a lotação, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while updating an already created workspace.${error}`);
+  }
+};
+
+export const deleteCargo = async (id, startModal) => {
+  try {
+    const res = await APICargos.delete(`/role/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
     }
     console.error(error);
   }

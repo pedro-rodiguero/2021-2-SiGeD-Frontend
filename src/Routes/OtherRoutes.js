@@ -23,6 +23,9 @@ import { useProfileUser } from '../Context';
 import StatisticScreen from '../Pages/StatisticsScreen';
 import ProfessionalHomepage from '../Pages/ProfessionalHomepage';
 import ClientFeaturesScreen from '../Pages/ClientFeaturesScreen';
+import CargosScreen from '../Pages/ListCargos';
+import RegisterCargosScreen from '../Pages/RegisterCargos';
+import WorkspaceListScreen from '../Pages/WorkplaceScreen';
 
 const OtherRoutes = () => {
   const { user } = useProfileUser();
@@ -38,6 +41,8 @@ const OtherRoutes = () => {
             </Switch>
           ) : (
             <Switch>
+              <Route path="/cargos" exact component={CargosScreen} />
+              <Route path="/cadastro-cargos" exact component={RegisterCargosScreen} />
               <Route path="/cadastro" exact component={RegisterScreen} />
               <Route path="/usuarios/editar/:id" exact component={UserUpdateScreen} />
               <Route path="/usuarios" exact component={ListScreen} />
@@ -57,6 +62,7 @@ const OtherRoutes = () => {
               <Route path="/nao-autorizado" exact component={UnauthorizedScreen} />
               <Route path="/recuperar-senha" exact component={RecoverPasswordScreen} />
               <Route path="/estatisticas/" exact component={StatisticScreen} />
+              <Route path="/lotacoes/" exact component={WorkspaceListScreen} />
               <Redirect path="*" to="/" />
             </Switch>
           )

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  BaseUrlUsers, BaseUrlClients, BaseUrlDemands, BaseUrlSectors,
+  BaseUrlUsers, BaseUrlClients, BaseUrlDemands, BaseUrlSectors, BaseUrlCargos,
 } from '../../../Constants/baseUrl';
 
 export const APIUsers = axios.create({
@@ -17,6 +17,10 @@ export const APIDemands = axios.create({
 
 export const APISectors = axios.create({
   baseURL: BaseUrlSectors,
+});
+
+export const APICargos = axios.create({
+  baseURL: BaseUrlCargos,
 });
 
 APIUsers.interceptors.response.use(async (response) => response, (error) => {

@@ -449,6 +449,9 @@ export async function getAlertsByDemand(id, startModal) {
 }
 
 export async function getAlertsBySector(id, startModal) {
+  if (!id) {
+    return null;
+  }
   try {
     const response = await APIDemands.get(`alert/sector/${id}`);
     return response.data;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import { Multiselect } from 'multiselect-react-dropdown';
 import RegisterInput from '../RegisterInput';
@@ -7,6 +7,7 @@ import {
   ClientFormsColumnText, Container, Label, styles,
 } from './Style';
 import colors from '../../Constants/colors';
+import { getClients, getCargos } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
   setInputName,
@@ -23,7 +24,7 @@ const ClientForms = ({
   inputAddress,
   setOfficeOption,
   setLocationOption,
-  locationOption,
+  //  locationOption,
   featuresList,
   setSelectedFeatures,
   selectedFeatures,
@@ -36,6 +37,18 @@ const ClientForms = ({
     setSelectedFeaturesID(featuresID);
   };
 
+  const [lotacao, setLotacao] = useState([]);
+  const [cargos, SetCargo] = useState([]);
+  useEffect(() => {
+    async function loadLotacao() {
+      const response = await getClients('/lotacao');
+      const response2 = await getCargos('/role');
+      SetCargo(response2.data);
+      setLotacao(response.data);
+    }
+
+    loadLotacao();
+  }, []);
   return (
     <ClientFormsColumnText>
       <RegisterInput long type="text" title="Nome" setText={setInputName} value={inputName} />
@@ -52,21 +65,26 @@ const ClientForms = ({
             onChange={(Option) => setOfficeOption(Option.target.value)}
             style={{ border: '0' }}
           >
-            <option>Administrativo Comissionado(a)</option>
-            <option>Administrativo Efetivo(a)</option>
-            <option>Agente Auxiliar Policial</option>
-            <option>Agente de Polícia</option>
-            <option>Agente Policial</option>
-            <option>Dactiloscopista</option>
-            <option>Delegado(a) de Polícia</option>
-            <option>Escrevente Policial</option>
-            <option>Escrivã(o) de Polícia</option>
-            <option>Estagiário(a)</option>
-            <option>Servidor(a) Voluntário(a)</option>
+            {cargos.map((cargo) => (
+              <option value={cargo.name}>{cargo.name}</option>
+            ))}
           </Dropdown>
         </div>
       </Form.Group>
-      <RegisterInput type="text" title="Lotação" setText={setLocationOption} value={locationOption} />
+      <Form.Group style={styles.formGroup}>
+        <Form.Label style={styles.formLabel}>Lotacao:</Form.Label>
+        <div style={styles.roleDiv}>
+          <Dropdown
+            as="select"
+            onChange={(Option) => setLocationOption(Option.target.value)}
+            style={{ border: '0' }}
+          >
+            {lotacao.map((lot) => (
+              <option value={lot._id}>{lot.name}</option>
+            ))}
+          </Dropdown>
+        </div>
+      </Form.Group>
       <Container long>
         <Label>
           Caracteristicas:
