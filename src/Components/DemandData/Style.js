@@ -79,3 +79,26 @@ export const CategoryName = styled.p`
     margin-left: 1vw;
   }
 `;
+
+export const Button = styled.button`
+  border: none;
+  background-color: #FFF;
+  font-size: 1.5vh;
+  color: ${(props) => `${props.color}`};
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  border-radius: 15px;
+
+  @media(max-width: 750px){
+    font-size: 1.3vh;
+  }
+`;
+
+export const Icon = styled.div`
+  font-size: 20px;
+  color: ${(props) => `${props.color}`};
+  border-width: 1;
+  border-color: #000;
+  width: 10%;
+`;

@@ -25,7 +25,8 @@ export const CardsContainer = styled.div`
 
 export const ButtonDiv = styled.div`
     display: flex;
-    width: 25%;
+    justify-content: space-around;
+    width: 50%;
     margin: 5%;
     padding-bottom: 5%;
     @media(max-width: 750px){
