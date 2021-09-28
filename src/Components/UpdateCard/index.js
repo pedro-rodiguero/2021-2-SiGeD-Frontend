@@ -2,8 +2,10 @@ import React, { useState } from 'react';
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import moment from 'moment-timezone';
 import { BsPencil } from 'react-icons/bs';
+import { AiFillEye } from 'react-icons/ai';
 import { BiTrash, BiLockAlt } from 'react-icons/bi';
 import { FcHighPriority } from 'react-icons/fc';
+import TinyButton from '../TinyButton';
 import ModalEditUpdateDemand from '../ModalEditUpdateDemand';
 import { deleteDemandUpdate } from '../../Services/Axios/demandsServices';
 import { useProfileUser } from '../../Context';
@@ -12,10 +14,11 @@ import {
   Card, TopSide, DemandName, EditIcon,
   DemandDescription, BottomSide, CreatedAt, Img,
   LockIcon, TrashIcon, IconsContainer, HighPriorityIcon,
+  PDFViwerContainer, PDFViwer, PDFViwerCloseButton,
 } from './Style';
 
 const UpdateCard = ({
-  update, sector, demand, setChangeState, changeState,
+  update, sector, demand, setChangeState, changeState, fileID,
 }) => {
   const sectorName = sector?.filter((sectorByID) => sectorByID?._id === update.userSector);
   const [show, setShow] = useState(false);
@@ -23,6 +26,7 @@ const UpdateCard = ({
   const handleClose = () => setShow(false);
   const handleConfirm = () => setConfirm(false);
   const { user, startModal } = useProfileUser();
+  const [fileStatus, setFileStatus] = useState(false);
 
   const styles = {
     topSideDiv: {
@@ -73,6 +77,33 @@ const UpdateCard = ({
     }
   };
 
+  const pdfViewer = () => (
+    <PDFViwerContainer>
+      <PDFViwerCloseButton>
+        <TinyButton
+          type="primary"
+          title="Fechar"
+          click={() => { setFileStatus(false); }}
+          style={{
+            backgroundColor: 'red',
+            color: 'white',
+            border: '1px solid #0000',
+            height: 'min-content',
+            width: '10%',
+            display: 'flex',
+            margin: '0 0 0 85%',
+          }}
+        />
+      </PDFViwerCloseButton>
+      <PDFViwer
+        title="PDF in an i-Frame"
+        src={`http://localhost:3003/demand/file/${fileID[0]}`}
+        scrolling="auto"
+      />
+    </PDFViwerContainer>
+
+  );
+
   const renderImageUser = () => {
     if (!user.image) {
       return (
@@ -100,6 +131,8 @@ const UpdateCard = ({
             )
           </DemandName>
         </div>
+        {fileStatus
+          && pdfViewer()}
         <IconsContainer>
           { update.important
             ? (
@@ -115,12 +148,21 @@ const UpdateCard = ({
               </LockIcon>
             )
             : null }
-          <EditIcon
-            onClick={() => { catchUser(); }}
-            style={{ cursor: 'pointer' }}
-          >
-            <BsPencil style={{ marginRight: '10px' }} />
-          </EditIcon>
+          { fileID.length === 1 ? (
+            <EditIcon
+              onClick={() => { setFileStatus(true); }}
+              style={{ cursor: 'pointer' }}
+            >
+              <AiFillEye style={{ marginRight: '10px' }} />
+            </EditIcon>
+          ) : (
+            <EditIcon
+              onClick={() => { catchUser(); }}
+              style={{ cursor: 'pointer' }}
+            >
+              <BsPencil style={{ marginRight: '10px' }} />
+            </EditIcon>
+          )}
           <TrashIcon
             onClick={() => { deleteCall(); }}
           >
