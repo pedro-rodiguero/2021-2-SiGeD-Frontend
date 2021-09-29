@@ -22,6 +22,7 @@ import { getClients } from '../../Services/Axios/clientServices';
 import { getUser } from '../../Services/Axios/userServices';
 import colors from '../../Constants/colors';
 import DemandHistory from '../../Components/DemandHistory';
+import DemandReport from '../../Utils/reports/printDemandReport';
 
 const ViewDemandsScreen = () => {
   const [client, setClient] = useState('');
@@ -170,7 +171,7 @@ const ViewDemandsScreen = () => {
                 {' '}
                 {sectorName[0]?.name}
               </p>
-              <p style={{ marginRight: '12%' }}>{ moment.parseZone(value.createdAt).local(true).format('DD/MM/YYYY')}</p>
+              <p style={{ marginRight: '12%' }}>{moment.parseZone(value.createdAt).local(true).format('DD/MM/YYYY')}</p>
             </ForwardedDemandDiv>
           </TimelineContent>
         </TimelineItem>
@@ -184,119 +185,133 @@ const ViewDemandsScreen = () => {
 
   return (
     <>
-      { demand && client && userDemand
-      && (
-      <Main>
-        <CardsContainer>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-          }}
-          >
-            <ViewDemandCard
-              demand={demand}
-            />
-          </div>
-          <TimelineDiv>
-            <Timeline>
-              { showUpdates() }
-            </Timeline>
-            <div style={{ width: '90%', marginLeft: '8%' }}>
-              <NewUpdateCard
-                demand={demand}
-                showUpdates={showUpdates}
-                getDemandApi={getDemandApi}
-                setChangeState={setChangeState}
-                changeState={changeState}
-              />
-            </div>
-          </TimelineDiv>
-          <ButtonDiv>
-            <TinyButton
-              type="primary"
-              title={buttonTitle}
-              click={handleShow}
-              style={{
-                backgroundColor: buttonColor,
-                color: `${colors.secondary}`,
-                border: `1px solid ${buttonColor}`,
-                height: 'min-content',
-                width: '100%',
+      {demand && client && userDemand
+        && (
+          <Main>
+            <CardsContainer>
+              <div style={{
                 display: 'flex',
-                margin: '0%',
+                justifyContent: 'center',
+                width: '100%',
               }}
-            />
-            <CloseDemandModal
+              >
+                <ViewDemandCard
+                  demand={demand}
+                />
+              </div>
+              <TimelineDiv>
+                <Timeline>
+                  {showUpdates()}
+                </Timeline>
+                <div style={{ width: '90%', marginLeft: '8%' }}>
+                  <NewUpdateCard
+                    demand={demand}
+                    showUpdates={showUpdates}
+                    getDemandApi={getDemandApi}
+                    setChangeState={setChangeState}
+                    changeState={changeState}
+                  />
+                </div>
+              </TimelineDiv>
+              <ButtonDiv>
+                <TinyButton
+                  type="secondary"
+                  title="Imprimir prontuário"
+                  click={() => DemandReport(demand._id, user, startModal)}
+                  fontColor="#000"
+                  style={{
+                    backgroundColor: '#FFF',
+                    border: '1px solid #000',
+                    height: 'min-content',
+                    width: '45%',
+                    display: 'flex',
+                    fontWeight: 'bold',
+                  }}
+                />
+                <TinyButton
+                  type="primary"
+                  title={buttonTitle}
+                  click={handleShow}
+                  style={{
+                    backgroundColor: buttonColor,
+                    color: `${colors.secondary}`,
+                    border: `1px solid ${buttonColor}`,
+                    height: 'min-content',
+                    width: '45%',
+                    display: 'flex',
+                    margin: '0%',
+                  }}
+                />
+                <CloseDemandModal
+                  demand={demand}
+                  id={id}
+                  show={show}
+                  handleClose={handleClose}
+                  message={message}
+                  startModal={startModal}
+                />
+              </ButtonDiv>
+            </CardsContainer>
+            <ViewDemandSidebar
+              clientImage={client.image}
+              clientName={client.name}
+              userName={userDemand.name}
+              selectedCategories={demand.categoryID}
               demand={demand}
-              id={id}
-              show={show}
-              handleClose={handleClose}
-              message={message}
-              startModal={startModal}
-            />
-          </ButtonDiv>
-        </CardsContainer>
-        <ViewDemandSidebar
-          clientImage={client.image}
-          clientName={client.name}
-          userName={userDemand.name}
-          selectedCategories={demand.categoryID}
-          demand={demand}
-          getDemandApi={getDemandApi}
-          showUpdates={showUpdates}
-          sectorsResponse={sectorsResponse}
-          changeState={changeState}
-          setChangeState={setChangeState}
-          handleShowHistory={handleShowHistory}
-          alerts={alerts}
-          setAlerts={setAlerts}
-        />
-        <DemandHistory
-          show={showHistory}
-          handleClose={handleCloseHistory}
-          demand={demand}
-        />
-        <MobileTimeline>
-          <Timeline>
-            { showUpdates() }
-          </Timeline>
-          <div style={{ width: '90%', marginLeft: '5%' }}>
-            <NewUpdateCard
-              demand={demand}
-              user={user}
               getDemandApi={getDemandApi}
+              showUpdates={showUpdates}
+              sectorsResponse={sectorsResponse}
               changeState={changeState}
               setChangeState={setChangeState}
+              handleShowHistory={handleShowHistory}
+              alerts={alerts}
+              setAlerts={setAlerts}
             />
-          </div>
-        </MobileTimeline>
-        <MobileButtonDiv>
-          <TinyButton
-            type="primary"
-            title={buttonTitle}
-            click={handleShow}
-            style={{
-              backgroundColor: buttonColor,
-              color: `${colors.secondary}`,
-              border: `1px solid ${buttonColor}`,
-              height: 'min-content',
-              width: '100%',
-              display: 'flex',
-              margin: '0%',
-            }}
-          />
-          <CloseDemandModal
-            demand={demand}
-            id={id}
-            show={show}
-            handleClose={handleClose}
-            message={message}
-            startModal={startModal}
-          />
-        </MobileButtonDiv>
-      </Main>
-      )}
+            <DemandHistory
+              show={showHistory}
+              handleClose={handleCloseHistory}
+              demand={demand}
+            />
+            <MobileTimeline>
+              <Timeline>
+                {showUpdates()}
+              </Timeline>
+              <div style={{ width: '90%', marginLeft: '5%' }}>
+                <NewUpdateCard
+                  demand={demand}
+                  user={user}
+                  getDemandApi={getDemandApi}
+                  changeState={changeState}
+                  setChangeState={setChangeState}
+                />
+              </div>
+            </MobileTimeline>
+            <MobileButtonDiv>
+              <TinyButton
+                type="primary"
+                title={buttonTitle}
+                click={handleShow}
+                style={{
+                  backgroundColor: buttonColor,
+                  color: `${colors.secondary}`,
+                  border: `1px solid ${buttonColor}`,
+                  height: 'min-content',
+                  width: '100%',
+                  display: 'flex',
+                  margin: '0%',
+                }}
+              />
+              <CloseDemandModal
+                demand={demand}
+                id={id}
+                show={show}
+                handleClose={handleClose}
+                message={message}
+                startModal={startModal}
+              />
+            </MobileButtonDiv>
+          </Main>
+        )}
     </>
   );
 };
