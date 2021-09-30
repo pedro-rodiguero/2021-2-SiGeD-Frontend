@@ -25,7 +25,7 @@ const UpdateCard = ({
   const [confirm, setConfirm] = useState(false);
   const handleClose = () => setShow(false);
   const handleConfirm = () => setConfirm(false);
-  const { user, startModal } = useProfileUser();
+  const { user, token, startModal } = useProfileUser();
   const [fileStatus, setFileStatus] = useState(false);
 
   const styles = {
@@ -96,8 +96,8 @@ const UpdateCard = ({
         />
       </PDFViwerCloseButton>
       <PDFViwer
-        title="PDF in an i-Frame"
-        src={`http://localhost:3003/demand/file/${fileID[0]}`}
+        title="PDF"
+        src={`http://localhost:3003/demand/file/${fileID[0]}?token=${token}`}
         scrolling="auto"
       />
     </PDFViwerContainer>
