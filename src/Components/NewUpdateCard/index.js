@@ -30,9 +30,7 @@ const NewUpdateCard = ({
     setDescription('');
   };
 
-  const submitForm = (event) => {
-    event.preventDefault();
-
+  const submitForm = () => {
     if (uploadFile) {
       const info = {
         userName: user.name,
@@ -46,6 +44,7 @@ const NewUpdateCard = ({
       DemandUploadFile(demand._id, startModal, uploadFile, info);
       setUploadFile();
       setOpenModal(false);
+      getDemandApi();
       setDescription('');
     } else {
       setOpenModal(true);
