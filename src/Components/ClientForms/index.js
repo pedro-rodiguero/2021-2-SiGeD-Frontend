@@ -29,6 +29,9 @@ const ClientForms = ({
   setSelectedFeatures,
   selectedFeatures,
   setSelectedFeaturesID,
+  setTela,
+  dataClientCargo,
+  dataClientLotation,
 }) => {
   const controlarCaracteristicas = (item) => {
     const featuresID = [];
@@ -65,6 +68,9 @@ const ClientForms = ({
             onChange={(Option) => setOfficeOption(Option.target.value)}
             style={{ border: '0' }}
           >
+            {setTela
+              ? <option> </option>
+              : <option>{dataClientCargo}</option>}
             {cargos.map((cargo) => (
               <option value={cargo.name}>{cargo.name}</option>
             ))}
@@ -76,9 +82,14 @@ const ClientForms = ({
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
+            displayValue="name"
+            placeholder=""
             onChange={(Option) => setLocationOption(Option.target.value)}
             style={{ border: '0' }}
           >
+            {setTela
+              ? <option> </option>
+              : <option>{dataClientLotation}</option>}
             {lotacao.map((lot) => (
               <option value={lot._id}>{lot.name}</option>
             ))}
