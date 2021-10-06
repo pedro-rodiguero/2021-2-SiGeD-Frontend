@@ -10,59 +10,61 @@ import colors from '../../Constants/colors';
 import { getClients, getCargos } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
-  setInputName,
-  inputName,
-  setInputEmail,
-  inputEmail,
-  setInputCpf,
-  inputCpf,
-  setInputPhone,
-  inputPhone,
-  setInputSecondaryPhone,
-  secondaryPhone,
-  setInputAddress,
-  inputAddress,
-  setOfficeOption,
-  setLocationOption,
-  //  locationOption,
+  // onChangeName,
+  // name,
+  // onChangeEmail,
+  // email,
+  // onChangeCpf,
+  // cpf,
+  // onChangePhone,
+  // phone,
+  // onChangeSecondaryPhone,
+  // secondaryPhone,
+  // onChangeAddress,
+  // address,
+  onChangeRole,
+  onChangeStation,
+  //  station,
   featuresList,
-  setSelectedFeatures,
+  onChangeFeatures,
+  onChangeFeaturesIds,
   selectedFeatures,
-  setSelectedFeaturesID,
+  client,
+  onChange,
 }) => {
   const controlarCaracteristicas = (item) => {
     const featuresID = [];
-    setSelectedFeatures(item);
+    onChangeFeatures(item);
     item.map((feat) => featuresID.push(feat._id));
-    setSelectedFeaturesID(featuresID);
+    onChangeFeaturesIds(featuresID);
   };
 
-  const [lotacao, setLotacao] = useState([]);
+  const [stations, setStations] = useState([]);
   const [cargos, SetCargo] = useState([]);
   useEffect(() => {
-    async function loadLotacao() {
-      const response = await getClients('/lotacao');
-      const response2 = await getCargos('/role');
-      SetCargo(response2.data);
-      setLotacao(response.data);
+    async function loadStations() {
+      const stationsResponse = await getClients('/lotacao');
+      const rolesResponse = await getCargos('/role');
+      SetCargo(rolesResponse.data);
+      setStations(stationsResponse.data);
     }
 
-    loadLotacao();
+    loadStations();
   }, []);
   return (
     <ClientFormsColumnText>
-      <RegisterInput long type="text" title="Nome" setText={setInputName} value={inputName} />
-      <RegisterInput long type="text" title="Email" setText={setInputEmail} value={inputEmail} />
-      <RegisterInput type="text" title="CPF" setText={setInputCpf} value={inputCpf} />
-      <RegisterInput type="text" title="Endereco" setText={setInputAddress} value={inputAddress} />
-      <RegisterInput type="text" title="Telefone principal" setText={setInputPhone} value={inputPhone} />
-      <RegisterInput type="text" title="Telefone secundario" setText={setInputSecondaryPhone} value={secondaryPhone} />
+      <RegisterInput long type="text" title="Nome" setText={(name) => onChange({ ...client, name })} value={client.name} />
+      <RegisterInput long type="text" title="Email" setText={(email) => onChange({ ...client, email })} value={client.email} />
+      <RegisterInput type="text" title="CPF" setText={(cpf) => onChange({ ...client, cpf })} value={client.cpf} />
+      <RegisterInput type="text" title="Endereco" setText={(address) => onChange({ ...client, address })} value={client.address} />
+      <RegisterInput type="text" title="Telefone principal" setText={(phone) => onChange({ ...client, phone })} value={client.phone} />
+      <RegisterInput type="text" title="Telefone secundario" setText={(secondaryPhone) => onChange({ ...client, secondaryPhone })} value={client.secondaryPhone} />
       <Form.Group style={styles.formGroup}>
         <Form.Label style={styles.formLabel}>Cargo:</Form.Label>
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
-            onChange={(Option) => setOfficeOption(Option.target.value)}
+            onChange={(Option) => onChangeRole(Option.target.value)}
             style={{ border: '0' }}
           >
             {cargos.map((cargo) => (
@@ -72,15 +74,15 @@ const ClientForms = ({
         </div>
       </Form.Group>
       <Form.Group style={styles.formGroup}>
-        <Form.Label style={styles.formLabel}>Lotacao:</Form.Label>
+        <Form.Label style={styles.formLabel}>Lotação:</Form.Label>
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
-            onChange={(Option) => setLocationOption(Option.target.value)}
+            onChange={(Option) => onChangeStation(Option.target.value)}
             style={{ border: '0' }}
           >
-            {lotacao.map((lot) => (
-              <option value={lot._id}>{lot.name}</option>
+            {stations.map((lot) => (
+              <option key={lot._id} value={lot._id}>{lot.name}</option>
             ))}
           </Dropdown>
         </div>

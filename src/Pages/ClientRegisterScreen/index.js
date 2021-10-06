@@ -5,6 +5,7 @@ import { validateFields } from '../../Utils/validations';
 import ClientForms from '../../Components/ClientForms';
 import { useProfileUser } from '../../Context';
 import { postClient, getFeatures } from '../../Services/Axios/clientServices';
+import ClientForm from '../../Models/clientForm';
 
 const ClientRegisterScreen = () => {
   const history = useHistory();
@@ -21,6 +22,7 @@ const ClientRegisterScreen = () => {
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [selectedFeaturesID, setSelectedFeaturesID] = useState([]);
   const [baseImage, setBaseImage] = useState('');
+  const [client, setClient] = useState(new ClientForm());
   const { startModal, user } = useProfileUser();
 
   const getFeaturesFromAPI = () => {
@@ -60,6 +62,7 @@ const ClientRegisterScreen = () => {
     setRegisterClientInputAddress('');
     setOfficeOption('');
     setRegisterLocation('');
+    setClient(new ClientForm());
   };
 
   if (!localStorage.getItem('@App:token')) {
@@ -81,9 +84,9 @@ const ClientRegisterScreen = () => {
         setBaseImage={setBaseImage}
       >
         <ClientForms
-          setInputName={setRegisterClientInputName}
-          inputName={registerClientInputName}
-          setInputEmail={setRegisterClientInputEmail}
+          onChangeName={setRegisterClientInputName}
+          name={registerClientInputName}
+          onChangeEmail={setRegisterClientInputEmail}
           inputEmail={registerClientInputEmail}
           setInputCpf={setRegisterClientInputCpf}
           inputCpf={registerClientInputCpf}
@@ -100,6 +103,8 @@ const ClientRegisterScreen = () => {
           setSelectedFeatures={setSelectedFeatures}
           selectedFeatures={selectedFeatures}
           setSelectedFeaturesID={setSelectedFeaturesID}
+          client={client}
+          onChange={setClient}
         />
       </GenericRegisterScreen>
     </div>

@@ -7,6 +7,7 @@ import {
 } from '../../Services/Axios/clientServices';
 import ClientForms from '../../Components/ClientForms';
 import { useProfileUser } from '../../Context';
+import ClientForm from '../../Models/clientForm';
 
 const ClientUpdateScreen = () => {
   const history = useHistory();
@@ -24,6 +25,7 @@ const ClientUpdateScreen = () => {
   const [clientFeatures, setClientFeatures] = useState([]);
   const [selectedFeaturesID, setSelectedFeaturesID] = useState([]);
   const [baseImage, setBaseImage] = useState('');
+  const [client, setClient] = useState(new ClientForm());
   const { id } = useParams();
   const { startModal, user, token } = useProfileUser();
 
@@ -31,6 +33,7 @@ const ClientUpdateScreen = () => {
     getClients(`clients/${id}`, startModal)
       .then((response) => {
         const { data } = response;
+        setClient(data);
         setupdateClientInputName(data?.name);
         setupdateClientInputEmail(data?.email);
         setupdateClientInputCpf(data?.cpf);
@@ -111,25 +114,27 @@ const ClientUpdateScreen = () => {
           setBaseImage={setBaseImage}
         >
           <ClientForms
-            setInputName={setupdateClientInputName}
-            inputName={updateClientInputName}
-            setInputEmail={setupdateClientInputEmail}
+            onChangeName={setupdateClientInputName}
+            name={updateClientInputName}
+            onChangeEmail={setupdateClientInputEmail}
             inputEmail={updateClientInputEmail}
             setInputCpf={setupdateClientInputCpf}
-            inputCpf={updateClientInputCpf}
-            setInputPhone={setupdateClientInputPhone}
-            inputPhone={updateClientInputPhone}
-            setInputSecondaryPhone={setupdateClientInputSecondaryPhone}
+            cpf={updateClientInputCpf}
+            onChangePhone={setupdateClientInputPhone}
+            phone={updateClientInputPhone}
+            onChangeSecondaryPhone={setupdateClientInputSecondaryPhone}
             secondaryPhone={updateClientInputSecondaryPhone}
-            setInputAddress={setupdateClientInputAddress}
-            inputAddress={updateClientInputAddress}
-            setOfficeOption={setOfficeOption}
-            setLocationOption={setupdateLocation}
-            locationOption={updateLocation}
+            onChangeAddress={setupdateClientInputAddress}
+            address={updateClientInputAddress}
+            onChangeRole={setOfficeOption}
+            onChangeStation={setupdateLocation}
+            station={updateLocation}
             featuresList={featuresList}
-            setSelectedFeatures={setClientFeatures}
+            onChangeFeatures={setClientFeatures}
+            onChangeFeaturesIds={setSelectedFeaturesID}
             selectedFeatures={clientFeatures}
-            setSelectedFeaturesID={setSelectedFeaturesID}
+            client={client}
+            onChange={setClient}
           />
         </GenericRegisterScreen>
       ) : null}
