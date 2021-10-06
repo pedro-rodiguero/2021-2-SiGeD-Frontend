@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { BiTrash } from 'react-icons/bi';
+import { BsPencil } from 'react-icons/bs';
 import colors from '../../Constants/colors';
 
 export const AlertData = styled.div`
@@ -18,21 +20,20 @@ export const AlertData = styled.div`
 `;
 
 export const styles = {
-  biIconStyle: {
-    marginRight: '5px',
-    color: '#F08080',
-  },
-  bsPencilStyle: {
-    marginRight: '10px',
-  },
-  textStyle: {
-    color: 'black',
-    fontSize: '1rem',
-  },
   cursorStyle: {
     cursor: 'pointer',
   },
 };
+
+export const Trash = styled(BiTrash)`
+ marginRight: '5px';
+ color: '#F08080'; 
+`;
+
+export const Pencil = styled(BsPencil)`
+ marginRight: '5px';
+ color: '#F08080'; 
+`;
 
 export const AlertName = styled.p`
   margin-bottom: 0px;

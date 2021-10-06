@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import moment from 'moment-timezone';
-import { BsPencil } from 'react-icons/bs';
-import { BiTrash } from 'react-icons/bi';
 import {
   AlertData,
   AlertName,
@@ -9,6 +7,8 @@ import {
   EditIcon,
   TrashIcon,
   styles,
+  Trash,
+  Pencil,
 } from './Style';
 import UpdateAlertModal from '../UpdateAlertModal';
 import { deleteAlert } from '../../Services/Axios/demandsServices';
@@ -46,10 +46,10 @@ const AlertByDemandData = ({
         }}
         style={styles.cursorStyle}
       >
-        <BsPencil style={styles.bsPencilStyle} />
+        <Pencil />
       </EditIcon>
       <TrashIcon onClick={() => handleShowCancel()}>
-        <BiTrash style={styles.biIconStyle} />
+        <Trash />
       </TrashIcon>
       <UpdateAlertModal
         demand={demand}
