@@ -16,7 +16,7 @@ const ClientForms = ({
   onChange,
 }) => {
   const onChangeFeatures = (items) => {
-    const features = items.select((feature) => feature._id);
+    const features = items.map((feature) => feature._id);
     onChange({ ...client, features });
   };
 

@@ -67,18 +67,21 @@ export async function postClient(clientForm, userContext, startModal) {
   return false;
 }
 
-export async function updateClient(clientForm, userContext, startModal) {
+export async function updateClient(id, clientForm, userContext, startModal) {
   try {
-    const response = await APIClients.put(`/clients/update/${clientForm.id}`, {
+    const response = await APIClients.put(`/clients/update/${id}`, {
       ...clientForm,
       userID: userContext,
     });
     return response;
   } catch (error) {
-    if (error.response.status === 500) {
+    console.log(error);
+    if (error.response?.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
-    } else if (error.response.status !== 401) {
+    } else if (error.response?.status !== 401) {
       startModal('Não foi possivel atualizar o cliente. Tente novamente mais tarde');
+    } else if (error.response?.status === 400) {
+      console.log(error.response?.data);
     }
     console.error(`An unexpected error ocourred while updating the client data.${error}`);
   }

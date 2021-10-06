@@ -35,9 +35,10 @@ const ClientRegisterScreen = () => {
   const submit = async () => {
     const validMessage = validateFields(clientForm);
     if (!validMessage.length) {
-      const data = await postClient(clientForm, user._id, startModal);
-      if (data) {
-        return history.push(`/perfil/${data._id}`);
+      const response = await postClient(clientForm, user._id, startModal);
+      console.log(response);
+      if (response) {
+        return history.push(`/perfil/${response.data?._id}`);
       }
       return undefined;
     }

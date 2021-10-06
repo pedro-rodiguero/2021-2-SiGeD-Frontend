@@ -50,8 +50,9 @@ const ClientUpdateScreen = () => {
   const submit = async () => {
     const validMessage = validateFields(clientForm);
     if (!validMessage.length) {
-      const data = await updateClient(clientForm, user._id, startModal);
-      return history.push(`/perfil/${data._id}`);
+      const response = await updateClient(id, clientForm, user._id, startModal);
+      console.log(response);
+      return history.push(`/perfil/${response.data?._id}`);
     }
     startModal(validMessage.join('\n'));
     return undefined;
