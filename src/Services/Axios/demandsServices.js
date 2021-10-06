@@ -304,7 +304,7 @@ export async function DemandUploadFile(
       startModal('PDF anexado com sucesso!');
     }
   } catch (error) {
-    if (error.response.status === 500) {
+    if (error.response && error.response.status === 500) {
       // eslint-disable-next-line no-undef
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else {
