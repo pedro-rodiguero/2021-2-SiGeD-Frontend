@@ -7,7 +7,7 @@ import { getDemands, updateAlert } from '../../Services/Axios/demandsServices';
 import { useProfileUser } from '../../Context';
 import {
   AlertData, WatchIcon, AlertAbout, AlertDemandName, AlertName, AlertDescription, AlertDate,
-  AlertRightSide,
+  AlertRightSide, styles,
 } from './Style';
 
 const AlertBySectorData = ({ alert, changeState, setChangeState }) => {
@@ -70,10 +70,7 @@ const AlertBySectorData = ({ alert, changeState, setChangeState }) => {
                   />
                 )
               }
-          style={{
-            justifyContent: 'center',
-            margin: '0px',
-          }}
+          style={styles.formStyle}
         />
         <AlertDate>
           { moment.parseZone(alert.date).local(true).format('DD/MM/YYYY')}
