@@ -44,8 +44,13 @@ const NewUpdateCard = ({
       DemandUploadFile(demand._id, startModal, uploadFile, info);
       setUploadFile();
       setOpenModal(false);
-      getDemandApi();
-      setDescription('');
+
+      setTimeout(() => {
+        getDemandApi();
+        setDescription('');
+      }, 1500);
+
+      // setDescription('');
     } else {
       setOpenModal(true);
     }
