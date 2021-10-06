@@ -1,5 +1,5 @@
-import { IoAddCircle } from "react-icons/io5";
-import styled from "styled-components";
+import { IoAddCircle } from 'react-icons/io5';
+import styled from 'styled-components';
 
 export const AddCategory = styled.div`
   display: flex;
@@ -16,21 +16,21 @@ export const AddCategory = styled.div`
 
 export const styles = {
   editIconStyle: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   textStyle: {
-    color: "black",
-    fontSize: "1rem",
+    color: 'black',
+    fontSize: '1rem',
   },
 };
 
 export const editIconStyle = styled.div`
-  cursor: "pointer";
+  cursor: 'pointer';
 `;
 
 export const textStyle = styled.div`
-  color: "black";
-  fontsize: "1rem";
+  color: 'black';
+  fontsize: '1rem';
 `;
 
 export const AddIcon = styled(IoAddCircle)`

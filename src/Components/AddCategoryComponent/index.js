@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { BsPencil } from "react-icons/bs";
+import React, { useEffect, useState } from 'react';
+import { BsPencil } from 'react-icons/bs';
 import {
   AddCategory,
   AddIcon,
-  c,
   List,
   P,
   CreateCategory,
   P2,
-  styles
-} from "./Style";
+  styles,
+  CategoriesBox,
+} from './Style';
 import {
   getCategories,
   createCategory,
-} from "../../Services/Axios/demandsServices";
-import CategoriesToAdd from "../CategoriesToAdd";
-import ModalComp from "../ModalComp";
-import { useProfileUser } from "../../Context";
+} from '../../Services/Axios/demandsServices';
+import CategoriesToAdd from '../CategoriesToAdd';
+import ModalComp from '../ModalComp';
+import { useProfileUser } from '../../Context';
 
 const CategoryDiv = ({ pushCategory }) => {
   const [statusBox, setStatusBox] = useState(false);
@@ -24,17 +24,16 @@ const CategoryDiv = ({ pushCategory }) => {
   const [modalState, setModalState] = useState(false);
   const { startModal } = useProfileUser();
 
-
   const toggleModal = () => {
     setModalState(!modalState);
   };
 
   const listCategories = async () => {
-    await getCategories("category", startModal)
+    await getCategories('category', startModal)
       .then((response) => setCategories(response.data))
       .catch((error) => {
         console.error(
-          `An unexpected error ocourred while getting categories.${error}`
+          `An unexpected error ocourred while getting categories.${error}`,
         );
       });
   };

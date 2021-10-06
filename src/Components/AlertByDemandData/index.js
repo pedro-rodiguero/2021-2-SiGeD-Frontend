@@ -1,17 +1,26 @@
-import React, { useState } from 'react';
-import moment from 'moment-timezone';
-import { BsPencil } from 'react-icons/bs';
-import { BiTrash } from 'react-icons/bi';
+import React, { useState } from "react";
+import moment from "moment-timezone";
+import { BsPencil } from "react-icons/bs";
+import { BiTrash } from "react-icons/bi";
 import {
-  AlertData, AlertName, AlertDate, EditIcon, TrashIcon,
-} from './Style';
-import UpdateAlertModal from '../UpdateAlertModal';
-import { deleteAlert } from '../../Services/Axios/demandsServices';
-import { useProfileUser } from '../../Context';
-import ConfirmDemandModal from '../ConfirmDemandModal';
+  AlertData,
+  AlertName,
+  AlertDate,
+  EditIcon,
+  TrashIcon,
+  styles,
+} from "./Style";
+import UpdateAlertModal from "../UpdateAlertModal";
+import { deleteAlert } from "../../Services/Axios/demandsServices";
+import { useProfileUser } from "../../Context";
+import ConfirmDemandModal from "../ConfirmDemandModal";
 
 const AlertByDemandData = ({
-  alert, demand, changeState, setChangeState, setSorted,
+  alert,
+  demand,
+  changeState,
+  setChangeState,
+  setSorted,
 }) => {
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
@@ -22,26 +31,25 @@ const AlertByDemandData = ({
   const { startModal } = useProfileUser();
 
   const submit = () => {
-    deleteAlert(alert._id, startModal)
-      .then(() => setChangeState(!changeState));
+    deleteAlert(alert._id, startModal).then(() => setChangeState(!changeState));
   };
 
   return (
     <AlertData>
-      <AlertName>
-        {alert.name}
-      </AlertName>
+      <AlertName>{alert.name}</AlertName>
       <AlertDate>
-        { moment.parseZone(alert.date).local(true).format('DD/MM/YYYY')}
+        {moment.parseZone(alert.date).local(true).format("DD/MM/YYYY")}
       </AlertDate>
       <EditIcon
-        onClick={() => { handleShow(); }}
-        style={{ cursor: 'pointer' }}
+        onClick={() => {
+          handleShow();
+        }}
+        style={styles.cursorStyle}
       >
-        <BsPencil style={{ marginRight: '10px' }} />
+        <BsPencil style={styles.bsPencilStyle} />
       </EditIcon>
       <TrashIcon onClick={() => handleShowCancel()}>
-        <BiTrash style={{ marginRight: '5px', color: '#F08080' }} />
+        <BiTrash style={styles.biIconStyle} />
       </TrashIcon>
       <UpdateAlertModal
         demand={demand}
