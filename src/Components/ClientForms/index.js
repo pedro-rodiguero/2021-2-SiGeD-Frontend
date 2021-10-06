@@ -43,6 +43,7 @@ const ClientForms = ({
     async function loadLotacao() {
       const response = await getClients('/lotacao');
       const response2 = await getCargos('/role');
+      setLocationOption(response.data[0]._id);
       SetCargo(response2.data);
       setLotacao(response.data);
     }
