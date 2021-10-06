@@ -11,16 +11,13 @@ import { getClients, getCargos } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
   featuresList,
-  onChangeSelectedFeatures,
-  selectedFeatures,
+  clientFeatures,
   clientForm: client,
   onChange,
 }) => {
-  const controlarCaracteristicas = (item) => {
-    const featuresID = [];
-    onChangeSelectedFeatures(item);
-    item.map((feat) => featuresID.push(feat._id));
-    onChange({ ...client, features: featuresID });
+  const onChangeFeatures = (items) => {
+    const features = items.select((feature) => feature._id);
+    onChange({ ...client, features });
   };
 
   const [stations, setStations] = useState([]);
@@ -77,9 +74,9 @@ const ClientForms = ({
         </Label>
         <Multiselect
           options={featuresList}
-          selectedValues={selectedFeatures}
-          onSelect={controlarCaracteristicas}
-          onRemove={controlarCaracteristicas}
+          selectedValues={clientFeatures}
+          onSelect={onChangeFeatures}
+          onRemove={onChangeFeatures}
           displayValue="name"
           placeholder=""
           emptyRecordMsg="Não há nenhuma característica disponível"

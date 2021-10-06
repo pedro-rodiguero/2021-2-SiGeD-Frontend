@@ -4,13 +4,13 @@ import GenericRegisterScreen from '../../Components/GenericRegisterScreen';
 import { validateFields } from '../../Utils/validations';
 import ClientForms from '../../Components/ClientForms';
 import { useProfileUser } from '../../Context';
-import { postClient, getFeatures } from '../../Services/Axios/clientServices';
+import { postClient, getFeatures, getClientFeatures } from '../../Services/Axios/clientServices';
 import ClientForm from '../../Models/clientForm';
 
 const ClientRegisterScreen = () => {
   const history = useHistory();
   const [featuresList, setFeaturesList] = useState([]);
-  const [selectedFeatures, setSelectedFeatures] = useState([]);
+  const [clientFeatures, setClientFeatures] = useState([]);
   const [baseImage, setBaseImage] = useState('');
   const [clientForm, setClientForm] = useState(new ClientForm());
   const { startModal, user } = useProfileUser();
@@ -18,6 +18,15 @@ const ClientRegisterScreen = () => {
   const getFeaturesFromAPI = () => {
     getFeatures('/features').then((response) => setFeaturesList(response.data));
   };
+
+  const getClientFeaturesList = () => {
+    getClientFeatures(clientForm.features, startModal)
+      .then((response) => setClientFeatures(response.data));
+  };
+
+  useEffect(() => {
+    getClientFeaturesList();
+  }, [clientForm.features]);
 
   useEffect(() => {
     getFeaturesFromAPI();
@@ -65,8 +74,7 @@ const ClientRegisterScreen = () => {
       >
         <ClientForms
           featuresList={featuresList}
-          onChangeSelectedFeatures={setSelectedFeatures}
-          selectedFeatures={selectedFeatures}
+          clientFeatures={clientFeatures}
           clientForm={clientForm}
           onChange={setClientForm}
         />

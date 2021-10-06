@@ -67,24 +67,11 @@ export async function postClient(clientForm, userContext, startModal) {
   return false;
 }
 
-export async function updateClient(
-  inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, locationOption, features, id, startModal, userContext,
-  baseImage,
-) {
+export async function updateClient(clientForm, userContext, startModal) {
   try {
-    const response = await APIClients.put(`/clients/update/${id}`, {
-      name: inputName,
-      email: inputEmail,
-      cpf: inputCpf,
-      phone: inputPhone,
-      secondaryPhone: inputSecondaryPhone,
-      address: inputAddress,
-      office: officeOption,
-      location: locationOption,
+    const response = await APIClients.put(`/clients/update/${clientForm.id}`, {
+      ...clientForm,
       userID: userContext,
-      features,
-      image: baseImage,
     });
     return response;
   } catch (error) {

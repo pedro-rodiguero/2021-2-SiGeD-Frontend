@@ -1,5 +1,6 @@
 export default class ClientForm {
   constructor(data = {}) {
+    this.id = data._id || '';
     this.name = data.name || '';
     this.email = data.email || '';
     this.cpf = data.cpf || '';
