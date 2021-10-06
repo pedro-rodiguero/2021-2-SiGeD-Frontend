@@ -14,20 +14,17 @@ const ClientRegisterScreen = () => {
   const [registerClientInputCpf, setRegisterClientInputCpf] = useState('');
   const [registerClientInputAddress, setRegisterClientInputAddress] = useState('');
   const [registerClientInputPhone, setRegisterClientInputPhone] = useState('');
-  const [registerClientInputSecondaryPhone, setregisterClientInputSecondaryPhone] = useState('');
   const [inputRegisterClientImage, setRegisterClientInputImage] = useState('');
   const [officeOption, setOfficeOption] = useState('Cargo');
   const [registerLocation, setRegisterLocation] = useState('Lotação');
   const [featuresList, setFeaturesList] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
-  const [selectedFeaturesID, setSelectedFeaturesID] = useState([]);
   const [baseImage, setBaseImage] = useState('');
-  const [client, setClient] = useState(new ClientForm());
+  const [clientForm, setClientForm] = useState(new ClientForm());
   const { startModal, user } = useProfileUser();
 
   const getFeaturesFromAPI = () => {
-    getFeatures('/features')
-      .then((response) => setFeaturesList(response.data));
+    getFeatures('/features').then((response) => setFeaturesList(response.data));
   };
 
   useEffect(() => {
@@ -35,16 +32,9 @@ const ClientRegisterScreen = () => {
   }, []);
 
   const submit = async () => {
-    const validMessage = validateFields(registerClientInputName,
-      registerClientInputEmail, registerClientInputCpf,
-      registerClientInputPhone, registerClientInputSecondaryPhone);
+    const validMessage = validateFields(clientForm);
     if (!validMessage.length) {
-      const data = await postClient(
-        registerClientInputName, registerClientInputEmail,
-        registerClientInputCpf, registerClientInputPhone,
-        registerClientInputSecondaryPhone, registerClientInputAddress,
-        officeOption, registerLocation, selectedFeaturesID, startModal, user._id, baseImage,
-      ).then((response) => response.data);
+      const data = await postClient(clientForm, user._id, startModal);
       if (data) {
         return history.push(`/perfil/${data._id}`);
       }
@@ -62,7 +52,7 @@ const ClientRegisterScreen = () => {
     setRegisterClientInputAddress('');
     setOfficeOption('');
     setRegisterLocation('');
-    setClient(new ClientForm());
+    setClientForm(new ClientForm());
   };
 
   if (!localStorage.getItem('@App:token')) {
@@ -72,8 +62,13 @@ const ClientRegisterScreen = () => {
   return (
     <div>
       <GenericRegisterScreen
-        sidebarList={[registerClientInputName, registerClientInputCpf,
-          registerClientInputAddress, officeOption, registerLocation]}
+        sidebarList={[
+          registerClientInputName,
+          registerClientInputCpf,
+          registerClientInputAddress,
+          officeOption,
+          registerLocation,
+        ]}
         sidebarFooter={[registerClientInputEmail, registerClientInputPhone]}
         cancel={cancel}
         submit={submit}
@@ -84,27 +79,11 @@ const ClientRegisterScreen = () => {
         setBaseImage={setBaseImage}
       >
         <ClientForms
-          onChangeName={setRegisterClientInputName}
-          name={registerClientInputName}
-          onChangeEmail={setRegisterClientInputEmail}
-          inputEmail={registerClientInputEmail}
-          setInputCpf={setRegisterClientInputCpf}
-          inputCpf={registerClientInputCpf}
-          setInputPhone={setRegisterClientInputPhone}
-          inputPhone={registerClientInputPhone}
-          setInputSecondaryPhone={setregisterClientInputSecondaryPhone}
-          secondaryPhone={registerClientInputSecondaryPhone}
-          setInputAddress={setRegisterClientInputAddress}
-          inputAddress={registerClientInputAddress}
-          setOfficeOption={setOfficeOption}
-          setLocationOption={setRegisterLocation}
-          locationOption={registerLocation}
           featuresList={featuresList}
-          setSelectedFeatures={setSelectedFeatures}
+          onChangeSelectedFeatures={setSelectedFeatures}
           selectedFeatures={selectedFeatures}
-          setSelectedFeaturesID={setSelectedFeaturesID}
-          client={client}
-          onChange={setClient}
+          clientForm={clientForm}
+          onChange={setClientForm}
         />
       </GenericRegisterScreen>
     </div>

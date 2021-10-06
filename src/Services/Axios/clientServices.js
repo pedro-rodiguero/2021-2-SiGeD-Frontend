@@ -45,24 +45,11 @@ export async function getFourClients(startModal) {
   return false;
 }
 
-export async function postClient(
-  inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, locationOption, selectedFeatures,
-  startModal, userContext, baseImage,
-) {
+export async function postClient(clientForm, userContext, startModal) {
   try {
     const response = await APIClients.post('clients/create', {
-      name: inputName,
-      email: inputEmail,
-      cpf: inputCpf,
-      phone: inputPhone,
-      secondaryPhone: inputSecondaryPhone,
-      address: inputAddress,
-      office: officeOption,
-      location: locationOption,
-      features: selectedFeatures,
+      ...clientForm,
       userID: userContext,
-      image: baseImage,
     });
     return response;
   } catch (error) {

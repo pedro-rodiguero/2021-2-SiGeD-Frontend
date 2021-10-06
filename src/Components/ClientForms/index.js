@@ -10,33 +10,17 @@ import colors from '../../Constants/colors';
 import { getClients, getCargos } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
-  // onChangeName,
-  // name,
-  // onChangeEmail,
-  // email,
-  // onChangeCpf,
-  // cpf,
-  // onChangePhone,
-  // phone,
-  // onChangeSecondaryPhone,
-  // secondaryPhone,
-  // onChangeAddress,
-  // address,
-  onChangeRole,
-  onChangeStation,
-  //  station,
   featuresList,
-  onChangeFeatures,
-  onChangeFeaturesIds,
+  onChangeSelectedFeatures,
   selectedFeatures,
-  client,
+  clientForm: client,
   onChange,
 }) => {
   const controlarCaracteristicas = (item) => {
     const featuresID = [];
-    onChangeFeatures(item);
+    onChangeSelectedFeatures(item);
     item.map((feat) => featuresID.push(feat._id));
-    onChangeFeaturesIds(featuresID);
+    onChange({ ...client, features: featuresID });
   };
 
   const [stations, setStations] = useState([]);
@@ -64,7 +48,7 @@ const ClientForms = ({
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
-            onChange={(Option) => onChangeRole(Option.target.value)}
+            onChange={(e) => onChange({ ...client, office: e.target.value })}
             style={{ border: '0' }}
           >
             {cargos.map((cargo) => (
@@ -78,7 +62,7 @@ const ClientForms = ({
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
-            onChange={(Option) => onChangeStation(Option.target.value)}
+            onChange={(e) => onChange({ ...client, location: e.target.value })}
             style={{ border: '0' }}
           >
             {stations.map((lot) => (

@@ -25,7 +25,7 @@ const ClientUpdateScreen = () => {
   const [clientFeatures, setClientFeatures] = useState([]);
   const [selectedFeaturesID, setSelectedFeaturesID] = useState([]);
   const [baseImage, setBaseImage] = useState('');
-  const [client, setClient] = useState(new ClientForm());
+  const [clientForm, setClientForm] = useState(new ClientForm());
   const { id } = useParams();
   const { startModal, user, token } = useProfileUser();
 
@@ -33,7 +33,7 @@ const ClientUpdateScreen = () => {
     getClients(`clients/${id}`, startModal)
       .then((response) => {
         const { data } = response;
-        setClient(data);
+        setClientForm(data);
         setupdateClientInputName(data?.name);
         setupdateClientInputEmail(data?.email);
         setupdateClientInputCpf(data?.cpf);
@@ -56,6 +56,7 @@ const ClientUpdateScreen = () => {
   };
 
   const getClientFeaturesList = () => {
+    console.log(clientFeatures);
     getClientFeatures(clientFeaturesID, startModal)
       .then((response) => setClientFeatures(response.data));
   };
@@ -73,9 +74,7 @@ const ClientUpdateScreen = () => {
   }, [clientFeaturesID]);
 
   const submit = async () => {
-    const validMessage = validateFields(updateClientInputName,
-      updateClientInputEmail, updateClientInputCpf,
-      updateClientInputPhone, updateClientInputSecondaryPhone);
+    const validMessage = validateFields(clientForm);
     if (!validMessage.length) {
       const data = await updateClient(
         updateClientInputName, updateClientInputEmail,
@@ -114,27 +113,10 @@ const ClientUpdateScreen = () => {
           setBaseImage={setBaseImage}
         >
           <ClientForms
-            onChangeName={setupdateClientInputName}
-            name={updateClientInputName}
-            onChangeEmail={setupdateClientInputEmail}
-            inputEmail={updateClientInputEmail}
-            setInputCpf={setupdateClientInputCpf}
-            cpf={updateClientInputCpf}
-            onChangePhone={setupdateClientInputPhone}
-            phone={updateClientInputPhone}
-            onChangeSecondaryPhone={setupdateClientInputSecondaryPhone}
-            secondaryPhone={updateClientInputSecondaryPhone}
-            onChangeAddress={setupdateClientInputAddress}
-            address={updateClientInputAddress}
-            onChangeRole={setOfficeOption}
-            onChangeStation={setupdateLocation}
-            station={updateLocation}
             featuresList={featuresList}
-            onChangeFeatures={setClientFeatures}
-            onChangeFeaturesIds={setSelectedFeaturesID}
-            selectedFeatures={clientFeatures}
-            client={client}
-            onChange={setClient}
+            onChangeSelectedFeatures={setClientFeatures}
+            clientForm={clientForm}
+            onChange={setClientForm}
           />
         </GenericRegisterScreen>
       ) : null}

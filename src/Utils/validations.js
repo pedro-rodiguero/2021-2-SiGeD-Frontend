@@ -40,19 +40,20 @@ export const validateSignUp = (email, name) => {
   return false;
 };
 
-export const validateFields = (inputName, inputEmail, inputCpf,
-  inputPhone, inputSecondaryPhone) => {
+export const validateFields = ({
+  name, email, cpf, phone, secondaryPhone,
+}) => {
   const message = [];
 
-  if (validateName(inputName) === false) {
+  if (validateName(name) === false) {
     message.push('Nome inválido.');
-  } if (validateCpf(inputCpf) === false) {
+  } if (validateCpf(cpf) === false) {
     message.push('CPF inválido. Utilize somente os digitos.');
-  } if (validateEmail(inputEmail) === false) {
+  } if (validateEmail(email) === false) {
     message.push('Email inválido.');
-  } if (validatePhone(inputPhone) === false) {
+  } if (validatePhone(phone) === false) {
     message.push('Telefone inválido. Minimo de 8 digitos');
-  } if (validatePhone(inputSecondaryPhone) === false) {
+  } if (validatePhone(secondaryPhone) === false) {
     message.push('Telefone secundario inválido. Minimo de 8 digitos');
   }
 

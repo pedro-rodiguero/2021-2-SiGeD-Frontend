@@ -8,7 +8,7 @@ export default class ClientForm {
     this.secondaryPhone = data.secondaryPhone || '';
     this.image = data.image || '';
     this.office = data.office || '';
-    this.featuresIds = data.features || [];
+    this.features = data.features || [];
     this.location = data.location?.name || '';
   }
 }
