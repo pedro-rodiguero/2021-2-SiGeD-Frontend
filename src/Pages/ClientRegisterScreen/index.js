@@ -9,14 +9,6 @@ import ClientForm from '../../Models/clientForm';
 
 const ClientRegisterScreen = () => {
   const history = useHistory();
-  const [registerClientInputName, setRegisterClientInputName] = useState('');
-  const [registerClientInputEmail, setRegisterClientInputEmail] = useState('');
-  const [registerClientInputCpf, setRegisterClientInputCpf] = useState('');
-  const [registerClientInputAddress, setRegisterClientInputAddress] = useState('');
-  const [registerClientInputPhone, setRegisterClientInputPhone] = useState('');
-  const [inputRegisterClientImage, setRegisterClientInputImage] = useState('');
-  const [officeOption, setOfficeOption] = useState('Cargo');
-  const [registerLocation, setRegisterLocation] = useState('Lotação');
   const [featuresList, setFeaturesList] = useState([]);
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [baseImage, setBaseImage] = useState('');
@@ -45,13 +37,6 @@ const ClientRegisterScreen = () => {
   };
 
   const cancel = () => {
-    setRegisterClientInputName('');
-    setRegisterClientInputCpf('');
-    setRegisterClientInputEmail('');
-    setRegisterClientInputPhone('');
-    setRegisterClientInputAddress('');
-    setOfficeOption('');
-    setRegisterLocation('');
     setClientForm(new ClientForm());
   };
 
@@ -63,18 +48,18 @@ const ClientRegisterScreen = () => {
     <div>
       <GenericRegisterScreen
         sidebarList={[
-          registerClientInputName,
-          registerClientInputCpf,
-          registerClientInputAddress,
-          officeOption,
-          registerLocation,
+          clientForm.name,
+          clientForm.cpf,
+          clientForm.address,
+          clientForm.office,
+          clientForm.location,
         ]}
-        sidebarFooter={[registerClientInputEmail, registerClientInputPhone]}
+        sidebarFooter={[clientForm.email, clientForm.phone]}
         cancel={cancel}
         submit={submit}
         buttonTitle="Cadastrar"
-        inputImage={inputRegisterClientImage}
-        setInputImage={setRegisterClientInputImage}
+        inputImage={clientForm.image}
+        setInputImage={(image) => setClientForm({ ...clientForm, image })}
         baseImage={baseImage}
         setBaseImage={setBaseImage}
       >
