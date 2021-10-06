@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import moment from "moment-timezone";
-import { BsPencil } from "react-icons/bs";
-import { BiTrash } from "react-icons/bi";
+import React, { useState } from 'react';
+import moment from 'moment-timezone';
+import { BsPencil } from 'react-icons/bs';
+import { BiTrash } from 'react-icons/bi';
 import {
   AlertData,
   AlertName,
@@ -9,11 +9,11 @@ import {
   EditIcon,
   TrashIcon,
   styles,
-} from "./Style";
-import UpdateAlertModal from "../UpdateAlertModal";
-import { deleteAlert } from "../../Services/Axios/demandsServices";
-import { useProfileUser } from "../../Context";
-import ConfirmDemandModal from "../ConfirmDemandModal";
+} from './Style';
+import UpdateAlertModal from '../UpdateAlertModal';
+import { deleteAlert } from '../../Services/Axios/demandsServices';
+import { useProfileUser } from '../../Context';
+import ConfirmDemandModal from '../ConfirmDemandModal';
 
 const AlertByDemandData = ({
   alert,
@@ -38,7 +38,7 @@ const AlertByDemandData = ({
     <AlertData>
       <AlertName>{alert.name}</AlertName>
       <AlertDate>
-        {moment.parseZone(alert.date).local(true).format("DD/MM/YYYY")}
+        {moment.parseZone(alert.date).local(true).format('DD/MM/YYYY')}
       </AlertDate>
       <EditIcon
         onClick={() => {

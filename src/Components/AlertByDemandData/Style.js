@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import colors from "../../Constants/colors";
+import styled from 'styled-components';
+import colors from '../../Constants/colors';
 
 export const AlertData = styled.div`
   height: max-content;
@@ -19,18 +19,18 @@ export const AlertData = styled.div`
 
 export const styles = {
   biIconStyle: {
-    marginRight: "5px",
-    color: "#F08080",
+    marginRight: '5px',
+    color: '#F08080',
   },
   bsPencilStyle: {
-    marginRight: "10px",
+    marginRight: '10px',
   },
   textStyle: {
-    color: "black",
-    fontSize: "1rem",
+    color: 'black',
+    fontSize: '1rem',
   },
   cursorStyle: {
-    cursor: "pointer",
+    cursor: 'pointer',
   },
 };
 

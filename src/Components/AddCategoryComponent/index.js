@@ -9,6 +9,7 @@ import {
   P2,
   styles,
   CategoriesBox,
+  CategoriesP,
 } from './Style';
 import {
   getCategories,
@@ -45,7 +46,7 @@ const CategoryDiv = ({ pushCategory }) => {
   const renderCategories = () => {
     if (categories?.length === 0) {
       return (
-        <p style={styles.textStyle}>Ainda não há categorias cadastradas</p>
+        <CategoriesP style={styles.textStyle}>Ainda não há categorias cadastradas</CategoriesP>
       );
     }
     if (categories?.length === 1) {

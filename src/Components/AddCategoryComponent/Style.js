@@ -18,19 +18,11 @@ export const styles = {
   editIconStyle: {
     cursor: 'pointer',
   },
-  textStyle: {
-    color: 'black',
-    fontSize: '1rem',
-  },
 };
 
-export const editIconStyle = styled.div`
-  cursor: 'pointer';
-`;
-
-export const textStyle = styled.div`
-  color: 'black';
-  fontsize: '1rem';
+export const CategoriesP = styled.p`
+color: 'black',
+fontSize: '1rem',
 `;
 
 export const AddIcon = styled(IoAddCircle)`
