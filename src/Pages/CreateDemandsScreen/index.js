@@ -21,7 +21,12 @@ const CreateDemandsScreen = () => {
   const handleClose = () => setShow(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [process, setProcess] = useState('');
+  // const [processes, setProcesses] = useState([]);
+  const [processOne, setProcessOne] = useState('');
+  const [processTwo, setProcessTwo] = useState('');
+  const [processThree, setProcessThree] = useState('');
+  const [processFour, setProcessFour] = useState('');
+  const [processFive, setProcessFive] = useState('');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [clients, setClients] = useState([]);
   const [sectorID, setSectorID] = useState('');
@@ -74,10 +79,26 @@ const CreateDemandsScreen = () => {
   const submit = async () => {
     if (validateInputs()) {
       startModal('Demanda criada com sucesso!');
+      const processesList = [];
+      if (processOne !== '') {
+        processesList.push(processOne);
+      }
+      if (processTwo !== '') {
+        processesList.push(processTwo);
+      }
+      if (processThree !== '') {
+        processesList.push(processThree);
+      }
+      if (processFour !== '') {
+        processesList.push(processFour);
+      }
+      if (processFive !== '') {
+        processesList.push(processFive);
+      }
       const data = await createDemand(
         name,
         description,
-        process,
+        processesList,
         categoriesIDs,
         sectorID,
         user._id,
@@ -106,8 +127,16 @@ const CreateDemandsScreen = () => {
       <DemandsDescription
         name={name}
         setName={setName}
-        process={process}
-        setProcess={setProcess}
+        processOne={processOne}
+        setProcessOne={setProcessOne}
+        processTwo={processTwo}
+        setProcessTwo={setProcessTwo}
+        processThree={processThree}
+        setProcessThree={setProcessThree}
+        processFour={processFour}
+        setProcessFour={setProcessFour}
+        processFive={processFive}
+        setProcessFive={setProcessFive}
         description={description}
         setDescription={setDescription}
         demandDate={demandDate}
