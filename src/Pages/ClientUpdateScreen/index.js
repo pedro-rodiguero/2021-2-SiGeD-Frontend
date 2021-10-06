@@ -23,7 +23,7 @@ const ClientUpdateScreen = () => {
 
   const getClientFromApi = async () => {
     getClients(`clients/${id}`, startModal).then(({ data }) => {
-      setClientForm(data);
+      setClientForm(new ClientForm(data));
     });
   };
 
