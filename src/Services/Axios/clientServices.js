@@ -75,13 +75,10 @@ export async function updateClient(id, clientForm, userContext, startModal) {
     });
     return response;
   } catch (error) {
-    console.log(error);
     if (error.response?.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response?.status !== 401) {
       startModal('Não foi possivel atualizar o cliente. Tente novamente mais tarde');
-    } else if (error.response?.status === 400) {
-      console.log(error.response?.data);
     }
     console.error(`An unexpected error ocourred while updating the client data.${error}`);
   }

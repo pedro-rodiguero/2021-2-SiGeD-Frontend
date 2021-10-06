@@ -27,7 +27,6 @@ const WorkspaceListScreen = () => {
 
   useEffect(() => {
     getWorkspacesFromApi();
-    console.log('workspace screen');
   }, [token]);
 
   useEffect(() => {
