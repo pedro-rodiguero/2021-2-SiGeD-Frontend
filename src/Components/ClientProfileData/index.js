@@ -9,9 +9,8 @@ import {
   PersonDataBox, TableContent, Box, Ul, Content, P,
   TableContainer, ImageUser, DotContent,
 } from '../PersonalData/Style';
-import Img from './Style';
+import { Img, styles } from './Style';
 import { Li, Button, Icon } from '../DataList/Style';
-import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
 import ConfirmDemandModal from '../ConfirmDemandModal';
 
@@ -26,14 +25,6 @@ const ClientProfileData = ({ client, query, getClientsFromAPI }) => {
   const [modalText, setModalText] = useState('Você tem certeza que quer desativar este cliente?');
   const [textColor, setTextColor] = useState('');
   const [icon, setIcon] = useState('');
-
-  const styles = {
-    tableContent: {
-      color: colors.text,
-      textDecorationLine: 'none',
-      marginRight: '1.5vw',
-    },
-  };
 
   const renderImage = () => {
     if (!client.image) {
