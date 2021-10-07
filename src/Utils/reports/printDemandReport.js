@@ -76,7 +76,7 @@ const DemandReport = async (id, user, startModal) => {
     return null;
   });
   updates.sort((a, b) => {
-    if (a.createdAt < b.createdAt) {
+    if (a.createdAt > b.createdAt) {
       return 1;
     }
     return -1;
