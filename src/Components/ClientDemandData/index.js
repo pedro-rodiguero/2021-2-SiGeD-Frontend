@@ -2,7 +2,7 @@ import moment from 'moment-timezone';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import {
-  DemandDiv, SectorNameDiv, CategoriesDiv, CategoryTag,
+  DemandDiv, SectorNameDiv, CategoriesDiv, CategoryTag, styles,
 } from './Style';
 import { DemandTitle, ProcessNumber, DemandCreatedAt } from '../DemandData/Style';
 
@@ -14,19 +14,11 @@ const ClientDemandData = ({ demand, sectors, style }) => {
     <CategoryTag color={category.color}>{category.name}</CategoryTag>
   )));
 
-  const styles = {
-    divStyle: {
-      display: 'flex',
-      justifyContent: 'space-between',
-      marginBottom: '1.5%',
-    },
-  };
-
   useEffect(() => {
   }, [sectorName]);
 
   return (
-    <DemandDiv onClick={() => history.push(`/visualizar/${demand._id}`)} style={style}>
+    <DemandDiv onClick={() => history.push(`/visualizar/${demand._id}`)} style={style.divStyle}>
       <DemandTitle>
         {demand.name}
       </DemandTitle>
