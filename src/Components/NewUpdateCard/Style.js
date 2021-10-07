@@ -2,6 +2,36 @@ import styled from 'styled-components';
 import { TextareaAutosize } from '@material-ui/core';
 import colors from '../../Constants/colors';
 
+export const ModalContainer = styled.div`
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+`;
+
+export const Form = styled.form`
+    width: 400px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border-radius: 4px;
+`;
+
+export const ButtonsContainer = styled.div`
+    margin-top: '10px'; 
+    display: flex;
+    width: '100%';
+    button+button {
+        margin-right: 0;
+    }
+`;
 export const Card = styled.div`
     width: 100%;
     height: max-content;

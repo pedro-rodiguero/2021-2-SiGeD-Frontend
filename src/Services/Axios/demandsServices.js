@@ -283,6 +283,37 @@ export async function deleteDemandUpdate(id, updateListID, startModal) {
   }
 }
 
+export async function DemandUploadFile(
+  id, startModal, file, info,
+) {
+  try {
+    const dataArray = new FormData();
+    dataArray.append('name', file.name);
+
+    dataArray.append('userName', info.userName);
+    dataArray.append('userSector', info.userSector);
+    dataArray.append('userId', info.userId);
+    dataArray.append('description', info.description);
+    dataArray.append('important', info.important);
+    dataArray.append('visibility', info.visibility);
+
+    dataArray.append('file', file);
+
+    const response = await APIDemands.post(`/demand/upload-file/${id}`, dataArray);
+    if (response.status === 200) {
+      startModal('PDF anexado com sucesso!');
+    }
+  } catch (error) {
+    if (error.response && error.response.status === 500) {
+      // eslint-disable-next-line no-undef
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else {
+      // eslint-disable-next-line no-undef
+      startModal('Erro ao anexar PDF.');
+    }
+  }
+}
+
 export async function updateDemandUpdate(
   userName,
   userSector,

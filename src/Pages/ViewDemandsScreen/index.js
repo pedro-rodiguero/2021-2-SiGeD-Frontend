@@ -148,6 +148,7 @@ const ViewDemandsScreen = () => {
                 demand={demand}
                 setChangeState={setChangeState}
                 changeState={changeState}
+                fileID={value.fileID}
               />
             </TimelineContent>
           </TimelineItem>
