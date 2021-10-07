@@ -11,6 +11,20 @@ export const TimeDiv = styled.div`
 
     }
 `;
+export const styles = {
+  margin: {
+    marginLeft: '8%',
+  },
+  display: {
+    display: 'none',
+  },
+  width: {
+    width: '100%',
+  },
+  borderStyle: {
+    border: '0',
+  },
+};
 
 export const UpdateDiv = styled.div`
     width: 100%;
@@ -22,6 +36,14 @@ export const UpdateDiv = styled.div`
     @media(max-width: 750px){
 
     }
+`;
+
+export const P = styled.p`
+    color: 'red';
+`;
+
+export const Pblue = styled.p`
+    color: '#5289B5';
 `;
 
 export const UserName = styled.p`

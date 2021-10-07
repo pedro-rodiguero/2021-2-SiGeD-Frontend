@@ -60,4 +60,7 @@ export const styles = {
   formLabel: {
     margin: '0',
   },
+  borderStyle: {
+    border: '0',
+  },
 };

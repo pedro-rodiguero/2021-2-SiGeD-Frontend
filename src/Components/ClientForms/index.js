@@ -62,7 +62,7 @@ const ClientForms = ({
           <Dropdown
             as="select"
             onChange={(Option) => setOfficeOption(Option.target.value)}
-            style={{ border: '0' }}
+            style={styles.borderStyle}
           >
             {cargos.map((cargo) => (
               <option value={cargo.name}>{cargo.name}</option>
@@ -76,7 +76,7 @@ const ClientForms = ({
           <Dropdown
             as="select"
             onChange={(Option) => setLocationOption(Option.target.value)}
-            style={{ border: '0' }}
+            style={styles.borderStyle}
           >
             {lotacao.map((lot) => (
               <option value={lot._id}>{lot.name}</option>
