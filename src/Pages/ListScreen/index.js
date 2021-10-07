@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import PersonalData from '../../Components/PersonalData';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
-  H1, TableHeader, P, Bar, TableTitle,
+  H1, TableHeader, Label, Bar, TableTitle,
 } from './Style';
 import { getUser } from '../../Services/Axios/userServices';
 import { useProfileUser } from '../../Context';
@@ -71,25 +71,25 @@ const ListScreen = ({ newUser }) => {
               >
                 <TableHeader>
                   <TableTitle width={25}>
-                    <P>Nome</P>
+                    <Label>Nome</Label>
                   </TableTitle>
                   <Bar />
                   <TableTitle width={25}>
-                    <P>Email</P>
+                    <Label>Email</Label>
                   </TableTitle>
                   <Bar />
 
                   <TableTitle width={20}>
-                    <P>Cargo</P>
+                    <Label>Cargo</Label>
                   </TableTitle>
                   <Bar />
 
                   <TableTitle width={15}>
-                    <P>Setor</P>
+                    <Label>Setor</Label>
                   </TableTitle>
                   <Bar />
                   <TableTitle width={15}>
-                    <P>Ult. Atualização</P>
+                    <Label>Ult. Atualização</Label>
                   </TableTitle>
                 </TableHeader>
                 <div style={{ display: 'none' }} />

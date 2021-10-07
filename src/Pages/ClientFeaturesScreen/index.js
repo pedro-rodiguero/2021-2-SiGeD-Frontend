@@ -5,7 +5,7 @@ import {
   getFeatures, createFeature, updateFeature, deleteFeature,
 } from '../../Services/Axios/clientServices';
 import {
-  P, TableTitle, TableHeader, Bar,
+  Label, TableTitle, TableHeader, Bar,
 } from '../ListCategories/Style';
 import DataList from '../../Components/DataList';
 import GenericListScreen from '../../Components/GenericListScreen';
@@ -80,15 +80,15 @@ const ClientFeaturesScreen = () => {
         >
           <TableHeader>
             <TableTitle width={24}>
-              <P>Nome</P>
+              <Label>Nome</Label>
             </TableTitle>
             <Bar />
             <TableTitle width={50}>
-              <P>Descrição</P>
+              <Label>Descrição</Label>
             </TableTitle>
             <Bar />
             <TableTitle width={24}>
-              <P>Ult. Atualização</P>
+              <Label>Ult. Atualização</Label>
             </TableTitle>
             <TableTitle width={2} />
           </TableHeader>

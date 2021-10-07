@@ -70,3 +70,17 @@ export const ForwardedDemandDiv = styled.div`
         flex-direction: column;
     }
 `;
+
+export const InternalContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    width: '100%';
+`;
+
+export const NewUpdateCardContainer = styled.div`
+    width: '90%';
+    margin-left: '8%';
+    @media(max-width: 750px){
+        margin-left: '5%';
+    }
+`;

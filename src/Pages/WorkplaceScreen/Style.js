@@ -14,7 +14,7 @@ export const TableHeader = styled.div`
   }
 `;
 
-export const P = styled.div`
+export const Label = styled.p`
   color: ${colors.secondary};
   font-size: 2vh;
 

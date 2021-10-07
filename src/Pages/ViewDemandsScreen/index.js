@@ -16,7 +16,7 @@ import CloseDemandModal from '../../Components/CloseDemandModal';
 import { useProfileUser } from '../../Context';
 import {
   Main, CardsContainer, MobileButtonDiv, ButtonDiv, TimelineDiv, MobileTimeline,
-  ForwardedDemandDiv,
+  ForwardedDemandDiv, InternalContainer, NewUpdateCardContainer,
 } from './Style';
 import { getClients } from '../../Services/Axios/clientServices';
 import { getUser } from '../../Services/Axios/userServices';
@@ -189,21 +189,16 @@ const ViewDemandsScreen = () => {
       && (
       <Main>
         <CardsContainer>
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-          }}
-          >
+          <InternalContainer>
             <ViewDemandCard
               demand={demand}
             />
-          </div>
+          </InternalContainer>
           <TimelineDiv>
             <Timeline>
               { showUpdates() }
             </Timeline>
-            <div style={{ width: '90%', marginLeft: '8%' }}>
+            <NewUpdateCardContainer>
               <NewUpdateCard
                 demand={demand}
                 showUpdates={showUpdates}
@@ -211,7 +206,7 @@ const ViewDemandsScreen = () => {
                 setChangeState={setChangeState}
                 changeState={changeState}
               />
-            </div>
+            </NewUpdateCardContainer>
           </TimelineDiv>
           <ButtonDiv>
             <TinyButton
@@ -262,7 +257,7 @@ const ViewDemandsScreen = () => {
           <Timeline>
             { showUpdates() }
           </Timeline>
-          <div style={{ width: '90%', marginLeft: '5%' }}>
+          <NewUpdateCardContainer>
             <NewUpdateCard
               demand={demand}
               user={user}
@@ -270,7 +265,7 @@ const ViewDemandsScreen = () => {
               changeState={changeState}
               setChangeState={setChangeState}
             />
-          </div>
+          </NewUpdateCardContainer>
         </MobileTimeline>
         <MobileButtonDiv>
           <TinyButton

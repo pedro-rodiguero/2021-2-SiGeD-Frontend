@@ -14,7 +14,7 @@ export const TableHeader = styled.div`
   }
 `;
 
-export const P = styled.div`
+export const Label = styled.div`
   color: ${colors.secondary};
   font-size: 2vh;
   @media(max-width: 750px){

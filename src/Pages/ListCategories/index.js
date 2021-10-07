@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import ModalComp from '../../Components/ModalComp';
 import {
-  TableHeader, TableTitle, P, Bar,
+  TableHeader, TableTitle, Label, Bar,
 } from './Style';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
@@ -87,15 +87,15 @@ const ListCategories = () => {
     >
       <TableHeader>
         <TableTitle width={24}>
-          <P>Nome</P>
+          <Label>Nome</Label>
         </TableTitle>
         <Bar />
         <TableTitle width={50}>
-          <P>Descrição</P>
+          <Label>Descrição</Label>
         </TableTitle>
         <Bar />
         <TableTitle width={24}>
-          <P>Ult. Atualização</P>
+          <Label>Ult. Atualização</Label>
         </TableTitle>
         <TableTitle width={2} />
       </TableHeader>

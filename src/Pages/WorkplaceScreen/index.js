@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Redirect } from 'react-router-dom';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
-  TableHeader, TableTitle, P, Bar,
+  TableHeader, TableTitle, Label, Bar,
 } from './Style';
 import {
   getClients, createWorkspace, updateWorkspace, deleteWorkspace,
@@ -27,7 +27,6 @@ const WorkspaceListScreen = () => {
 
   useEffect(() => {
     getWorkspacesFromApi();
-    console.log('workspace screen');
   }, [token]);
 
   useEffect(() => {
@@ -40,7 +39,7 @@ const WorkspaceListScreen = () => {
     );
   }, [word]);
 
-  const listWorkspaces = () => {
+  const listWorkspaces = useCallback(() => {
     if (workspaces?.length === 0) {
       return <h1>Sem resultados</h1>;
     }
@@ -57,7 +56,7 @@ const WorkspaceListScreen = () => {
         type="Lotação"
       />
     ));
-  };
+  }, [workspaces, filterWorkspaces]);
 
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
@@ -75,15 +74,15 @@ const WorkspaceListScreen = () => {
     >
       <TableHeader>
         <TableTitle width={24}>
-          <P>Nome</P>
+          <Label>Nome</Label>
         </TableTitle>
         <Bar />
         <TableTitle width={50}>
-          <P>Descrição</P>
+          <Label>Descrição</Label>
         </TableTitle>
         <Bar />
         <TableTitle width={24}>
-          <P>Ult. Atualização</P>
+          <Label>Ult. Atualização</Label>
         </TableTitle>
         <TableTitle width={2} />
       </TableHeader>

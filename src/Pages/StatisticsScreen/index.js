@@ -55,7 +55,6 @@ const StatisticScreen = () => {
     } else {
       setQuery(null);
     }
-    console.log(query);
   }, [active]);
 
   useEffect(() => {
