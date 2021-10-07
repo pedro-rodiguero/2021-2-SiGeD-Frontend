@@ -5,6 +5,7 @@ import { validateSignUp } from '../../Utils/validations';
 import { postUser } from '../../Services/Axios/userServices';
 import UserForms from '../../Components/UserForms';
 import { useProfileUser } from '../../Context';
+import { roleDefine } from '../../Utils/roles';
 
 const RegisterCargos = () => {
   const { user, startModal } = useProfileUser();
@@ -35,13 +36,7 @@ const RegisterCargos = () => {
   };
 
   useEffect(() => {
-    if (inputRegisterUserRole === 'Administrador(a)') {
-      setEnglishRole('admin');
-    } else if (inputRegisterUserRole === 'Recepcionista') {
-      setEnglishRole('receptionist');
-    } else if (inputRegisterUserRole === 'Profissional') {
-      setEnglishRole('professional');
-    }
+    setEnglishRole(roleDefine(inputRegisterUserRole));
   }, [inputRegisterUserRole]);
 
   const cancel = () => {
