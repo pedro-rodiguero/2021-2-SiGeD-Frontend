@@ -24,7 +24,6 @@ const ClientForms = ({
   inputAddress,
   setOfficeOption,
   setLocationOption,
-  //  locationOption,
   featuresList,
   setSelectedFeatures,
   selectedFeatures,
@@ -42,8 +41,8 @@ const ClientForms = ({
   useEffect(() => {
     async function loadLotacao() {
       const response = await getClients('/lotacao');
-      const response2 = await getCargos('/role');
-      SetCargo(response2.data);
+      const roleResponse = await getCargos('/role');
+      SetCargo(roleResponse.data);
       setLotacao(response.data);
     }
 
@@ -104,7 +103,7 @@ const ClientForms = ({
               height: 'max-content',
             },
             chips: {
-              backgroundColor: colors.navHeaders, // colors.primary,
+              backgroundColor: colors.navHeaders,
             },
           }}
           avoidHighlightFirstOption="true"
