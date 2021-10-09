@@ -21,7 +21,7 @@ const CreateDemandsScreen = () => {
   const handleClose = () => setShow(false);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [process, setProcess] = useState('');
+  const [process, setProcess] = useState(['', '', '', '', '']);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [clients, setClients] = useState([]);
   const [sectorID, setSectorID] = useState('');
