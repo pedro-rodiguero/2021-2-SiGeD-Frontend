@@ -10,7 +10,9 @@ import {
   TimelineDot,
 } from '@material-ui/lab';
 import colors from '../../Constants/colors';
-import { TimeDiv, UpdateDiv, UserName } from './Style';
+import {
+  TimeDiv, UpdateDiv, UserName, P, Pblue, styles,
+} from './Style';
 import { getUser } from '../../Services/Axios/userServices';
 import { useProfileUser } from '../../Context';
 import ModalHistory from '../ModalHistory';
@@ -67,13 +69,13 @@ const ClientHistory = ({ show, handleClose, client }) => {
     const findedUser = users?.filter((user) => user?._id === update.userID);
 
     return (
-      <TimelineItem style={{ marginLeft: '8%' }}>
-        <TimelineOppositeContent style={{ display: 'none' }} />
+      <TimelineItem style={styles.margin}>
+        <TimelineOppositeContent style={styles.display} />
         <TimelineSeparator>
           <TimelineDot style={{ backgroundColor: colors.primary }} />
           <TimelineConnector style={{ backgroundColor: colors.navHeaders }} />
         </TimelineSeparator>
-        <TimelineContent style={{ width: '100%' }}>
+        <TimelineContent style={styles.width}>
           <TimeDiv>
             {moment(update.date, 'YYYY-MM-DDTHH:mm:ss').format('DD/MM/YYYY HH:mm').toString()}
             {titleClient(update.label)}
@@ -85,16 +87,16 @@ const ClientHistory = ({ show, handleClose, client }) => {
           </TimeDiv>
           <UpdateDiv>
             {update.before && (
-              <p style={{ color: 'red' }}>
+              <P>
                 {'Removido: '}
                 {update.before}
-              </p>
+              </P>
             )}
             {update.after && (
-              <p style={{ color: '#5289B5' }}>
+              <Pblue>
                 {'Adicionado: '}
                 {update.after}
-              </p>
+              </Pblue>
             )}
           </UpdateDiv>
         </TimelineContent>

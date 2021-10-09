@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import colors from '../../Constants/colors';
 
-const Img = styled.img`
+export const Img = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -16,4 +17,10 @@ const Img = styled.img`
 
 `;
 
-export default Img;
+export const styles = {
+  tableContent: {
+    color: colors.text,
+    textDecorationLine: 'none',
+    marginRight: '1.5vw',
+  },
+};

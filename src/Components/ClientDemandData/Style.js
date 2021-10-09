@@ -14,7 +14,13 @@ export const DemandDiv = styled.div`
         width: 100%;
     }
 `;
-
+export const styles = {
+  divStyle: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    marginBottom: '1.5%',
+  },
+};
 export const SectorNameDiv = styled.div`
     height: 10%;
     width: 100%;
