@@ -49,20 +49,21 @@ const UpdateDemandsScreen = () => {
       });
   };
 
+  const setExistingData = (data) => {
+    setName(data?.name);
+    setDescription(data?.description);
+    setProcess(data?.process);
+    setAllSelectedCategories(data?.categoryID);
+    setClientID(data?.clientID);
+    setSectorID(data?.sectorHistory[0].sectorID);
+    getSectorFromApi(data?.sectorHistory[0].sectorID);
+    setUserID(data?.userID);
+    getClientFromApi(data?.clientID);
+  };
+
   const getDemandsFromApi = async () => {
     await getDemands(`demand/${id}`, startModal)
-      .then((response) => {
-        const { data } = response;
-        setName(data?.name);
-        setDescription(data?.description);
-        setProcess(data?.process);
-        setAllSelectedCategories(data?.categoryID);
-        setClientID(data?.clientID);
-        setSectorID(data?.sectorHistory[0].sectorID);
-        getSectorFromApi(data?.sectorHistory[0].sectorID);
-        setUserID(data?.userID);
-        getClientFromApi(data?.clientID);
-      });
+      .then((response) => setExistingData(response.data));
   };
 
   useEffect(() => {
