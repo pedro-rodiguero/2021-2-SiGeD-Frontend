@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
 import moment from 'moment';
@@ -77,7 +78,7 @@ const CreateDemandsScreen = () => {
       const data = await createDemand(
         name,
         description,
-        process,
+        process.filter((p) => p !== ''),
         categoriesIDs,
         sectorID,
         user._id,
