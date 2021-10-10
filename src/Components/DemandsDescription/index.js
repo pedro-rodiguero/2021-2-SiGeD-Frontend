@@ -21,7 +21,6 @@ const DemandsDescription = ({
 }) => {
   const onProcessChange = (value, index) => {
     const processes = [...process];
-    console.log(processes);
     let element = processes[index];
     element = value;
 
