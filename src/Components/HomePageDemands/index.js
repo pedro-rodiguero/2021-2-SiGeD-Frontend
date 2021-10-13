@@ -44,9 +44,9 @@ const HomePageDemand = ({ demand, sectors, style }) => {
       </SectorNameDiv>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1.5%' }}>
         <ProcessNumber>
-          Nº do Processo:
+          Nº de Processos:
           {'\t'}
-          {demand.process}
+          {demand.process.filter((p) => p !== '').length}
         </ProcessNumber>
         <DemandCreatedAt>
           { moment.parseZone(demand.updatedAt).local(true).format('DD/MM/YYYY')}

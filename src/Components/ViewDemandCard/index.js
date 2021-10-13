@@ -5,7 +5,7 @@ import colors from '../../Constants/colors';
 import {
   Card, TopSide, DemandName, EditIcon,
   DemandDescription, BottomSide, ProcessNumber,
-  CreatedAt,
+  CreatedAt, ProcessContainer,
 } from './Style';
 
 const ViewDemandCard = ({ demand }) => (
@@ -28,10 +28,14 @@ const ViewDemandCard = ({ demand }) => (
       {demand.description}
     </DemandDescription>
     <BottomSide>
-      <ProcessNumber>
-        Nº do Processo:
-        {demand.process}
-      </ProcessNumber>
+      <ProcessContainer>
+        {demand.process.filter((p) => p !== '').map((p, index) => (
+          <ProcessNumber>
+            {`Processo Nº ${index + 1}:`}
+            {` ${p}`}
+          </ProcessNumber>
+        ))}
+      </ProcessContainer>
       <CreatedAt>
         { moment.parseZone(demand.createdAt).local(true).format('DD/MM/YYYY HH:mm')}
       </CreatedAt>

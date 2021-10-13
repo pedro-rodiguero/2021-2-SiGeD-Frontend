@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect, useState } from 'react';
 import { useParams, Redirect, useHistory } from 'react-router-dom';
 import { Main, Footer } from './Style';
@@ -21,7 +22,7 @@ const UpdateDemandsScreen = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const historyDemands = useHistory();
-  const [process, setProcess] = useState('');
+  const [process, setProcess] = useState([]);
   const [AllselectedCategories, setAllSelectedCategories] = useState([]);
   const [clientID, setClientID] = useState('');
   const [userID, setUserID] = useState('');
@@ -48,20 +49,21 @@ const UpdateDemandsScreen = () => {
       });
   };
 
+  const setExistingData = (data) => {
+    setName(data?.name);
+    setDescription(data?.description);
+    setProcess(data?.process);
+    setAllSelectedCategories(data?.categoryID);
+    setClientID(data?.clientID);
+    setSectorID(data?.sectorHistory[0].sectorID);
+    getSectorFromApi(data?.sectorHistory[0].sectorID);
+    setUserID(data?.userID);
+    getClientFromApi(data?.clientID);
+  };
+
   const getDemandsFromApi = async () => {
     await getDemands(`demand/${id}`, startModal)
-      .then((response) => {
-        const { data } = response;
-        setName(data?.name);
-        setDescription(data?.description);
-        setProcess(data?.process);
-        setAllSelectedCategories(data?.categoryID);
-        setClientID(data?.clientID);
-        setSectorID(data?.sectorHistory[0].sectorID);
-        getSectorFromApi(data?.sectorHistory[0].sectorID);
-        setUserID(data?.userID);
-        getClientFromApi(data?.clientID);
-      });
+      .then((response) => setExistingData(response.data));
   };
 
   useEffect(() => {
@@ -101,7 +103,7 @@ const UpdateDemandsScreen = () => {
   const submit = () => {
     if (validateInputs()) {
       updateDemand(
-        name, description, process, categoriesIDs, sectorID, userID, clientID, id, startModal,
+        name, description, process.filter((p) => p !== ''), categoriesIDs, sectorID, userID, clientID, id, startModal,
       );
       startModal('Demanda editada com sucesso!');
       historyDemands.push('/demandas');

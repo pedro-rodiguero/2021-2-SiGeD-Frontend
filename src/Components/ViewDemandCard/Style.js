@@ -72,3 +72,13 @@ export const CreatedAt = styled.div`
     }
 
 `;
+
+export const ProcessContainer = styled.div`
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 70%;
+    flex-direction: column;
+    /* background-color: #000; */
+`;
