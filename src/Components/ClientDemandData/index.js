@@ -18,7 +18,7 @@ const ClientDemandData = ({ demand, sectors, style }) => {
   }, [sectorName]);
 
   return (
-    <DemandDiv onClick={() => history.push(`/visualizar/${demand._id}`)} style={style.divStyle}>
+    <DemandDiv onClick={() => history.push(`/visualizar/${demand._id}`)} style={style}>
       <DemandTitle>
         {demand.name}
       </DemandTitle>
@@ -29,9 +29,9 @@ const ClientDemandData = ({ demand, sectors, style }) => {
       </SectorNameDiv>
       <div style={styles.divStyle}>
         <ProcessNumber>
-          Nº do Processo:
+          Nº de Processos:
           {'\t'}
-          {demand.process}
+          {demand.process.filter((p) => p !== '').length}
         </ProcessNumber>
         <DemandCreatedAt>
           { moment.parseZone(demand.updatedAt).local(true).format('DD/MM/YYYY') }

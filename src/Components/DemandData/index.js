@@ -65,8 +65,9 @@ const DemandData = ({ demand, sectors }) => {
       </SectorName>
       <div style={styles.divStyle}>
         <ProcessNumber>
-          Nº do Processo:
-          {demand.process}
+          Nº de Processos:
+          {'\t'}
+          {demand.process.filter((p) => p !== '').length}
         </ProcessNumber>
         <DemandCreatedAt>
           {moment.parseZone(demand.createdAt).local(true).format('DD/MM/YYYY')}

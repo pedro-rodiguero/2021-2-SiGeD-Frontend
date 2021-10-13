@@ -27,24 +27,26 @@ const ClientUpdateScreen = () => {
   const { id } = useParams();
   const { startModal, user, token } = useProfileUser();
 
+  const setExistingData = (response) => {
+    const { data } = response;
+    setupdateClientInputName(data?.name);
+    setupdateClientInputEmail(data?.email);
+    setupdateClientInputCpf(data?.cpf);
+    setupdateClientInputPhone(data?.phone);
+    setupdateClientInputSecondaryPhone(data?.secondaryPhone);
+    setupdateClientInputAddress(data?.address);
+    setOfficeOption(data?.office);
+    if (data.location == null) {
+      data.location = 'location';
+    }
+    setupdateLocation(data?.location.name);
+    setClientFeaturesID(data?.features);
+    setRegisterClientInputImage(data?.image);
+  };
+
   const getClientFromApi = async () => {
     getClients(`clients/${id}`, startModal)
-      .then((response) => {
-        const { data } = response;
-        setupdateClientInputName(data?.name);
-        setupdateClientInputEmail(data?.email);
-        setupdateClientInputCpf(data?.cpf);
-        setupdateClientInputPhone(data?.phone);
-        setupdateClientInputSecondaryPhone(data?.secondaryPhone);
-        setupdateClientInputAddress(data?.address);
-        setOfficeOption(data?.office);
-        if (data.location == null) {
-          data.location = 'location';
-        }
-        setupdateLocation(data?.location.name);
-        setClientFeaturesID(data?.features);
-        setRegisterClientInputImage(data?.image);
-      });
+      .then((response) => setExistingData(response));
   };
 
   const getFeaturesFromAPI = () => {
