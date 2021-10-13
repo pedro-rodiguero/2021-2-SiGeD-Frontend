@@ -31,7 +31,7 @@ const ViewDemandCard = ({ demand }) => (
       <ProcessContainer>
         {demand.process.filter((p) => p !== '').map((p, index) => (
           <ProcessNumber>
-            {`Processo ${index + 1}:`}
+            {`Processo Nº ${index + 1}:`}
             {` ${p}`}
           </ProcessNumber>
         ))}
