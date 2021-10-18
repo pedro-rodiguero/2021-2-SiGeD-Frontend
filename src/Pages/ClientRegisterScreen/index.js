@@ -100,6 +100,7 @@ const ClientRegisterScreen = () => {
           setSelectedFeatures={setSelectedFeatures}
           selectedFeatures={selectedFeatures}
           setSelectedFeaturesID={setSelectedFeaturesID}
+          register
         />
       </GenericRegisterScreen>
     </div>
