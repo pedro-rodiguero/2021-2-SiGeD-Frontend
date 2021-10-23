@@ -83,7 +83,6 @@ const ClientUpdateScreen = () => {
         officeOption, updateLocation, selectedFeaturesID, id, startModal, user._id,
         baseImage,
       ).then((response) => response.data);
-      console.log(data);
       return history.push(`/perfil/${data._id}`);
     }
     startModal(validMessage.join('\n'));
