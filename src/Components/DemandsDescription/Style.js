@@ -1,24 +1,6 @@
 import { IoPersonCircleOutline } from 'react-icons/io5';
 import styled from 'styled-components';
 
-export const ContentBox = styled.div`
-    width: 100%;
-    height: 20%;
-    display: flex;
-    flex-direction: column;
-    margin-top: 20%;
-    align-items: center;
-`;
-
-export const NameDiv = styled.div`
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-`;
-
 export const DescriptionField = styled.textarea`
   font-family: Montserrat;
   border: 2px solid black;
@@ -50,11 +32,13 @@ export const InputField = styled.input`
 
 export const FieldsDiv = styled.div`
   height: 100%;
+  overflow: scroll;
   display: flex;
   justify-content: center;
   width: 65%;
   @media(max-width: 750px){
     width: 100%;
+    overflow: visible;
   }
 `;
 
@@ -75,6 +59,7 @@ export const Footer = styled.div`
   align-items: flex-end;
   justify-content: flex-end;
   margin-top: 10%;
+  margin-bottom: 30%;
   @media(max-width: 750px) {
     display: none;
     flex-direction: column-reverse;
@@ -99,6 +84,7 @@ export const InputsDiv = styled.div`
     flex-direction: column;
     width: 90%;
     height: 40%;
+    margin-bottom: 10%;
   }
 `;
 
@@ -111,6 +97,7 @@ export const InputDiv = styled.div`
   @media(max-width: 750px){
     width: 100%;
     height: 40%;
+    
   }
 `;
 
