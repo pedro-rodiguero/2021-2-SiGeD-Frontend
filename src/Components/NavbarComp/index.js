@@ -132,9 +132,6 @@ const NavbarComp = () => {
                   <NavDropdown.Item><Nav.Link as={Link} to="/cliente" style={{ color: 'black' }}>Novo Cliente</Nav.Link></NavDropdown.Item>
                   <NavDropdown.Item><Nav.Link as={Link} to="/clientes" style={{ color: 'black' }}>Lista de Clientes</Nav.Link></NavDropdown.Item>
                 </NavDropdown>
-                <Nav.Link as={Link} to="/categorias" style={styles.navbarText}>
-                  Categorias
-                </Nav.Link>
                 <NavDropdown title="Demandas" style={styles.navbarText}>
                   <NavDropdown.Item><Nav.Link as={Link} to="/demanda" style={{ color: 'black' }}>Criar Demanda</Nav.Link></NavDropdown.Item>
                   <NavDropdown.Item><Nav.Link as={Link} to="/demandas" style={{ color: 'black' }}>Lista de Demandas</Nav.Link></NavDropdown.Item>

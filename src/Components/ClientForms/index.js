@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import { Multiselect } from 'multiselect-react-dropdown';
 import RegisterInput from '../RegisterInput';
 import { Dropdown } from '../UserForms/Style';
@@ -28,6 +29,7 @@ const ClientForms = ({
   setSelectedFeatures,
   selectedFeatures,
   setSelectedFeaturesID,
+  register,
 }) => {
   const controlarCaracteristicas = (item) => {
     const featuresID = [];
@@ -38,14 +40,23 @@ const ClientForms = ({
 
   const [lotacao, setLotacao] = useState([]);
   const [cargos, SetCargo] = useState([]);
+  const [cargoInicial, setCargoinicial] = useState('');
+  const [idLot, setIdLot] = useState('');
+  const [nomeLotacaoinicial, setnomeLotacaoInicial] = useState('');
+  const { id } = useParams();
   useEffect(() => {
     async function loadLotacao() {
       const response = await getClients('/lotacao');
       const roleResponse = await getCargos('/role');
+      if (id) {
+        const lotacaoinforesponse = await getClients(`clients/${id}`);
+        setIdLot(lotacaoinforesponse.data.location._id);
+        setnomeLotacaoInicial(lotacaoinforesponse.data.location.name);
+        setCargoinicial(lotacaoinforesponse.data.office);
+      }
       SetCargo(roleResponse.data);
       setLotacao(response.data);
     }
-
     loadLotacao();
   }, []);
   return (
@@ -64,6 +75,9 @@ const ClientForms = ({
             onChange={(Option) => setOfficeOption(Option.target.value)}
             style={styles.borderStyle}
           >
+            {!register
+              ? <option selected disabled hidden value={cargoInicial}>{cargoInicial}</option>
+              : <option hidden disabled selected value> </option>}
             {cargos.map((cargo) => (
               <option value={cargo.name}>{cargo.name}</option>
             ))}
@@ -78,6 +92,9 @@ const ClientForms = ({
             onChange={(Option) => setLocationOption(Option.target.value)}
             style={styles.borderStyle}
           >
+            {!register
+              ? <option selected disabled hidden value={idLot}>{nomeLotacaoinicial}</option>
+              : <option hidden disabled selected value> </option>}
             {lotacao.map((lot) => (
               <option value={lot._id}>{lot.name}</option>
             ))}
