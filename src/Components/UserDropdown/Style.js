@@ -12,6 +12,7 @@ export const UserSearchDiv = styled.div`
 
   @media(max-width: 750px){
     height: 30%;
+    margin-top: 20%;
   }
 `;
 
