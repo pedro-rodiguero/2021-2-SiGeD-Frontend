@@ -43,7 +43,7 @@ const DemandsDescription = ({
         <Title>
           Nova Demanda
         </Title>
-        <InputsDiv height="25%">
+        <InputsDiv height="50%">
           <InputDiv width="60%">
             <P>
               Nome:
