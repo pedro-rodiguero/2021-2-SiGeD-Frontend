@@ -95,6 +95,9 @@ const NavbarComp = () => {
                   <Nav.Link as={Link} to="/cargos" style={styles.navbarText}>
                     Cargos
                   </Nav.Link>
+                  <Nav.Link as={Link} to="/chat" style={styles.navbarText}>
+                    Chat
+                  </Nav.Link>
                   <Navbar.Brand style={{ cursor: 'pointer' }} onClick={() => { handleShow(); getAlertsApi(); }}>
                     <BsBell />
                   </Navbar.Brand>
