@@ -1,9 +1,18 @@
 /* eslint-disable */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Main, UsersContainer, CreateConversation, Message,Sidebar, ConversationsContainer,  MessagesContainer, ChatText, ChatMessages} from './Style';
+import {getConversations} from '../../Services/Axios/chatService';
+import { useProfileUser } from '../../Context';
 
 const ChatScreen = () => {
-  
+
+  const { user, startModal } = useProfileUser();
+  console.log(user);
+
+  useEffect(() => {
+    getConversations(user._id, startModal);
+  }, []);  
+
   const users = {
       "123222": {
         "status": 0,
@@ -100,13 +109,6 @@ const ChatScreen = () => {
       minute = "0" + String(minute); 
 
     return `${day}/${month}/${year}  -  ${hour}:${minute}`;
-    // let newDate = '';
-
-    // const year = date.split('-')[0];
-    // const month = date.split('-')[1];
-    // const day = date.split('-')[2];
-
-    // const hour = date.split('')[1].split(':')[0];
   };
 
   console.log(list);
@@ -116,9 +118,9 @@ const ChatScreen = () => {
         <Sidebar>
           <ConversationsContainer>
             <CreateConversation>
-              <h2>
+              <h3>
                 Iniciar conversa
-              </h2>
+              </h3>
               </CreateConversation>
             {list.map((item, index) => (
               <MessagesContainer>

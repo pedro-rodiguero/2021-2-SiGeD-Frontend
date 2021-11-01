@@ -84,7 +84,7 @@ export const CreateConversation = styled.button`
     align-items: center;
     justify-content: space-evenly;
     border-radius: 15px;
-    background: ${colors.primary};
+    background: ${colors.secondary};
     margin-bottom: 10px;
 
     @media(max-width: 750px){
@@ -132,7 +132,6 @@ export const Message = styled.li`
     height: ${(props) => props.size};
     background: ${(props) => props.color};
     margin-left: ${(props) => props.margin}px;
-    /* margin-right: ${(props) => props.margin}; */
     padding: 5%;
     display: flex;
     border-radius: 15px;
