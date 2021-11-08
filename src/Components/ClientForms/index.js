@@ -80,9 +80,9 @@ const ClientForms = ({
             {!register
               ? <option selected disabled hidden value={cargoInicial}>{cargoInicial}</option>
               : <option hidden disabled selected value> </option>}
-            {cargos.map((cargo) => (
+            { cargos ? cargos.map((cargo) => (
               <option value={cargo.name}>{cargo.name}</option>
-            ))}
+            )) : null }
           </Dropdown>
         </div>
       </Form.Group>
