@@ -17,14 +17,14 @@ const ListDemandsScreen = () => {
   const { token, user } = useProfileUser();
   const [word, setWord] = useState();
   const [filterDemands, setFilterDemands] = useState([]);
-  const [filterSector, setFilterSector] = useState([]);
+  const [filterSector, setFilterSector] = useState(['todos']);
   const [filterCategory, setFilterCategory] = useState(['Todas']);
   const [demands, setDemands] = useState([]);
   const [sectors, setSectors] = useState([]);
   const [dropdownYears, setDropdownYears] = useState([]);
   const [filterYear, setFilterYear] = useState('Sem filtro');
   const [categories, setCategories] = useState([]);
-  const [sectorActive, setSectorActive] = useState('Todos');
+  const [sectorActive, setSectorActive] = useState('todos');
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [active, setActive] = useState('Ativos');
   const [query, setQuery] = useState(true);
@@ -33,8 +33,10 @@ const ListDemandsScreen = () => {
   const getDemandsFromApi = async () => {
     // Por default, traz como resultado somente as demandas ativas,
     // de todos os setores, de todas as categorias
-    await getDemandsWithClientsNames(`clientsNames?open=${query}?sectorActive=${sectorActive}`, startModal)
-      .then((response) => setDemands(response.data));
+    await getDemandsWithClientsNames(`clientsNames?open=${query}&sectorActive=${sectorActive}`, startModal)
+      .then((response) => {
+        setDemands(response.data);
+      });
   };
 
   const getSectorsFromApi = async () => {
@@ -49,6 +51,7 @@ const ListDemandsScreen = () => {
       .then((response) => {
         setCategories(response.data);
       });
+    setSectorActive('todos');
   };
 
   const filterDemandByYear = () => {
@@ -94,6 +97,8 @@ const ListDemandsScreen = () => {
   useEffect(() => {
     if (active === 'Inativas') {
       setQuery(false);
+    } else if (active === 'Todas') {
+      setQuery(null);
     } else {
       setQuery(true);
     }
@@ -117,7 +122,7 @@ const ListDemandsScreen = () => {
   }, [demands]);
 
   useEffect(() => {
-    setFilterSector(sectors);
+    setFilterSector([{ name: 'todos' }, ...sectors]);
   }, [sectors]);
 
   useEffect(() => {
@@ -140,12 +145,13 @@ const ListDemandsScreen = () => {
       const sector = filterSector?.filter(
         (listSector) => (listSector.name === sectorActive ? listSector : false),
       );
-      if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
-        return false;
+
+      if (sectorActive !== 'todos') {
+        if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
+          return false;
+        }
       }
-      if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
-        return false;
-      }
+
       if (categoryActive !== 'Todas') {
         const results = demand.categoryID.filter(
           (demandCategory) => (demandCategory.name === categoryActive ? demandCategory : false),
@@ -193,7 +199,7 @@ const ListDemandsScreen = () => {
                   optionStyle={{
                     backgroundColor: `${colors.secondary}`,
                   }}
-                  optionList={['Ativas', 'Inativas']}
+                  optionList={['Ativas', 'Inativas', 'Todas']}
                 />
               </DropdownField>
               <DropdownField width="25%">
