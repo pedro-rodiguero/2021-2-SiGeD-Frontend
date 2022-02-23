@@ -1,16 +1,16 @@
-name: CI
+name: Tests 
 
 on: [push, pull_request]
 
 jobs:
   tests:
     runs-on: ubuntu-latest
-  
+
     steps:
     - uses: actions/checkout@v2
 
     - name: Tests check
-      run: docker-compose run frontend bash -c  "yarn && yarn run test"
+      run: docker network create siged_backend && docker-compose run api_users bash -c  "yarn && yarn jest --coverage --forceExit"
 
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
