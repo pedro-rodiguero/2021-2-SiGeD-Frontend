@@ -8,6 +8,7 @@ import {
   ClientFormsColumnText, Container, Label, styles,
 } from './Style';
 import colors from '../../Constants/colors';
+import { useProfileUser } from '../../Context';
 import { getClients, getCargos } from '../../Services/Axios/clientServices';
 
 const ClientForms = ({
@@ -43,13 +44,14 @@ const ClientForms = ({
   const [cargoInicial, setCargoinicial] = useState('');
   const [idLot, setIdLot] = useState('');
   const [nomeLotacaoinicial, setnomeLotacaoInicial] = useState('');
+  const { startModal } = useProfileUser();
   const { id } = useParams();
   useEffect(() => {
     async function loadLotacao() {
-      const response = await getClients('/lotacao');
-      const roleResponse = await getCargos('/role');
+      const response = await getClients('/lotacao', startModal);
+      const roleResponse = await getCargos('/role', startModal);
       if (id) {
-        const lotacaoinforesponse = await getClients(`clients/${id}`);
+        const lotacaoinforesponse = await getClients(`clients/${id}`, startModal);
         setIdLot(lotacaoinforesponse.data.location._id);
         setnomeLotacaoInicial(lotacaoinforesponse.data.location.name);
         setCargoinicial(lotacaoinforesponse.data.office);
@@ -78,9 +80,9 @@ const ClientForms = ({
             {!register
               ? <option selected disabled hidden value={cargoInicial}>{cargoInicial}</option>
               : <option hidden disabled selected value> </option>}
-            {cargos.map((cargo) => (
+            { cargos ? cargos.map((cargo) => (
               <option value={cargo.name}>{cargo.name}</option>
-            ))}
+            )) : null }
           </Dropdown>
         </div>
       </Form.Group>
@@ -95,9 +97,9 @@ const ClientForms = ({
             {!register
               ? <option selected disabled hidden value={idLot}>{nomeLotacaoinicial}</option>
               : <option hidden disabled selected value> </option>}
-            {lotacao.map((lot) => (
+            {lotacao ? lotacao.map((lot) => (
               <option value={lot._id}>{lot.name}</option>
-            ))}
+            )) : null}
           </Dropdown>
         </div>
       </Form.Group>
