@@ -43,6 +43,7 @@ const ClientFeaturesScreen = () => {
 
   useEffect(() => {
     setFilterFeatures(features);
+    console.log(features);
   }, [features]);
 
   const renderFeatures = () => {
@@ -57,7 +58,7 @@ const ClientFeaturesScreen = () => {
         color={colors.secondary}
         axiosDelete={deleteFeature}
         updateContent={updateFeature}
-        type="característica"
+        type="Caracteristica"
       />
     ));
   };
@@ -89,6 +90,10 @@ const ClientFeaturesScreen = () => {
             <Bar />
             <TableTitle width={24}>
               <P>Ult. Atualização</P>
+            </TableTitle>
+            <Bar />
+            <TableTitle width={24}>
+              <P>Data de criação</P>
             </TableTitle>
             <TableTitle width={2} />
           </TableHeader>

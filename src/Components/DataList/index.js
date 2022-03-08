@@ -84,6 +84,14 @@ const DataList = ({
             <P>{ moment.parseZone(content.updatedAt).local(true).format('DD/MM/YYYY') }</P>
           </TableContent>
 
+          {type === 'Caracteristica' ? (
+            <TableContent width={24}>
+              <P>{ moment.parseZone(content.createdAt).local(true).format('DD/MM/YYYY') }</P>
+            </TableContent>
+          ) : (
+            <div />
+          )}
+
           <DotContent width={2}>
             <P>
               <BsThreeDotsVertical onClick={() => { setOptionsMenuState(!optionsMenuState); }} />
