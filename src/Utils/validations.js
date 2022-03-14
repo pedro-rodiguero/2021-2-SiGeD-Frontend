@@ -14,7 +14,7 @@ export const validateCpf = (cpf) => {
 };
 
 export const validatePhone = (phone) => {
-  const regex = /^[0-9]{8,}$/;
+  const regex = /^[0-9]{10,11}$/;
   return regex.test(phone);
 };
 
@@ -51,9 +51,9 @@ export const validateFields = (inputName, inputEmail, inputCpf,
   } if (validateEmail(inputEmail) === false) {
     message.push('Email inválido.');
   } if (validatePhone(inputPhone) === false) {
-    message.push('Telefone inválido. Minimo de 8 digitos');
+    message.push('Telefone inválido. Minimo de 10 digitos');
   } if (validatePhone(inputSecondaryPhone) === false) {
-    message.push('Telefone secundario inválido. Minimo de 8 digitos');
+    message.push('Telefone secundario inválido. Minimo de 10 digitos');
   }
 
   return message;

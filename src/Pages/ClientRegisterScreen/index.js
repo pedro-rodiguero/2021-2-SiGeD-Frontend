@@ -61,7 +61,6 @@ const ClientRegisterScreen = () => {
     setOfficeOption('');
     setRegisterLocation('');
   };
-
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
   }
