@@ -20,12 +20,13 @@ import UnauthorizedScreen from '../Pages/Unauthorized';
 import RecoverPasswordScreen from '../Pages/RecoverPasswordScreen';
 import ChangePasswordScreen from '../Pages/ChangePasswordScreen';
 import { useProfileUser } from '../Context';
-import StatisticScreen from '../Pages/StatisticsScreen';
 import ProfessionalHomepage from '../Pages/ProfessionalHomepage';
 import ClientFeaturesScreen from '../Pages/ClientFeaturesScreen';
 import CargosScreen from '../Pages/ListCargos';
 import RegisterCargosScreen from '../Pages/RegisterCargos';
 import WorkspaceListScreen from '../Pages/WorkplaceScreen';
+import StatisticByCategory from '../Pages/StatisticsScreen/ByCategory';
+import StatisticBySectors from '../Pages/StatisticsScreen/BySectors';
 
 const OtherRoutes = () => {
   const { user } = useProfileUser();
@@ -61,7 +62,8 @@ const OtherRoutes = () => {
               <Route path="/login" exact component={LoginScreen} />
               <Route path="/nao-autorizado" exact component={UnauthorizedScreen} />
               <Route path="/recuperar-senha" exact component={RecoverPasswordScreen} />
-              <Route path="/estatisticas/" exact component={StatisticScreen} />
+              <Route path="/estatisticas/categoria" exact component={StatisticByCategory} />
+              <Route path="/estatisticas/setor" exact component={StatisticBySectors} />
               <Route path="/lotacoes/" exact component={WorkspaceListScreen} />
               <Redirect path="*" to="/" />
             </Switch>
