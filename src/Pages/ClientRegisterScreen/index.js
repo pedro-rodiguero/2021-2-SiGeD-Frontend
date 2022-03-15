@@ -33,13 +33,15 @@ const ClientRegisterScreen = () => {
   }, []);
 
   const submit = async () => {
+    const cpfNoMask = registerClientInputCpf.replaceAll('.', '').replaceAll('-', '');
+    console.log(cpfNoMask);
     const validMessage = validateFields(registerClientInputName,
-      registerClientInputEmail, registerClientInputCpf,
+      registerClientInputEmail, cpfNoMask,
       registerClientInputPhone, registerClientInputSecondaryPhone);
     if (!validMessage.length) {
       const data = await postClient(
         registerClientInputName, registerClientInputEmail,
-        registerClientInputCpf, registerClientInputPhone,
+        cpfNoMask, registerClientInputPhone,
         registerClientInputSecondaryPhone, registerClientInputAddress,
         officeOption, registerLocation, selectedFeaturesID, startModal, user._id, baseImage,
       ).then((response) => response.data);
