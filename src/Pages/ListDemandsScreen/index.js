@@ -17,17 +17,17 @@ const ListDemandsScreen = () => {
   const { token, user } = useProfileUser();
   const [word, setWord] = useState();
   const [filterDemands, setFilterDemands] = useState([]);
-  const [filterSector, setFilterSector] = useState(['todos']);
+  const [filterSector, setFilterSector] = useState(['Todos']);
   const [filterCategory, setFilterCategory] = useState(['Todas']);
   const [demands, setDemands] = useState([]);
   const [sectors, setSectors] = useState([]);
   const [dropdownYears, setDropdownYears] = useState([]);
-  const [filterYear, setFilterYear] = useState('Sem filtro');
+  const [filterYear, setFilterYear] = useState('2022');
   const [categories, setCategories] = useState([]);
-  const [sectorActive, setSectorActive] = useState('todos');
+  const [sectorActive, setSectorActive] = useState('Todos');
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [active, setActive] = useState('Ativos');
-  const [query, setQuery] = useState(true);
+  const [query, setQuery] = useState(null);
   const { startModal } = useProfileUser();
 
   const getDemandsFromApi = async () => {
@@ -51,7 +51,7 @@ const ListDemandsScreen = () => {
       .then((response) => {
         setCategories(response.data);
       });
-    setSectorActive('todos');
+    setSectorActive('Todos');
   };
 
   const filterDemandByYear = () => {
@@ -67,7 +67,7 @@ const ListDemandsScreen = () => {
   };
 
   const listYears = () => {
-    const years = ['Sem filtro'];
+    const years = [];
     demands?.map((demand) => {
       const year = new Date(demand.createdAt).getFullYear();
       if (!years.find((y) => y === year)) {
@@ -75,6 +75,7 @@ const ListDemandsScreen = () => {
       }
       return undefined;
     });
+    years.push('Sem filtro');
     setDropdownYears(years);
   };
 
@@ -122,7 +123,7 @@ const ListDemandsScreen = () => {
   }, [demands]);
 
   useEffect(() => {
-    setFilterSector([{ name: 'todos' }, ...sectors]);
+    setFilterSector([{ name: 'Todos' }, ...sectors]);
   }, [sectors]);
 
   useEffect(() => {
@@ -146,7 +147,7 @@ const ListDemandsScreen = () => {
         (listSector) => (listSector.name === sectorActive ? listSector : false),
       );
 
-      if (sectorActive !== 'todos') {
+      if (sectorActive !== 'Todos') {
         if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
           return false;
         }
@@ -199,7 +200,7 @@ const ListDemandsScreen = () => {
                   optionStyle={{
                     backgroundColor: `${colors.secondary}`,
                   }}
-                  optionList={['Ativas', 'Inativas', 'Todas']}
+                  optionList={['Todas', 'Ativas', 'Inativas']}
                 />
               </DropdownField>
               <DropdownField width="25%">
