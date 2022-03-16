@@ -5,7 +5,7 @@ import {
 import moment from 'moment';
 import { getDemandsStatistics, getCategories } from '../../../Services/Axios/demandsServices';
 import {
-  Main, Title, Container, Card, CardTitle, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
+  Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
   SearchDiv, TextLabel, DateInput, styles,
 } from './Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
@@ -111,7 +111,7 @@ const StatisticBySectors = () => {
       { user ? (
         <Container>
           <TopDiv>
-            <Title>Estatísticas</Title>
+            <Title>Estatísticas - Demandas por Setor</Title>
             <FiltersDiv>
               <SearchDiv>
                 <DropdownDiv>
@@ -171,7 +171,6 @@ const StatisticBySectors = () => {
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <CardTitle>Demandas por setor</CardTitle>
               <ResponsiveContainer width="100%" height="90%">
                 <PieChart width={400} height={300}>
                   <Pie
