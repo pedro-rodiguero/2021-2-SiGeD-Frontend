@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import colors from '../../Constants/colors';
+import colors from '../../../Constants/colors';
 
 export const Main = styled.div`
   display: flex;
@@ -48,7 +48,7 @@ export const Card = styled.div`
 
   display: flex;
   flex-direction: column;
-  width: 700px;
+  width: 100%;
   height:400px;
   border-radius:15px;
   border: 2px solid black;
@@ -129,12 +129,10 @@ export const FiltersDiv = styled.div`
 
 export const SearchDiv = styled.div`
   height: 100%;
-  width: 50%;
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
   align-items: center;
-  justify-self: flex-end;
   @media(max-width: 750px){
     height: min-content;
     width: 100%;

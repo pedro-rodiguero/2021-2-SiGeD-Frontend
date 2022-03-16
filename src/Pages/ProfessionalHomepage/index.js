@@ -8,6 +8,7 @@ import { getFourClients } from '../../Services/Axios/clientServices';
 import { getFourDemands } from '../../Services/Axios/demandsServices';
 import {
   Main, PageBox, ProfessionalPage, BlankDiv, ProfessionalDiv, ResponsovePageBox, ScrollDiv,
+  Title,
 } from './Style';
 import { useProfileUser } from '../../Context';
 import HomepageUsers from '../../Components/HomePageUsers';
@@ -149,13 +150,10 @@ const ProfessionalHomepage = () => {
               </HomepageHeader>
             </PageBox>
             <PageBox width="54%" height="43%">
-              <HomepageHeader
-                HeaderTitle="Estatísticas"
-                LeftIcon="/estatisticas"
-                RightIconDisplay="none"
-              >
+              <div>
+                <Title>Estatísticas</Title>
                 <HomepageCharts />
-              </HomepageHeader>
+              </div>
             </PageBox>
             <PageBox width="37%" height="43%">
               <HomepageHeader
@@ -180,7 +178,7 @@ const ProfessionalHomepage = () => {
             <ResponsovePageBox>
               <HomepageHeader
                 HeaderTitle="Estatísticas"
-                LeftIcon="/estatisticas"
+                LeftIcon="/estatisticas/categoria"
                 RightIconDisplay="none"
               />
             </ResponsovePageBox>
@@ -197,7 +195,7 @@ const ProfessionalHomepage = () => {
               <PageBox width="100%" height="45%">
                 <HomepageHeader
                   HeaderTitle="Estatísticas"
-                  LeftIcon="/estatisticas"
+                  LeftIcon="/estatisticas/categoria"
                   RightIconDisplay="none"
                 >
                   <HomepageCharts />

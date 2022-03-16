@@ -33,14 +33,17 @@ const ClientRegisterScreen = () => {
   }, []);
 
   const submit = async () => {
+    const cpfNoMask = registerClientInputCpf.replaceAll('.', '').replaceAll('-', '');
+    const phoneNoMask = registerClientInputPhone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
+    const secondaryPhoneNoMask = registerClientInputSecondaryPhone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
     const validMessage = validateFields(registerClientInputName,
-      registerClientInputEmail, registerClientInputCpf,
-      registerClientInputPhone, registerClientInputSecondaryPhone);
+      registerClientInputEmail, cpfNoMask,
+      phoneNoMask, secondaryPhoneNoMask);
     if (!validMessage.length) {
       const data = await postClient(
         registerClientInputName, registerClientInputEmail,
-        registerClientInputCpf, registerClientInputPhone,
-        registerClientInputSecondaryPhone, registerClientInputAddress,
+        cpfNoMask, phoneNoMask,
+        secondaryPhoneNoMask, registerClientInputAddress,
         officeOption, registerLocation, selectedFeaturesID, startModal, user._id, baseImage,
       ).then((response) => response.data);
       if (data) {
@@ -61,7 +64,6 @@ const ClientRegisterScreen = () => {
     setOfficeOption('');
     setRegisterLocation('');
   };
-
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
   }

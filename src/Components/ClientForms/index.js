@@ -3,6 +3,8 @@ import { Form } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { Multiselect } from 'multiselect-react-dropdown';
 import RegisterInput from '../RegisterInput';
+import CpfInput from '../CpfInput';
+import TelephoneInput from '../TelephoneInput';
 import { Dropdown } from '../UserForms/Style';
 import {
   ClientFormsColumnText, Container, Label, styles,
@@ -65,10 +67,10 @@ const ClientForms = ({
     <ClientFormsColumnText>
       <RegisterInput long type="text" title="Nome" setText={setInputName} value={inputName} />
       <RegisterInput long type="text" title="Email" setText={setInputEmail} value={inputEmail} />
-      <RegisterInput type="text" title="CPF" setText={setInputCpf} value={inputCpf} />
+      <CpfInput type="text" title="CPF" setText={setInputCpf} value={inputCpf} />
       <RegisterInput type="text" title="Endereco" setText={setInputAddress} value={inputAddress} />
-      <RegisterInput type="text" title="Telefone principal" setText={setInputPhone} value={inputPhone} />
-      <RegisterInput type="text" title="Telefone secundario" setText={setInputSecondaryPhone} value={secondaryPhone} />
+      <TelephoneInput type="text" title="Telefone principal" setText={setInputPhone} value={inputPhone} />
+      <TelephoneInput type="text" title="Telefone secundario" setText={setInputSecondaryPhone} value={secondaryPhone} />
       <Form.Group style={styles.formGroup}>
         <Form.Label style={styles.formLabel}>Cargo:</Form.Label>
         <div style={styles.roleDiv}>

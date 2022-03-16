@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
   PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip,
-  BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
 import moment from 'moment';
-import { getDemandsStatistics, getCategories } from '../../Services/Axios/demandsServices';
+import { getDemandsStatistics, getCategories } from '../../../Services/Axios/demandsServices';
 import {
-  Main, Title, Container, Card, CardTitle, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
+  Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
   SearchDiv, TextLabel, DateInput, styles,
 } from './Style';
-import DropdownComponent from '../../Components/DropdownComponent';
-import colors from '../../Constants/colors';
-import { getSectors } from '../../Services/Axios/sectorServices';
-import { useProfileUser } from '../../Context';
+import DropdownComponent from '../../../Components/DropdownComponent';
+import colors from '../../../Constants/colors';
+import { getSectors } from '../../../Services/Axios/sectorServices';
+import { useProfileUser } from '../../../Context';
 
-const StatisticScreen = () => {
+const StatisticBySectors = () => {
   const { token, user, startModal } = useProfileUser();
   const [sectors, setSectors] = useState(['Todos']);
   const [loading, setLoading] = useState(true);
-  const [sectorActive, setSectorActive] = useState('Todos');
-  const [sectorID, setSectorID] = useState('');
-  const [categoryStatistics, setCategoryStatistics] = useState([]);
   const [sectorGraphData, setSectorGraphData] = useState([]);
   const [categories, setCategories] = useState(['Todas']);
   const [categoryActive, setCategoryActive] = useState('Todas');
@@ -59,15 +55,6 @@ const StatisticScreen = () => {
   }, [active]);
 
   useEffect(() => {
-    if (sectorActive !== 'Todos') {
-      const results = sectors.find((element) => element.name === sectorActive);
-      setSectorID(results._id);
-    } else {
-      setSectorID(null);
-    }
-  }, [sectorActive]);
-
-  useEffect(() => {
     if (categoryActive !== 'Todas') {
       const results = categories.find((element) => element.name === categoryActive);
       setCategoryID(results._id);
@@ -75,16 +62,6 @@ const StatisticScreen = () => {
       setCategoryID(null);
     }
   }, [categoryActive]);
-
-  const getCategoriesStatistics = async (idSector, idCategory) => {
-    await getDemandsStatistics(
-      `statistic/category?isDemandActive=${query}&idSector=${idSector}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
-      startModal,
-    )
-      .then((response) => {
-        setCategoryStatistics(response?.data);
-      });
-  };
 
   const getSectorStatistics = async (idCategory) => {
     await getDemandsStatistics(
@@ -115,7 +92,6 @@ const StatisticScreen = () => {
     if (user && token) {
       getSectorsFromApi();
       getCategoriesFromApi();
-      getCategoriesStatistics(null, null);
       getSectorStatistics(null);
     }
   }, [token, user]);
@@ -125,12 +101,7 @@ const StatisticScreen = () => {
   }, [loading]);
 
   useEffect(() => {
-    getCategoriesStatistics(sectorID);
-  }, [query, sectorID, finalDate, initialDate]);
-
-  useEffect(() => {
     getSectorStatistics(categoryID);
-    getCategoriesStatistics(sectorID, categoryID);
   }, [query, categoryID, finalDate, initialDate]);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -140,9 +111,9 @@ const StatisticScreen = () => {
       { user ? (
         <Container>
           <TopDiv>
-            <Title>Estatísticas</Title>
+            <Title>Estatísticas - Demandas por Setor</Title>
             <FiltersDiv>
-              <SearchDiv style={{ justifyContent: 'flex-start' }}>
+              <SearchDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Demandas:
@@ -154,21 +125,6 @@ const StatisticScreen = () => {
                       backgroundColor: `${colors.secondary}`,
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
-                  />
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Setor:
-                  </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={sectors?.map(
-                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
-                    )}
                   />
                 </DropdownDiv>
                 <DropdownDiv>
@@ -186,8 +142,6 @@ const StatisticScreen = () => {
                     )}
                   />
                 </DropdownDiv>
-              </SearchDiv>
-              <SearchDiv>
                 <DropdownDiv
                   style={{ width: '40%' }}
                 >
@@ -217,7 +171,6 @@ const StatisticScreen = () => {
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <CardTitle>Demandas por setor</CardTitle>
               <ResponsiveContainer width="100%" height="90%">
                 <PieChart width={400} height={300}>
                   <Pie
@@ -239,31 +192,6 @@ const StatisticScreen = () => {
                 </PieChart>
               </ResponsiveContainer>
             </Card>
-            <Card>
-              <CardTitle>Demandas por categoria</CardTitle>
-              <ResponsiveContainer width="100%" height="90%">
-                <BarChart
-                  data={categoryStatistics}
-                  margin={{
-                    top: 5,
-                    right: 10,
-                    left: 2,
-                    bottom: 5,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="categories[0].name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="demandas">
-                    {categoryStatistics?.map((entry, index) => (
-                      <Cell key={index} fill={entry?.categories[0]?.color} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </Card>
           </MiddleDiv>
         </Container>
       ) : <h1>Carregando...</h1> }
@@ -271,4 +199,4 @@ const StatisticScreen = () => {
   );
 };
 
-export default StatisticScreen;
+export default StatisticBySectors;
