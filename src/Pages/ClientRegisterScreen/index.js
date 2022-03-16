@@ -34,7 +34,6 @@ const ClientRegisterScreen = () => {
 
   const submit = async () => {
     const cpfNoMask = registerClientInputCpf.replaceAll('.', '').replaceAll('-', '');
-    console.log(cpfNoMask);
     const validMessage = validateFields(registerClientInputName,
       registerClientInputEmail, cpfNoMask,
       registerClientInputPhone, registerClientInputSecondaryPhone);
