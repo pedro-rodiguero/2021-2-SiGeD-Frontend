@@ -47,16 +47,21 @@ export const Search = styled.div`
 export const Card = styled.div`
 
   display: flex;
-  flex-direction: column;
   width: 100%;
   height:400px;
   border-radius:15px;
   border: 2px solid black;
   margin: 10px;
   justify-content: space-evenly;
+  align-items: center;
 
   @media(max-width: 750px){
-    justify-content: space-between;
+    flex-direction: column;
+    height:
+
+    .legenda {
+      width: 100%;
+    }
   }
 
 `;

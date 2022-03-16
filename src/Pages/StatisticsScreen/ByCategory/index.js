@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import {
-  Cell, ResponsiveContainer, Legend, Tooltip,
+  Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
 import moment from 'moment';
 import { getDemandsStatistics, getCategories } from '../../../Services/Axios/demandsServices';
 import {
-  Main, Title, Container, Card, CardTitle, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
+  Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
   SearchDiv, TextLabel, DateInput, styles,
 } from './Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
@@ -76,7 +76,7 @@ const StatisticScreen = () => {
     if (user && token) {
       getSectorsFromApi();
       getCategoriesFromApi();
-      getCategoriesStatistics(null, null);
+      getCategoriesStatistics(null);
     }
   }, [token, user]);
 
@@ -93,7 +93,7 @@ const StatisticScreen = () => {
       { user ? (
         <Container>
           <TopDiv>
-            <Title>Estatísticas</Title>
+            <Title>Estatísticas - Demandas por Categoria</Title>
             <FiltersDiv>
               <SearchDiv>
                 <DropdownDiv>
@@ -153,8 +153,7 @@ const StatisticScreen = () => {
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <CardTitle>Demandas por categoria</CardTitle>
-              <ResponsiveContainer width="100%" height="90%">
+              <ResponsiveContainer width="80%" height="90%">
                 <BarChart
                   data={categoryStatistics}
                   margin={{
@@ -165,10 +164,9 @@ const StatisticScreen = () => {
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="categories[0].name" />
+                  <XAxis dataKey="categories[0].name" hide />
                   <YAxis />
                   <Tooltip />
-                  <Legend />
                   <Bar dataKey="demandas">
                     {categoryStatistics?.map((entry, index) => (
                       <Cell key={index} fill={entry?.categories[0]?.color} />
@@ -176,6 +174,14 @@ const StatisticScreen = () => {
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
+              <div className="legenda" style={{ width: '20%', height: '90%', overflow: 'auto' }}>
+                {categoryStatistics.map((entry, index) => (
+                  <div key={`cell-${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '20px', height: '10px', backgroundColor: entry.categories[0].color }} />
+                    <span style={{ margin: '0px 5px' }}>{entry.categories[0].name}</span>
+                  </div>
+                ))}
+              </div>
             </Card>
           </MiddleDiv>
         </Container>
