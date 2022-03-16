@@ -126,10 +126,9 @@ const HomepageCharts = () => {
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="categories[0].name" />
+                  <XAxis dataKey="categories[0].name" hide />
                   <YAxis />
                   <Tooltip />
-                  <Legend />
                   <Bar dataKey="demandas">
                     {categoryStatistics?.map((entry, index) => (
                       <Cell key={index} fill={entry?.categories[0]?.color} />

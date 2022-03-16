@@ -88,3 +88,14 @@ export const ScrollDiv = styled.div`
   overflow: auto;
   margin-left: 10%;
 `;
+
+export const Title = styled.p`
+  padding: 10px 15px 15px 15px;
+  margin-bottom: 0px;
+  height: 100%;
+  font-size: 140%;
+  @media(max-width: 750px){
+    color: white;
+    font-size: 250%;
+  }
+`;
