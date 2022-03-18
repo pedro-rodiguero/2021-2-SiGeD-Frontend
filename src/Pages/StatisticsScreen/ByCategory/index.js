@@ -4,15 +4,19 @@ import {
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
 import moment from 'moment';
-import { getDemandsStatistics, getCategories } from '../../../Services/Axios/demandsServices';
+import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, DateInput, styles,
+  SearchDiv, TextLabel, styles,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
 import { getSectors } from '../../../Services/Axios/sectorServices';
 import { useProfileUser } from '../../../Context';
+
+import getCategoriesFromApiService from '../utils/services';
+
+import Dropdown from '../utils/Dropdown';
 
 const StatisticScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -33,13 +37,12 @@ const StatisticScreen = () => {
   };
 
   const getCategoriesFromApi = async () => {
-    await getCategories('category', startModal)
-      .then((response) => {
-        setCategories([...categories, ...response.data]);
-      })
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting categories.${error}`);
-      });
+    try {
+      const res = await getCategoriesFromApiService(startModal);
+      setCategories([...categories, ...res]);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -124,30 +127,12 @@ const StatisticScreen = () => {
                     )}
                   />
                 </DropdownDiv>
-                <DropdownDiv
-                  style={{ width: '40%' }}
-                >
-                  <TextLabel>
-                    Data de Inicio:
-                  </TextLabel>
-                  <DateInput
-                    type="date"
-                    value={initialDate}
-                    onChange={(e) => setInitialDate(e.target.value)}
-                  />
-                </DropdownDiv>
-                <DropdownDiv
-                  style={{ width: '40' }}
-                >
-                  <TextLabel>
-                    Data final:
-                  </TextLabel>
-                  <DateInput
-                    type="date"
-                    value={finalDate}
-                    onChange={(e) => setFinalDate(e.target.value)}
-                  />
-                </DropdownDiv>
+                <Dropdown
+                  initialDate={initialDate}
+                  setInitialDate={setInitialDate}
+                  finalDate={finalDate}
+                  setFinalDate={setFinalDate}
+                />
               </SearchDiv>
             </FiltersDiv>
           </TopDiv>
