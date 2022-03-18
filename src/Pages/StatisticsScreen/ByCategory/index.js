@@ -8,7 +8,7 @@ import { getDemandsStatistics, getCategories } from '../../../Services/Axios/dem
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
   SearchDiv, TextLabel, DateInput, styles,
-} from './Style';
+} from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
 import { getSectors } from '../../../Services/Axios/sectorServices';
