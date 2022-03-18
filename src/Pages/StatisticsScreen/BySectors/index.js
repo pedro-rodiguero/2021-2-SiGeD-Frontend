@@ -33,27 +33,6 @@ const StatisticBySectors = () => {
       });
   };
 
-  const getCategoriesFromApi = async () => {
-    await getCategories('category', startModal)
-      .then((response) => {
-        setCategories([...categories, ...response.data]);
-      })
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting categories.${error}`);
-      });
-  };
-
-  useEffect(() => {
-    if (active === 'Inativas') {
-      setQuery(false);
-    } else if (active === 'Ativas') {
-      setQuery(true);
-    } else {
-      setQuery(null);
-    }
-    console.log(query);
-  }, [active]);
-
   useEffect(() => {
     if (categoryActive !== 'Todas') {
       const results = categories.find((element) => element.name === categoryActive);
@@ -87,6 +66,27 @@ const StatisticBySectors = () => {
         setSectorGraphData(sectorGraph);
       });
   };
+
+  const getCategoriesFromApi = async () => {
+    await getCategories('category', startModal)
+      .then((response) => {
+        setCategories([...categories, ...response.data]);
+      })
+      .catch((error) => {
+        console.error(`An unexpected error ocourred while getting categories.${error}`);
+      });
+  };
+
+  useEffect(() => {
+    if (active === 'Inativas') {
+      setQuery(false);
+    } else if (active === 'Ativas') {
+      setQuery(true);
+    } else {
+      setQuery(null);
+    }
+    console.log(query);
+  }, [active]);
 
   useEffect(() => {
     if (user && token) {
