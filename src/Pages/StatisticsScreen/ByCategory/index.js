@@ -13,10 +13,9 @@ import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
 import { getSectors } from '../../../Services/Axios/sectorServices';
 import { useProfileUser } from '../../../Context';
-
 import getCategoriesFromApiService from '../utils/services';
-
 import Dropdown from '../utils/Dropdown';
+import { getClients } from '../../../Services/Axios/clientServices';
 
 const StatisticScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -27,6 +26,8 @@ const StatisticScreen = () => {
   const [categories, setCategories] = useState(['Todas']);
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
+  const [clientID, setClientID] = useState(null);
+  const [clientList, setClientList] = useState([]);
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
   const getSectorsFromApi = async () => {
@@ -67,7 +68,7 @@ const StatisticScreen = () => {
 
   const getCategoriesStatistics = async (idSector) => {
     await getDemandsStatistics(
-      `statistic/category?isDemandActive=${query}&idSector=${idSector}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/category?isDemandActive=${query}&idSector=${idSector}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -85,11 +86,25 @@ const StatisticScreen = () => {
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
-  }, [query, sectorID, finalDate, initialDate]);
+  }, [query, sectorID, finalDate, initialDate, clientID]);
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
   }, [query, finalDate, initialDate]);
+
+  const getClientsFromApi = async () => {
+    await getClients(`clients?active=${null}`, startModal)
+      .then((response) => {
+        const clientSelectArray = response.data.map((client) => (
+          {
+            label: client.name,
+            value: client._id,
+          }));
+        setClientList(clientSelectArray);
+      });
+  };
+
+  useEffect(() => getClientsFromApi(), []);
 
   return (
     <Main>
@@ -111,6 +126,23 @@ const StatisticScreen = () => {
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
                   />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Clientes:
+                  </TextLabel>
+                  <select
+                    onChange={(e) => setClientID(e.target.value)}
+                    value={clientID}
+                    style={styles.dropdownComponentStyle}
+                  >
+                    <option selected value="null">Todos</option>
+                    {
+                      clientList?.map((el) => (
+                        <option key={el.value} value={el.value}>{el.label}</option>
+                      ))
+                    }
+                  </select>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
