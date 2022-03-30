@@ -55,13 +55,12 @@ export const Card = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
+  span{
+    font-size: 1.5rem;
+  }
   @media(max-width: 750px){
     flex-direction: column;
-    height:
 
-    .legenda {
-      width: 100%;
-    }
   }
 
 `;

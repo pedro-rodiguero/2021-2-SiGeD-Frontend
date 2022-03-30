@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
-  PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip,
+  Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
 import moment from 'moment';
@@ -87,7 +87,8 @@ const HomepageCharts = () => {
     getStatisticsSectors(null);
   }, [loading]);
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#D088FE', '#D0C49F', '#3FBB28', '#3F8042',
+    '#EE88FE', '#EEC49F', '#11BB28', '#118042', '#D0FFFE', '#E08F9F', '#FF2928', '#6FED42'];
 
   return (
     <Main>
@@ -96,22 +97,25 @@ const HomepageCharts = () => {
           <ChartsDiv>
             <Card>
               <ResponsiveContainer width="100%" height="90%">
-                <PieChart width="100%" height="100%">
-                  <Pie
-                    data={sectorChartData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    fill="#8884d8"
-                    dataKey="total"
-                  >
-                    {sectorChartData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
+                <BarChart
+                  data={sectorChartData}
+                  margin={{
+                    top: 5,
+                    right: 10,
+                    left: 2,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" hide />
+                  <YAxis />
                   <Tooltip />
-                  <Legend />
-                </PieChart>
+                  <Bar dataKey="total">
+                    {sectorChartData?.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index]} />
+                    ))}
+                  </Bar>
+                </BarChart>
               </ResponsiveContainer>
             </Card>
             <Card>
