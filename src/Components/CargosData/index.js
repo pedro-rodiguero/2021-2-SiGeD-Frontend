@@ -8,7 +8,7 @@ import { getSector } from '../../Services/Axios/sectorServices';
 import {
   PersonDataBox, TableContent, Box, Ul, Content, P,
   TableContainer, DotContent,
-} from './Style';
+} from '../PersonalData/Style';
 import { Li, Button, Icon } from '../DataList/Style';
 import { useProfileUser } from '../../Context';
 import ConfirmDemandModal from '../ConfirmDemandModal';

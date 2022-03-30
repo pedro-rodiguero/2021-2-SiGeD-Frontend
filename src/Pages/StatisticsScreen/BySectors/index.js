@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import {
-  PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip,
+  Cell, ResponsiveContainer, Tooltip,
+  BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
 import moment from 'moment';
-import { getDemandsStatistics, getCategories } from '../../../Services/Axios/demandsServices';
+import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, DateInput, styles,
-} from './Style';
-import DropdownComponent from '../../../Components/DropdownComponent';
+  SearchDiv, TextLabel, styles,
+} from '../Style';
 import colors from '../../../Constants/colors';
+import DropdownComponent from '../../../Components/DropdownComponent';
 import { getSectors } from '../../../Services/Axios/sectorServices';
 import { useProfileUser } from '../../../Context';
+import getCategoriesFromApiService from '../utils/services';
+import Dropdown from '../utils/Dropdown';
+import { getClients } from '../../../Services/Axios/clientServices';
 
 const StatisticBySectors = () => {
   const { token, user, startModal } = useProfileUser();
@@ -23,6 +27,8 @@ const StatisticBySectors = () => {
   const [categoryID, setCategoryID] = useState('');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
+  const [clientID, setClientID] = useState(null);
+  const [clientList, setClientList] = useState([]);
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
   const getSectorsFromApi = async () => {
@@ -32,27 +38,6 @@ const StatisticBySectors = () => {
         setLoading(false);
       });
   };
-
-  const getCategoriesFromApi = async () => {
-    await getCategories('category', startModal)
-      .then((response) => {
-        setCategories([...categories, ...response.data]);
-      })
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting categories.${error}`);
-      });
-  };
-
-  useEffect(() => {
-    if (active === 'Inativas') {
-      setQuery(false);
-    } else if (active === 'Ativas') {
-      setQuery(true);
-    } else {
-      setQuery(null);
-    }
-    console.log(query);
-  }, [active]);
 
   useEffect(() => {
     if (categoryActive !== 'Todas') {
@@ -65,7 +50,7 @@ const StatisticBySectors = () => {
 
   const getSectorStatistics = async (idCategory) => {
     await getDemandsStatistics(
-      `statistic/sector?isDemandActive=${query}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/sector?isDemandActive=${query}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -88,6 +73,26 @@ const StatisticBySectors = () => {
       });
   };
 
+  const getCategoriesFromApi = async () => {
+    try {
+      const res = await getCategoriesFromApiService(startModal);
+      setCategories([...categories, ...res]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    if (active === 'Inativas') {
+      setQuery(false);
+    } else if (active === 'Ativas') {
+      setQuery(true);
+    } else {
+      setQuery(null);
+    }
+    console.log(query);
+  }, [active]);
+
   useEffect(() => {
     if (user && token) {
       getSectorsFromApi();
@@ -102,9 +107,24 @@ const StatisticBySectors = () => {
 
   useEffect(() => {
     getSectorStatistics(categoryID);
-  }, [query, categoryID, finalDate, initialDate]);
+  }, [query, categoryID, finalDate, initialDate, clientID]);
 
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const getClientsFromApi = async () => {
+    await getClients(`clients?active=${null}`, startModal)
+      .then((response) => {
+        const clientSelectArray = response.data.map((client) => (
+          {
+            label: client.name,
+            value: client._id,
+          }));
+        setClientList(clientSelectArray);
+      });
+  };
+
+  useEffect(() => getClientsFromApi(), []);
+
+  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#D088FE', '#D0C49F', '#3FBB28', '#3F8042',
+    '#EE88FE', '#EEC49F', '#11BB28', '#118042', '#D0FFFE', '#E08F9F', '#FF2928', '#6FED42'];
 
   return (
     <Main>
@@ -129,6 +149,23 @@ const StatisticBySectors = () => {
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
+                    Clientes:
+                  </TextLabel>
+                  <select
+                    onChange={(e) => setClientID(e.target.value)}
+                    value={clientID}
+                    style={styles.dropdownComponentStyle}
+                  >
+                    <option selected value="null">Todos</option>
+                    {
+                      clientList?.map((el) => (
+                        <option key={el.value} value={el.value}>{el.label}</option>
+                      ))
+                    }
+                  </select>
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
                     Categoria:
                   </TextLabel>
                   <DropdownComponent
@@ -142,55 +179,46 @@ const StatisticBySectors = () => {
                     )}
                   />
                 </DropdownDiv>
-                <DropdownDiv
-                  style={{ width: '40%' }}
-                >
-                  <TextLabel>
-                    Data de Inicio:
-                  </TextLabel>
-                  <DateInput
-                    type="date"
-                    value={initialDate}
-                    onChange={(e) => setInitialDate(e.target.value)}
-                  />
-                </DropdownDiv>
-                <DropdownDiv
-                  style={{ width: '40' }}
-                >
-                  <TextLabel>
-                    Data final:
-                  </TextLabel>
-                  <DateInput
-                    type="date"
-                    value={finalDate}
-                    onChange={(e) => setFinalDate(e.target.value)}
-                  />
-                </DropdownDiv>
+                <Dropdown
+                  initialDate={initialDate}
+                  setInitialDate={setInitialDate}
+                  finalDate={finalDate}
+                  setFinalDate={setFinalDate}
+                />
               </SearchDiv>
             </FiltersDiv>
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <ResponsiveContainer width="100%" height="90%">
-                <PieChart width={400} height={300}>
-                  <Pie
-                    data={sectorGraphData}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={100}
-                    fill="#8884d8"
-                    dataKey="total"
-                    label
-                  >
-                    {sectorGraphData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
+              <ResponsiveContainer width="80%" height="90%">
+                <BarChart
+                  data={sectorGraphData}
+                  margin={{
+                    top: 5,
+                    right: 10,
+                    left: 2,
+                    bottom: 5,
+                  }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" hide />
+                  <YAxis />
                   <Tooltip />
-                  <Legend />
-                </PieChart>
+                  <Bar dataKey="total">
+                    {sectorGraphData?.map((entry, index) => (
+                      <Cell key={index} fill={COLORS[index]} />
+                    ))}
+                  </Bar>
+                </BarChart>
               </ResponsiveContainer>
+              <div className="legenda" style={{ width: '20%', height: '90%', overflow: 'auto' }}>
+                {sectorGraphData.map((entry, index) => (
+                  <div key={`cell-${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                    <div style={{ width: '20px', height: '10px', backgroundColor: COLORS[index] }} />
+                    <span style={{ margin: '0px 5px' }}>{entry.name}</span>
+                  </div>
+                ))}
+              </div>
             </Card>
           </MiddleDiv>
         </Container>
