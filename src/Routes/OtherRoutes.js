@@ -27,6 +27,7 @@ import RegisterCargosScreen from '../Pages/RegisterCargos';
 import WorkspaceListScreen from '../Pages/WorkplaceScreen';
 import StatisticByCategory from '../Pages/StatisticsScreen/ByCategory';
 import StatisticBySectors from '../Pages/StatisticsScreen/BySectors';
+import StatisticClientScreen from '../Pages/StatisticsScreen/ByClients';
 
 const OtherRoutes = () => {
   const { user } = useProfileUser();
@@ -64,6 +65,7 @@ const OtherRoutes = () => {
               <Route path="/recuperar-senha" exact component={RecoverPasswordScreen} />
               <Route path="/estatisticas/categoria" exact component={StatisticByCategory} />
               <Route path="/estatisticas/setor" exact component={StatisticBySectors} />
+              <Route path="/estatisticas/cliente" exact component={StatisticClientScreen} />
               <Route path="/lotacoes/" exact component={WorkspaceListScreen} />
               <Redirect path="*" to="/" />
             </Switch>
