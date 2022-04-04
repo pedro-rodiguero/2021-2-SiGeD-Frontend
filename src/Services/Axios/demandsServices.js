@@ -1,5 +1,20 @@
 import { APIDemands } from './baseService';
 
+export async function getClientByDemands(url, startModal) {
+  try {
+    const response = await APIDemands.get(url);
+    console.log(response);
+    return response;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível carregar as demandas dos clientes, tente novamente mais tarde.');
+    }
+  }
+  return false;
+}
+
 export async function getCategories(url, startModal) {
   try {
     const response = await APIDemands.get(url);
