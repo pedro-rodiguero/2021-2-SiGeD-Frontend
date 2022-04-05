@@ -45,22 +45,24 @@ export const Search = styled.div`
 `;
 
 export const Card = styled.div`
-
-  display: flex;
+  padding: 2rem 0 1rem 0;
   width: 100%;
   height:400px;
   border-radius:15px;
   border: 2px solid black;
-  margin: 10px;
-  justify-content: space-evenly;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-
-  span{
-    font-size: 1.5rem;
-  }
-  @media(max-width: 750px){
-    flex-direction: column;
-
+  
+  
+  .legenda{
+    margin: 0.2rem 0 0 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    max-height: 100px;
+    width: 50%;
+    overflow-y: scroll;
   }
 
 `;
