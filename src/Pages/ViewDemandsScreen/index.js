@@ -99,6 +99,14 @@ const ViewDemandsScreen = () => {
     }
   };
 
+  const setUserName = () => {
+    if (userDemand.open === false) {
+      const userName = `${userDemand.name} (inativo)`;
+      return userName;
+    }
+    return userDemand.name;
+  };
+
   useEffect(() => {
     if (id) {
       getDemandApi();
@@ -256,7 +264,7 @@ const ViewDemandsScreen = () => {
             <ViewDemandSidebar
               clientImage={client.image}
               clientName={client.name}
-              userName={userDemand.name}
+              userName={setUserName()}
               selectedCategories={demand.categoryID}
               demand={demand}
               getDemandApi={getDemandApi}
