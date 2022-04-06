@@ -190,7 +190,7 @@ const StatisticBySectors = () => {
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <ResponsiveContainer width="80%" height="80%">
+              <ResponsiveContainer width="100%" height="80%">
                 <BarChart
                   data={sectorGraphData}
                   margin={{
@@ -213,7 +213,11 @@ const StatisticBySectors = () => {
               </ResponsiveContainer>
               <div className="legenda">
                 {sectorGraphData.map((entry, index) => (
-                  <div key={`cell-${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                  <div
+                    key={`cell-${index}`}
+                    style={{
+                      display: 'flex', alignItems: 'center', margin: '0px 4px', fontSize: '1.5rem',
+                    }}>
                     <div style={{ width: '20px', height: '10px', backgroundColor: COLORS[index] }} />
                     <span style={{ margin: '0px 5px' }}>{entry.name}</span>
                   </div>

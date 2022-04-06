@@ -6,7 +6,7 @@ export const Main = styled.div`
   background-color: ${colors.background};
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   @media(max-width: 750px){
     height: max-content;
   }
@@ -47,22 +47,23 @@ export const Search = styled.div`
 export const Card = styled.div`
   padding: 2rem 0 1rem 0;
   width: 100%;
-  height:400px;
   border-radius:15px;
   border: 2px solid black;
   margin: 2rem auto;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 400px;
+  overflow: scroll;
   
   
   .legenda{
-    margin: 0.2rem 0 0 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    max-height: 100px;
-    width: 50%;
-    overflow-y: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    max-height: 700px;
+    width: 80%;
+    justify-content: space-evenly;
   }
 
 `;

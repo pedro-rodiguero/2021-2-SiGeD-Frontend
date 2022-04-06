@@ -170,14 +170,14 @@ const StatisticScreen = () => {
           </TopDiv>
           <MiddleDiv>
             <Card>
-              <ResponsiveContainer height="80%" width="80%">
+              <ResponsiveContainer height="80%" width="100%">
                 <BarChart
                   data={categoryStatistics}
                   margin={{
                     top: 5,
                     right: 10,
                     left: 2,
-                    bottom: 5,
+                    bottom: 40,
                   }}
                 >
                   <CartesianGrid strokeDasharray="3 3" />
@@ -193,7 +193,11 @@ const StatisticScreen = () => {
               </ResponsiveContainer>
               <div className="legenda">
                 {categoryStatistics.map((entry, index) => (
-                  <div key={`cell-${index}`} style={{ display: 'flex', alignItems: 'center' }}>
+                  <div
+                    key={`cell-${index}`}
+                    style={{
+                      display: 'flex', alignItems: 'center', margin: '0px 4px', fontSize: '1.5rem',
+                    }}>
                     <div style={{ width: '20px', height: '10px', backgroundColor: entry.categories[0].color }} />
                     <span style={{ margin: '0px 5px' }}>{entry.categories[0].name}</span>
                   </div>
