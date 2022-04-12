@@ -9,6 +9,7 @@ import { getClients } from '../../Services/Axios/clientServices';
 import DropdownComponent from '../../Components/DropdownComponent';
 import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
+import activeClient from '../StatisticsScreen/utils/alternateClient';
 
 const ClientListScreen = () => {
   const { token, startModal } = useProfileUser();
@@ -20,7 +21,7 @@ const ClientListScreen = () => {
 
   const getClientsFromApi = async () => {
     await getClients(`clients?active=${query}`, startModal)
-      .then((response) => setClients(response.data));
+      .then((response) => setClients(activeClient(response.data)));
   };
 
   useEffect(() => {
