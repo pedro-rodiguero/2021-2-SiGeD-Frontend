@@ -68,8 +68,9 @@ export const ScreenContentBox = styled.div`
 `;
 
 export const ScreenSearch = styled.div`
+  display: flex;
   float: left;
-  width: 35%;
+  width: 45%;
   @media(max-width: 750px){
     width: 90%;
   }
@@ -127,3 +128,27 @@ export const styles = {
     justifyContent: 'center',
   },
 };
+
+export const Button = styled.button`
+  display: flex;
+  border: none;
+  border-radius: 4px;
+  margin-left: 5%;
+  background-color: #1F3541;
+  color: white;
+  font-size: 1.5vh;
+  padding: 5px;
+  width: 40%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: filter 0.2s;
+
+  &:hover {
+    filter: brightness(80%);
+  }
+
+  @media(max-width: 750px){
+    font-size: 1.3vh;
+  }
+`;

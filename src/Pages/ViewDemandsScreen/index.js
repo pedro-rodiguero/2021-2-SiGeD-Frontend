@@ -22,7 +22,7 @@ import { getClients } from '../../Services/Axios/clientServices';
 import { getUser } from '../../Services/Axios/userServices';
 import colors from '../../Constants/colors';
 import DemandHistory from '../../Components/DemandHistory';
-import DemandReport from '../../Utils/reports/printDemandReport';
+import { DemandReport } from '../../Utils/reports/printDemandReport';
 
 const ViewDemandsScreen = () => {
   const [client, setClient] = useState('');

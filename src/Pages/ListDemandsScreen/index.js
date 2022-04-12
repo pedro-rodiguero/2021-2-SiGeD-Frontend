@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import { FaSistrix } from 'react-icons/fa';
 import {
   Main, ScreenContainer, ScreenTitle, ScreenSearch, ScreenContentBox,
-  ScreenHeader, ScreenList, Dropdown, DropdownField, styles,
+  ScreenHeader, ScreenList, Dropdown, DropdownField, styles, Button,
 } from './Style';
 import SearchInput from '../../Components/SearchInput';
 import DemandData from '../../Components/DemandData';
@@ -12,9 +12,10 @@ import { getSectors } from '../../Services/Axios/sectorServices';
 import DropdownComponent from '../../Components/DropdownComponent';
 import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
+import { AllDemandsReport } from '../../Utils/reports/printDemandReport';
 
 const ListDemandsScreen = () => {
-  const { token, user } = useProfileUser();
+  const { token, user, startModal } = useProfileUser();
   const [word, setWord] = useState();
   const [filterDemands, setFilterDemands] = useState([]);
   const [filterSector, setFilterSector] = useState(['Todos']);
@@ -28,7 +29,6 @@ const ListDemandsScreen = () => {
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [active, setActive] = useState('Ativos');
   const [query, setQuery] = useState(null);
-  const { startModal } = useProfileUser();
 
   const getDemandsFromApi = async () => {
     // Por default, traz como resultado somente as demandas ativas,
@@ -188,8 +188,11 @@ const ListDemandsScreen = () => {
                 icon={<FaSistrix />}
                 value={word}
                 setWord={(value) => setWord(value)}
-                style={{ width: '100%' }}
+                style={{ width: '50%' }}
               />
+              <Button onClick={() => AllDemandsReport(filterDemands, user, startModal)}>
+                Baixar relatório
+              </Button>
             </ScreenSearch>
             <Dropdown>
               <DropdownField>
