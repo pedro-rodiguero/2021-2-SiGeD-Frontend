@@ -6,7 +6,7 @@ import {
   DemandCreatedAt, CategoryField, CategoryName, Icon, Button,
 } from './Style';
 import colors from '../../Constants/colors';
-import DemandReport from '../../Utils/reports/printDemandReport';
+import { DemandReport } from '../../Utils/reports/printDemandReport';
 import { useProfileUser } from '../../Context';
 
 const DemandData = ({ demand, sectors }) => {
