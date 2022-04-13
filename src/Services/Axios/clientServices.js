@@ -116,7 +116,7 @@ export const toggleStatus = async (id, startModal) => {
     await APIClients.put(`/clients/toggleStatus/${id}`);
   } catch (error) {
     console.error(error);
-    startModal('Não foi possivel desativar/reativar o cliente, tente novamente mais tarde.');
+    startModal('O cliente selecionado está vinculado a uma demanda aberta.\nConclua a demanda antes de desativar o cliente.');
   }
 };
 
