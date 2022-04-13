@@ -16,6 +16,7 @@ import { useProfileUser } from '../../../Context';
 import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
+import activeClient from '../utils/alternateClient';
 
 const StatisticScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -95,7 +96,7 @@ const StatisticScreen = () => {
   const getClientsFromApi = async () => {
     await getClients(`clients?active=${null}`, startModal)
       .then((response) => {
-        const clientSelectArray = response.data.map((client) => (
+        const clientSelectArray = activeClient(response.data).map((client) => (
           {
             label: client.name,
             value: client._id,
