@@ -50,7 +50,7 @@ const ClientUpdateScreen = () => {
   };
 
   const getFeaturesFromAPI = () => {
-    getFeatures('/features')
+    getFeatures('/openfeatures')
       .then((response) => setFeaturesList(response.data));
   };
 

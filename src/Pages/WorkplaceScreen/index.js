@@ -21,13 +21,12 @@ const WorkspaceListScreen = () => {
   const toggleModal = () => setStatusModal(!statusModal);
 
   const getWorkspacesFromApi = async () => {
-    await getClients('lotacao', startModal)
+    await getClients('openlotacao', startModal)
       .then((response) => setWorkspaces(response.data));
   };
 
   useEffect(() => {
     getWorkspacesFromApi();
-    console.log('workspace screen');
   }, [token]);
 
   useEffect(() => {

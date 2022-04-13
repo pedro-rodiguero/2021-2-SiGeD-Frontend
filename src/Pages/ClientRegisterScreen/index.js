@@ -24,7 +24,7 @@ const ClientRegisterScreen = () => {
   const { startModal, user } = useProfileUser();
 
   const getFeaturesFromAPI = () => {
-    getFeatures('/features')
+    getFeatures('/openfeatures')
       .then((response) => setFeaturesList(response.data));
   };
 

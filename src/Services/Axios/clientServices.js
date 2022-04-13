@@ -204,6 +204,8 @@ export const deleteFeature = async (id, startModal) => {
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status === 400) {
+      startModal('Não é possivel excluir uma característica que está vinculada à um cliente');
     } else if (error.response.status !== 401) {
       startModal(`Não foi possivel deletar a categoria.\n${error}`);
     }
@@ -259,6 +261,8 @@ export const deleteWorkspace = async (id, startModal) => {
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status === 400) {
+      startModal('Não é possivel excluir uma lotação que está vinculada à um cliente');
     } else if (error.response.status !== 401) {
       startModal(`Não foi possivel deletar a lotação.\n${error}`);
     }
@@ -329,6 +333,8 @@ export const deleteCargo = async (id, startModal) => {
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status === 400) {
+      startModal('Não é possivel excluir um cargo que está vinculado à um cliente');
     } else if (error.response.status !== 401) {
       startModal(`Não foi possivel deletar a lotação.\n${error}`);
     }

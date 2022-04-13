@@ -111,7 +111,7 @@ const DataList = ({
             {user.role === 'admin' ? (
               <Li onClick={handleShow}>
                 <Button color="red">
-                  Remover
+                  Desativar
                   <Icon color="red">
                     <FaRegTrashAlt />
                   </Icon>

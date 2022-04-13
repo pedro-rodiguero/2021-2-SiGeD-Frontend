@@ -22,7 +22,7 @@ const ClientFeaturesScreen = () => {
   const toggleModal = () => setStatusModal(!statusModal);
 
   const listFeatures = async () => {
-    await getFeatures('features', startModal)
+    await getFeatures('openfeatures', startModal)
       .then((response) => setFeatures(response.data))
       .catch((error) => {
         console.error(`An unexpected error ocourred while getting features.${error}`);
