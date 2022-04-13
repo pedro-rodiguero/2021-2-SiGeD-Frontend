@@ -7,7 +7,7 @@ import CpfInput from '../CpfInput';
 import TelephoneInput from '../TelephoneInput';
 import { Dropdown } from '../UserForms/Style';
 import {
-  ClientFormsColumnText, Container, Label, styles,
+  ClientFormsColumnText, Container, Label, styles, DateInput,
 } from './Style';
 import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
@@ -33,6 +33,14 @@ const ClientForms = ({
   selectedFeatures,
   setSelectedFeaturesID,
   register,
+  setInputGender,
+  inputGender,
+  setInputBirthdate,
+  inputBirthdate,
+  setInputAdministrativeRestriction,
+  inputAdministrativeRestriction,
+  setInputHealthRestrictions,
+  inputHealthRestrictions,
 }) => {
   const controlarCaracteristicas = (item) => {
     const featuresID = [];
@@ -69,6 +77,14 @@ const ClientForms = ({
       <RegisterInput long type="text" title="Email" setText={setInputEmail} value={inputEmail} />
       <CpfInput type="text" title="CPF" setText={setInputCpf} value={inputCpf} />
       <RegisterInput type="text" title="Endereco" setText={setInputAddress} value={inputAddress} />
+      <Form.Group style={styles.formGroup}>
+        <Form.Label style={styles.formLabel}>Data de Nascimento:</Form.Label>
+        <DateInput
+          type="date"
+          value={inputBirthdate}
+          onChange={(e) => setInputBirthdate(e.target.value)}
+        />
+      </Form.Group>
       <TelephoneInput type="text" title="Telefone principal" setText={setInputPhone} value={inputPhone} />
       <TelephoneInput type="text" title="Telefone secundario" setText={setInputSecondaryPhone} value={secondaryPhone} />
       <Form.Group style={styles.formGroup}>
@@ -105,6 +121,20 @@ const ClientForms = ({
           </Dropdown>
         </div>
       </Form.Group>
+      <Form.Group style={styles.formGroup}>
+        <Form.Label style={styles.formLabel}>Genero:</Form.Label>
+        <div style={styles.roleDiv}>
+          <Dropdown
+            as="select"
+            value={inputGender}
+            style={styles.dropdownStyle}
+            onChange={(Option) => setInputGender(Option.target.value)}
+          >
+            <option>Masculino</option>
+            <option>Feminino</option>
+          </Dropdown>
+        </div>
+      </Form.Group>
       <Container long>
         <Label>
           Caracteristicas:
@@ -132,6 +162,8 @@ const ClientForms = ({
           closeOnSelect="false"
         />
       </Container>
+      <RegisterInput type="text" title="Restricoes Administrativas" setText={setInputAdministrativeRestriction} value={inputAdministrativeRestriction} />
+      <RegisterInput type="text" title="Restricoes de Saude" setText={setInputHealthRestrictions} value={inputHealthRestrictions} />
     </ClientFormsColumnText>
   );
 };
