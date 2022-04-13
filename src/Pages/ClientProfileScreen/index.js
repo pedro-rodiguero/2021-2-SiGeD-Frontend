@@ -29,7 +29,7 @@ const ClientProfileScreen = () => {
   const [inputPhone, setInputPhone] = useState('');
   const [inputSecondaryPhone, setInputSecondaryPhone] = useState('');
   const [inputGender, setInputGender] = useState('');
-  const [inputBirthdate, setInputBirthdate] = useState(moment().format('DD-MM-YYYY'));
+  const [inputBirthdate, setInputBirthdate] = useState(moment().format('DD/MM/YYYY'));
   const [inputHealthRestrictions, setInputHealthRestrictions] = useState('');
   const [inputAdministrativeRestrictions, setInputAdministrativeRestrictions] = useState('');
   const [location, setLocation] = useState('');
@@ -64,7 +64,7 @@ const ClientProfileScreen = () => {
         setInputPhone(data.phone);
         setInputSecondaryPhone(data.secondaryPhone); // sec phone
         setInputGender(data.gender);
-        setInputBirthdate(data.birthdate);
+        setInputBirthdate(moment(data.birthdate).format('DD/MM/YYYY'));
         setInputAdministrativeRestrictions(data.administrativeRestrictions);
         setInputHealthRestrictions(data.healthRestrictions);
         setOfficeOption(data.office);
@@ -76,6 +76,7 @@ const ClientProfileScreen = () => {
         setAddress(data.address);
         setClient(data);
         setClientFeaturesID(data?.features);
+        console.log(data.birthdate);
       });
   };
 

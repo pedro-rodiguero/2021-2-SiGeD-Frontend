@@ -16,7 +16,7 @@ const ClientRegisterScreen = () => {
   const [registerClientInputPhone, setRegisterClientInputPhone] = useState('');
   const [registerClientInputSecondaryPhone, setregisterClientInputSecondaryPhone] = useState('');
   const [registerClientInputGender, setRegisterClientInputGender] = useState('');
-  const [registerClientInputBirthdate, setRegisterClientInputBirthdate] = useState(moment().format('DD-MM-YYYY'));
+  const [registerClientInputBirthdate, setRegisterClientInputBirthdate] = useState(moment().format('DD/MM/YYYY'));
   const [registerClientInputHealthRestrictions, setRegisterClientInputHealthRestrictions] = useState('');
   const [registerClientInputAdministrativeRestrictions, setRegisterClientInputAdministrativeRestrictions] = useState('');
   const [inputRegisterClientImage, setRegisterClientInputImage] = useState('');
@@ -82,7 +82,7 @@ const ClientRegisterScreen = () => {
   return (
     <div>
       <GenericRegisterScreen
-        sidebarList={[registerClientInputName, registerClientInputCpf, registerClientInputBirthdate,
+        sidebarList={[registerClientInputName, registerClientInputCpf, moment(registerClientInputBirthdate).format('DD/MM/YYYY'),
           registerClientInputAddress, officeOption, registerLocation]}
         sidebarFooter={[registerClientInputEmail, registerClientInputPhone]}
         cancel={cancel}
