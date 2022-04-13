@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaSistrix } from 'react-icons/fa';
-import { useParams, Redirect } from 'react-router-dom';
+import { useParams, Redirect } from 'react-router-dom'; import moment from 'moment';
 import ProfileSidebarComponent from '../../Components/ProfileSidebarComponent';
 import { getDemands } from '../../Services/Axios/demandsServices';
 import ClientDemandData from '../../Components/ClientDemandData';
@@ -28,6 +28,10 @@ const ClientProfileScreen = () => {
   const [inputCpf, setInputCpf] = useState('');
   const [inputPhone, setInputPhone] = useState('');
   const [inputSecondaryPhone, setInputSecondaryPhone] = useState('');
+  const [inputGender, setInputGender] = useState('');
+  const [inputBirthdate, setInputBirthdate] = useState(moment().format('DD-MM-YYYY'));
+  const [inputHealthRestrictions, setInputHealthRestrictions] = useState('');
+  const [inputAdministrativeRestrictions, setInputAdministrativeRestrictions] = useState('');
   const [location, setLocation] = useState('');
   const [officeOption, setOfficeOption] = useState('');
   const [address, setAddress] = useState('');
@@ -59,6 +63,10 @@ const ClientProfileScreen = () => {
         setInputCpf(data.cpf);
         setInputPhone(data.phone);
         setInputSecondaryPhone(data.secondaryPhone); // sec phone
+        setInputGender(data.gender);
+        setInputBirthdate(data.birthdate);
+        setInputAdministrativeRestrictions(data.administrativeRestrictions);
+        setInputHealthRestrictions(data.healthRestrictions);
         setOfficeOption(data.office);
         if (!data.location) {
           data.location = 'location';
@@ -176,9 +184,10 @@ const ClientProfileScreen = () => {
           <Main>
             <ProfileSidebarComponent
               sidebarTitle="Perfil do Cliente"
-              sidebarList={[inputName, inputCpf,
-                address, officeOption, location]}
-              sidebarFooter={[inputEmail, inputPhone, inputSecondaryPhone]}
+              sidebarList={[inputName, inputCpf, inputBirthdate,
+                inputGender, address, officeOption, location]}
+              sidebarFooter={[inputAdministrativeRestrictions, inputHealthRestrictions,
+                inputEmail, inputPhone, inputSecondaryPhone]}
               edit
               handleShow={handleShow}
               id={client._id}

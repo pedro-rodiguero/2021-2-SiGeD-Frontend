@@ -64,3 +64,28 @@ export const styles = {
     border: '0',
   },
 };
+
+export const DateView = styled.div`
+  /* margin-top: 5px; */
+`;
+
+export const DateInput = styled.input`
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 2px solid #000000;
+  box-shadow: none !important;
+  display: flex;
+  width: 50%;
+  height: calc(1.5em + 0.75rem + 2px);
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: white;
+  outline: none;
+  
+  @media(max-width: 750px){
+    width: 90%;
+  }
+`;

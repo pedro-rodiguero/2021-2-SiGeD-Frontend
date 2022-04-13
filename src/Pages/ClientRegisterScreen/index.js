@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, Redirect } from 'react-router-dom';
+import moment from 'moment';
 import GenericRegisterScreen from '../../Components/GenericRegisterScreen';
 import { validateFields } from '../../Utils/validations';
 import ClientForms from '../../Components/ClientForms';
@@ -14,6 +15,10 @@ const ClientRegisterScreen = () => {
   const [registerClientInputAddress, setRegisterClientInputAddress] = useState('');
   const [registerClientInputPhone, setRegisterClientInputPhone] = useState('');
   const [registerClientInputSecondaryPhone, setregisterClientInputSecondaryPhone] = useState('');
+  const [registerClientInputGender, setRegisterClientInputGender] = useState('');
+  const [registerClientInputBirthdate, setRegisterClientInputBirthdate] = useState(moment().format('DD-MM-YYYY'));
+  const [registerClientInputHealthRestrictions, setRegisterClientInputHealthRestrictions] = useState('');
+  const [registerClientInputAdministrativeRestrictions, setRegisterClientInputAdministrativeRestrictions] = useState('');
   const [inputRegisterClientImage, setRegisterClientInputImage] = useState('');
   const [officeOption, setOfficeOption] = useState('Cargo');
   const [registerLocation, setRegisterLocation] = useState('Lotação');
@@ -43,7 +48,9 @@ const ClientRegisterScreen = () => {
       const data = await postClient(
         registerClientInputName, registerClientInputEmail,
         cpfNoMask, phoneNoMask,
-        secondaryPhoneNoMask, registerClientInputAddress,
+        secondaryPhoneNoMask, registerClientInputAddress, registerClientInputGender,
+        registerClientInputBirthdate, registerClientInputHealthRestrictions,
+        registerClientInputAdministrativeRestrictions,
         officeOption, registerLocation, selectedFeaturesID, startModal, user._id, baseImage,
       ).then((response) => response.data);
       if (data) {
@@ -63,6 +70,10 @@ const ClientRegisterScreen = () => {
     setRegisterClientInputAddress('');
     setOfficeOption('');
     setRegisterLocation('');
+    setRegisterClientInputGender('');
+    setRegisterClientInputBirthdate('');
+    setRegisterClientInputHealthRestrictions('');
+    setRegisterClientInputAdministrativeRestrictions('');
   };
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
@@ -71,7 +82,7 @@ const ClientRegisterScreen = () => {
   return (
     <div>
       <GenericRegisterScreen
-        sidebarList={[registerClientInputName, registerClientInputCpf,
+        sidebarList={[registerClientInputName, registerClientInputCpf, registerClientInputBirthdate,
           registerClientInputAddress, officeOption, registerLocation]}
         sidebarFooter={[registerClientInputEmail, registerClientInputPhone]}
         cancel={cancel}
@@ -89,6 +100,14 @@ const ClientRegisterScreen = () => {
           inputEmail={registerClientInputEmail}
           setInputCpf={setRegisterClientInputCpf}
           inputCpf={registerClientInputCpf}
+          setInputGender={setRegisterClientInputGender}
+          inputGender={registerClientInputGender}
+          setInputBirthdate={setRegisterClientInputBirthdate}
+          inputBirthdate={registerClientInputBirthdate}
+          setInputAdministrativeRestriction={setRegisterClientInputAdministrativeRestrictions}
+          inputAdministrativeRestriction={registerClientInputAdministrativeRestrictions}
+          setInputHealthRestrictions={setRegisterClientInputHealthRestrictions}
+          inputHealthRestrictions={registerClientInputHealthRestrictions}
           setInputPhone={setRegisterClientInputPhone}
           inputPhone={registerClientInputPhone}
           setInputSecondaryPhone={setregisterClientInputSecondaryPhone}
