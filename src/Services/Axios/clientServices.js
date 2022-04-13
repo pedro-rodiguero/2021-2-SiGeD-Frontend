@@ -47,8 +47,11 @@ export async function getFourClients(startModal) {
 
 export async function postClient(
   inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, locationOption, selectedFeatures,
-  startModal, userContext, baseImage,
+  inputAddress,
+  inputGender, inputBirthdate, inputHealthRestrictions,
+  inputAdministrativeRestrictions,
+  officeOption, locationOption,
+  selectedFeatures, startModal, userContext, baseImage,
 ) {
   try {
     const response = await APIClients.post('clients/create', {
@@ -58,6 +61,10 @@ export async function postClient(
       phone: inputPhone,
       secondaryPhone: inputSecondaryPhone,
       address: inputAddress,
+      gender: inputGender,
+      birthdate: inputBirthdate,
+      healthRestrictions: inputHealthRestrictions,
+      administrativeRestrictions: inputAdministrativeRestrictions,
       office: officeOption,
       location: locationOption,
       features: selectedFeatures,
@@ -82,8 +89,9 @@ export async function postClient(
 
 export async function updateClient(
   inputName, inputEmail, inputCpf, inputPhone, inputSecondaryPhone,
-  inputAddress, officeOption, locationOption, features, id, startModal, userContext,
-  baseImage,
+  inputAddress, inputGender, inputBirthdate, inputHealthRestrictions,
+  inputAdministrativeRestrictions, officeOption, locationOption,
+  features, id, startModal, userContext, baseImage,
 ) {
   try {
     const response = await APIClients.put(`/clients/update/${id}`, {
@@ -93,6 +101,10 @@ export async function updateClient(
       phone: inputPhone,
       secondaryPhone: inputSecondaryPhone,
       address: inputAddress,
+      gender: inputGender,
+      birthdate: inputBirthdate,
+      healthRestrictions: inputHealthRestrictions,
+      administrativeRestrictions: inputAdministrativeRestrictions,
       office: officeOption,
       location: locationOption,
       userID: userContext,
