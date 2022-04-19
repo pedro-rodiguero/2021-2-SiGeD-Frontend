@@ -217,3 +217,26 @@ export const styles = {
     backgroundColor: 'white',
   },
 };
+
+export const Button = styled.button`
+  display: flex;
+  border: none;
+  border-radius: 4px;
+  background-color: #1F3541;
+  color: white;
+  font-size: 1.5vh;
+  padding: 5px;
+  width: 20%;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: filter 0.2s;
+
+  &:hover {
+    filter: brightness(80%);
+  }
+
+  @media(max-width: 750px){
+    font-size: 1.3vh;
+  }
+`;
