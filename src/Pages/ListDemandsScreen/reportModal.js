@@ -7,6 +7,7 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const { user, startModal } = useProfileUser();
   const [currentDemands, setCurrentDemands] = useState(allDemands);
   const [currentSector, setCurrentSector] = useState('Todos');
+  const [currentCategory, setCurrentCategory] = useState('Todas');
 
   useEffect(() => {
     console.log(filterCategory);
@@ -14,6 +15,11 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
 
   const handleChangeSector = (e) => {
     setCurrentSector(String(e.target.value));
+  };
+
+  const handleChangeCategory = (e) => {
+    console.log('category value', e.target.value);
+    setCurrentCategory(e.target.value);
   };
 
   useEffect(() => {
@@ -28,6 +34,17 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
     setCurrentDemands(allDemands);
   }, [currentSector]);
 
+  useEffect(() => {
+    if (currentCategory !== 'Todas') {
+      const demandsFiltered = allDemands.filter((category) => (
+        category.categoryID.some((el) => el.name === currentCategory)
+      ));
+      setCurrentDemands(demandsFiltered);
+      return;
+    }
+    setCurrentDemands(allDemands);
+  }, [currentCategory]);
+
   return (
     <div>
       <h1>Esse é o modal</h1>
@@ -37,6 +54,17 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
             filterSector.map((sector) => (
               <option key={sector.name} value={sector._id}>
                 {sector.name}
+              </option>
+            ))
+          }
+        </select>
+      </div>
+      <div>
+        <select onChange={handleChangeCategory}>
+          {
+            filterCategory.map((category) => (
+              <option key={category.name || category} value={category.name || category}>
+                {category.name || category}
               </option>
             ))
           }
