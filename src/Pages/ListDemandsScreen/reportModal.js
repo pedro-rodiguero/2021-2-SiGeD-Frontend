@@ -7,9 +7,10 @@ import { Button } from './Style';
 export default function ReportModal({ allDemands, filterSector, filterCategory }) {
   const { user, startModal } = useProfileUser();
   const [currentDemands, setCurrentDemands] = useState(allDemands);
-  const [currentSector, setCurrentSector] = useState('Todos');
+  const [currentSector, setCurrentSector] = useState(filterSector[0]._id);
   const [currentCategory, setCurrentCategory] = useState('Todas');
   const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
+  const [demandStatus, setDemandStatus] = useState('Ativas');
 
   useEffect(() => {
     console.log(filterCategory);
@@ -20,8 +21,10 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   };
 
   const handleChangeCategory = (e) => {
-    console.log('category value', e.target.value);
     setCurrentCategory(e.target.value);
+  };
+  const handleChangeStatus = (e) => {
+    setDemandStatus(e.target.value);
   };
 
   const handleGeneratePdf = async () => {
@@ -58,6 +61,14 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
     setCurrentDemands(allDemands);
   }, [currentCategory]);
 
+  useEffect(() => {
+    const flag = demandStatus === 'Ativas';
+    const demandsFiltered = allDemands.filter((demand) => (
+      demand.open === flag
+    ));
+    setCurrentDemands(demandsFiltered);
+  }, [demandStatus]);
+
   return (
     <div>
       <h2>Selecione os filtros para gerar o relatório</h2>
@@ -65,8 +76,18 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
         display: 'flex',
         marginTop: '15px',
       }}>
+        Status:
+        <select style={{ marginLeft: '5px', width: '30%' }} onChange={handleChangeStatus}>
+          <option value="Ativas" selected>Ativas</option>
+          <option value="Inativas">Inativas</option>
+        </select>
+      </div>
+      <div style={{
+        display: 'flex',
+        marginTop: '15px',
+      }}>
         Setor:
-        <select style={{ marginLeft: '5px', width: '30%' }} id="sectorselect" onChange={handleChangeSector}>
+        <select style={{ marginLeft: '5px', width: '30%' }} value={currentSector} onChange={handleChangeSector}>
           {
             filterSector.map((sector) => (
               <option key={sector.name} value={sector._id}>
