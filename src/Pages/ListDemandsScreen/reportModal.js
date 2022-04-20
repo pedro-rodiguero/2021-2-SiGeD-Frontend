@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { FaTruckLoading } from 'react-icons/fa';
 import { useProfileUser } from '../../Context';
 import { AllDemandsReport } from '../../Utils/reports/printDemandReport';
 import { Button } from './Style';
@@ -8,6 +9,7 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const [currentDemands, setCurrentDemands] = useState(allDemands);
   const [currentSector, setCurrentSector] = useState('Todos');
   const [currentCategory, setCurrentCategory] = useState('Todas');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   useEffect(() => {
     console.log(filterCategory);
@@ -20,6 +22,17 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const handleChangeCategory = (e) => {
     console.log('category value', e.target.value);
     setCurrentCategory(e.target.value);
+  };
+
+  const handleGeneratePdf = async () => {
+    setIsGeneratingPdf(true);
+    try {
+      await AllDemandsReport(currentDemands, user, startModal);
+      setIsGeneratingPdf(false);
+    } catch (error) {
+      console.log('erro');
+      setIsGeneratingPdf(false);
+    }
   };
 
   useEffect(() => {
@@ -70,9 +83,23 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
           }
         </select>
       </div>
-      <Button onClick={() => AllDemandsReport(currentDemands, user, startModal)}>
+      <Button onClick={() => handleGeneratePdf()}>
         Baixar relatório
       </Button>
+      {
+        isGeneratingPdf
+        && (
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: '5px',
+          }}>
+            <FaTruckLoading />
+            Gerando pdf...
+          </div>
+        )
+      }
     </div>
   );
 }
