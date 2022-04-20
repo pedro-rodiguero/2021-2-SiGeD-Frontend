@@ -17,7 +17,7 @@ export async function getSectors(startModal) {
 
 export async function getSectorsAtivos(startModal) {
   try {
-    const response = await APISectors.get('sector');
+    const response = await APISectors.get('/sector_ativos');
     return response;
   } catch (error) {
     if (error.response.status === 500) {
