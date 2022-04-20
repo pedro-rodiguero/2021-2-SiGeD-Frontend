@@ -30,6 +30,21 @@ export async function getCategories(url, startModal) {
   return false;
 }
 
+export async function getCategoriesAtivos(url, startModal) {
+  try {
+    const response = await APIDemands.get(url);
+    return response;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível carregar as categorias ativas, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while getting categories.${error}`);
+  }
+  return false;
+}
+
 export async function createCategory(name, description, color, startModal) {
   try {
     const response = await APIDemands.post('category/create', {
@@ -72,14 +87,14 @@ export async function updateCategory(name, description, color, id, startModal) {
   }
 }
 
-export const deleteCategory = async (id, startModal) => {
+export const toggleCategory = async (id, startModal) => {
   try {
-    await APIDemands.delete(`/category/delete/${id}`);
+    await APIDemands.delete(`/category/toggle/${id}`);
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response.status !== 401) {
-      startModal(`Não foi possivel deletar a categoria.\n${error}`);
+      startModal(`A categoria selecionada está vinculado a uma demanda aberta.\nConclua a demanda antes de desativar a categoria.'\n${error}`);
     }
     console.error(error);
   }

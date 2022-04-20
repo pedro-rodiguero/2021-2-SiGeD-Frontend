@@ -15,6 +15,21 @@ export async function getSectors(startModal) {
   return false;
 }
 
+export async function getSectorsAtivos(startModal) {
+  try {
+    const response = await APISectors.get('sector');
+    return response;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível obter a lista de setores ativos, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while retrieving the sectors list.${error}`);
+  }
+  return false;
+}
+
 export async function getFourSectors(startModal) {
   try {
     const response = await APISectors.get('/sector/newest-four');
@@ -82,14 +97,14 @@ export const updateSectors = async (
   }
 };
 
-export const deleteSector = async (id, startModal) => {
+export const toggleSector = async (id, startModal) => {
   try {
-    await APISectors.delete(`/sector/delete/${id}`);
+    await APISectors.delete(`/sector/toggle/${id}`);
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response.status !== 401) {
-      startModal(`Não foi possivel deletar o setor.\n${error}`);
+      startModal(`O setor selecionado está vinculado a uma demanda aberta.\nConclua a demanda antes de desativar o setor.\n${error}`);
     }
     console.error(error);
   }

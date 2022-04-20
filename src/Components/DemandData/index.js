@@ -18,6 +18,20 @@ const DemandData = ({ demand, sectors }) => {
     <CategoryName color={category.color}>{category.name}</CategoryName>
   )));
 
+  /*  useEffect(() => {
+    if (query) {
+      setText('Desativar');
+      setModalText('Você tem certeza que quer desativar este cliente?');
+      setTextColor('red');
+      setIcon(<FaRegTrashAlt color="red" />);
+    } else {
+      setText('Ativar');
+      setModalText('Você tem certeza que quer ativar este cliente?');
+      setTextColor('green');
+      setIcon(<BsPersonCheckFill color="green" />);
+    }
+  }, [query]);  */
+
   const styles = {
     demandCard: {
       textDecorationLine: 'none',

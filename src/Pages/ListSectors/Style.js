@@ -14,6 +14,38 @@ export const TableHeader = styled.div`
   }
 `;
 
+export const Dropdown = styled.div`
+width: 200px;
+height: 50px;
+border-radius: 15px;
+
+@media(max-width: 750px){
+  width: 60%;
+  height: 50px;
+  float: none;
+  justify-self: center;
+  margin-left: 5%;
+}
+`;
+
+export const styles = {
+  headerStyle: {
+    fontSize: '1.5rem',
+    font: 'Montserrat',
+  },
+  dropdownComponentStyle: {
+    display: 'flex',
+    color: `${colors.text}`,
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    boxSizing: 'border-box',
+    borderRadius: '8px',
+    border: '1px solid black',
+    justifyContent: 'center',
+  },
+};
+
 export const P = styled.div`
   color: ${colors.secondary};
   font-size: 2vh;

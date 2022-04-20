@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import ModalComp from '../../Components/ModalComp';
 import {
-  TableHeader, TableTitle, P, Bar,
+  TableHeader, TableTitle, P, Bar, Dropdown, styles,
 } from './Style';
 import GenericListScreen from '../../Components/GenericListScreen';
+import DropdownComponent from '../../Components/DropdownComponent';
 import {
-  getCategories, createCategory, updateCategory, deleteCategory, getDemands,
+  getCategories, createCategory, updateCategory, toggleCategory, getDemands,
 } from '../../Services/Axios/demandsServices';
 import DataList from '../../Components/DataList';
 import colors from '../../Constants/colors';
@@ -19,6 +20,8 @@ const ListCategories = () => {
   const [word, setWord] = useState();
   const [statusModal, setStatusModal] = useState(false);
   const [demands, setDemands] = useState([]);
+  const [active, setActive] = useState('Ativos');
+  const [setQuery] = useState(true);
 
   const getDemandFromApi = async () => {
     await getDemands('demand', startModal)
@@ -47,6 +50,14 @@ const ListCategories = () => {
   }, [word]);
 
   useEffect(() => {
+    if (active === 'Inativos') {
+      setQuery(false);
+    } else {
+      setQuery(true);
+    }
+  }, [active]);
+
+  useEffect(() => {
     setFilterCategories(categories);
   }, [categories]);
 
@@ -63,7 +74,7 @@ const ListCategories = () => {
         getContent={listCategories}
         backgroundColor={category.color}
         color={colors.secondary}
-        axiosDelete={deleteCategory}
+        axiosDelete={toggleCategory}
         updateContent={updateCategory}
         type="Categoria"
         demands={demands}
@@ -100,6 +111,16 @@ const ListCategories = () => {
         <TableTitle width={2} />
       </TableHeader>
       { statusModal ? <ModalComp show={statusModal} type="Categoria" operation="Nova " idName="" idDescription="" idColor="#000000" getContent={listCategories} handleClose={toggleModal} createContent={createCategory} /> : null}
+      <Dropdown>
+        <DropdownComponent
+          OnChangeFunction={(Option) => setActive(Option.target.value)}
+          style={styles.dropdownComponentStyle}
+          optionStyle={{
+            backgroundColor: `${colors.secondary}`,
+          }}
+          optionList={['Ativos', 'Inativos']}
+        />
+      </Dropdown>
     </GenericListScreen>
   );
 };
