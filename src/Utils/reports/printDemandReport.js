@@ -159,14 +159,109 @@ const DemandReport = async (id, user, startModal) => {
   return (null);
 };
 
-const AllDemandsReport = async (demandsList, users, startModal) => {
+const DemandBySector = async (payload) => {
+  const {
+    sectorGraphData, active, clientID,
+    categoryActive, initialDate, finalDate,
+    startModal,
+  } = payload;
+
+  let clientData = {
+    name: 'Todos',
+  };
+  if (clientID) {
+    clientData = await getClientData(clientID, startModal)
+      .then((response) => response.data);
+  }
+
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  console.log('users', users);
-  console.log('demandsList', demandsList);
-  console.log('startmodal', startModal);
   const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
-  console.log('date', date);
-  const arrayDeTest = await Promise.all(demandsList.map(async (demand) => {
+
+  const document = {
+    content: [
+      { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
+      { text: '\nRelatório de Demandas por Setor\n\n', style: 'subTitle' },
+      { text: `Data de geração: ${date}`, style: 'dateStyle' },
+      { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
+      { text: `Status: ${active}`, style: 'filterStyle' },
+      { text: `Cliente: ${clientData.name}`, style: 'filterStyle' },
+      { text: `Categoria: ${categoryActive}`, style: 'filterStyle' },
+      { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: '\n\n' },
+      {
+        table: {
+          widths: ['*', '*'],
+          body: [
+            [{ text: [{ text: 'Setor', style: 'demandTitle' }], colSpan: 1 }, { text: [{ text: 'Total de demandas', style: 'demandTitle' }], colSpan: 1 }],
+            ...sectorGraphData.map((sector) => (
+              [{ text: [{ text: `${sector?.name}`, style: 'title' }] }, { text: [{ text: `${sector?.total}`, style: 'title' }] }]
+            )),
+          ],
+        },
+      },
+    ],
+    styles: {
+      header: {
+        fontSize: 30,
+        bold: true,
+        alignment: 'center',
+      },
+      subTitle: {
+        fontSize: 22,
+        bold: true,
+        alignment: 'center',
+        decoration: 'underline',
+      },
+      filterTitle: {
+        fontSize: 16,
+      },
+      filterStyle: {
+        alignment: 'left',
+      },
+      dateStyle: {
+        alignment: 'right',
+      },
+      leftAlign: {
+        alignment: 'left',
+      },
+      title: {
+        bold: true,
+      },
+      demandTitle: {
+        fontSize: 16,
+        marginTop: 30,
+        bold: true,
+      },
+      important: {
+        color: '#FF0000',
+      },
+    },
+    defaultStyle: {
+      alignment: 'justify',
+    },
+
+  };
+  const docDefinitions = {
+    pageSize: 'A4',
+    pageMargins: 40,
+    content: [document.content],
+    styles: document.styles,
+    defaultStyle: document.defaultStyle,
+  };
+
+  pdfMake.createPdf(docDefinitions).print();
+
+  return (null);
+};
+
+const AllDemandsReport = async (demandsList, users, startModal, filters) => {
+  const {
+    initialDate, finalDate, demandStatus, currentCategory,
+  } = filters;
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
+  const demandsFilterList = await Promise.all(demandsList.map(async (demand) => {
     const demandData = await getDemandData(demand._id, startModal);
     const clientData = await getClientData(demandData.clientID, startModal)
       .then((response) => response.data);
@@ -212,20 +307,22 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
     });
 
     return [
-      await demandData, await clientData, await clientsFeatures,
-      await sectors, await demandData, await updates,
-      await userData,
+      demandData, clientData, clientsFeatures,
+      updates, userData,
     ];
   }));
-
-  console.log(arrayDeTest);
 
   const document = {
     content: [
       { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
       { text: '\nRelatório de Demandas\n\n', style: 'subTitle' },
       { columns: [{ text: [{ text: 'Usuário:  ', style: 'title' }, { text: `${users.name}`, style: 'leftAlign' }] }, { text: `Data: ${date}`, style: 'dateStyle' }] },
-      arrayDeTest.map((el) => (
+      { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
+      { text: `Status: ${demandStatus}`, style: 'filterStyle' },
+      { text: `Categoria: ${currentCategory}`, style: 'filterStyle' },
+      { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      demandsFilterList.map((el) => (
         [
           { text: '\n\n' },
           { text: [{ text: `Demanda: ${el[0].name}`, style: 'demandTitle' }] },
@@ -234,13 +331,13 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
               widths: ['*', '*'],
               body: [
                 [{ text: [{ text: 'Status:  ', style: 'title' }, `${el[0].open ? 'Aberta' : 'Concluída'}`], colSpan: 2 }, {}],
-                [{ text: [{ text: 'Usuário:  ', style: 'title' }, ` ${el[6]?.name}`], colSpan: 2 }, {}],
+                [{ text: [{ text: 'Usuário:  ', style: 'title' }, ` ${el[4]?.name}`], colSpan: 2 }, {}],
                 [{ text: [{ text: 'Categorias:  ', style: 'title' }, `${splitList(el[0].categoryID)}`], colSpan: 2 }, {}],
                 [{ text: [{ text: 'Processos:  ', style: 'title' }, `${el[0].process}`], colSpan: 2 }, {}],
                 [{ colSpan: 1, text: [{ text: 'Cliente: ', style: 'title' }, `${el[1].name}`] },
                   { colSpan: 1, text: [{ text: 'Característica: ', style: 'title' }, `${el[2].length === 0 ? '~Não possui' : splitList(el[2])}`] }],
                 [{ text: 'Atualizações', style: 'subTitleLeft', colSpan: 2 }, {}],
-                ...updatesList(el[5]),
+                ...updatesList(el[3]),
               ],
             },
           },
@@ -258,6 +355,12 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
         bold: true,
         alignment: 'center',
         decoration: 'underline',
+      },
+      filterTitle: {
+        fontSize: 16,
+      },
+      filterStyle: {
+        alignment: 'left',
       },
       subTitleLeft: {
         fontSize: 14,
@@ -310,4 +413,4 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
   return (null);
 };
 
-export { DemandReport, AllDemandsReport };
+export { DemandReport, AllDemandsReport, DemandBySector };

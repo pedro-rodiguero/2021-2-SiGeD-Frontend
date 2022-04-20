@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FaSistrix } from 'react-icons/fa';
+import Modal from 'react-modal';
+import ReportModal from './reportModal';
 import {
   Main, ScreenContainer, ScreenTitle, ScreenSearch, ScreenContentBox,
   ScreenHeader, ScreenList, Dropdown, DropdownField, styles, Button,
@@ -12,7 +14,17 @@ import { getSectors } from '../../Services/Axios/sectorServices';
 import DropdownComponent from '../../Components/DropdownComponent';
 import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
-import { AllDemandsReport } from '../../Utils/reports/printDemandReport';
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
 const ListDemandsScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -29,6 +41,15 @@ const ListDemandsScreen = () => {
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [active, setActive] = useState('Ativos');
   const [query, setQuery] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const getDemandsFromApi = async () => {
     // Por default, traz como resultado somente as demandas ativas,
@@ -190,9 +211,14 @@ const ListDemandsScreen = () => {
                 setWord={(value) => setWord(value)}
                 style={{ width: '50%' }}
               />
-              <Button onClick={() => AllDemandsReport(filterDemands, user, startModal)}>
-                Baixar relatório
-              </Button>
+              {
+                demands.length > 0
+                && (
+                  <Button onClick={openModal}>
+                    Gerar relatório
+                  </Button>
+                )
+              }
             </ScreenSearch>
             <Dropdown>
               <DropdownField>
@@ -244,6 +270,18 @@ const ListDemandsScreen = () => {
             </Dropdown>
           </ScreenHeader>
           <ScreenContentBox>
+            <Modal
+              isOpen={modalOpen}
+              onRequestClose={closeModal}
+              contentLabel="Filtro de relatório"
+              style={customStyles}
+            >
+              <ReportModal
+                allDemands={demands}
+                filterSector={filterSector.slice(1)}
+                filterCategory={filterCategory}
+              />
+            </Modal>
             <ScreenList>
               {listDemands()}
             </ScreenList>
