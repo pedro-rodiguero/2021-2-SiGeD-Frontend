@@ -40,7 +40,9 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const handleGeneratePdf = async () => {
     setIsGeneratingPdf(true);
     try {
-      await AllDemandsReport(currentDemands, user, startModal);
+      await AllDemandsReport(currentDemands, user, startModal, {
+        initialDate, finalDate, demandStatus, currentCategory,
+      });
       setIsGeneratingPdf(false);
     } catch (error) {
       toast.error('Houve um problema ao gerar o pdf 😬');

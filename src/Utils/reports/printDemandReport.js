@@ -255,10 +255,13 @@ const DemandBySector = async (payload) => {
   return (null);
 };
 
-const AllDemandsReport = async (demandsList, users, startModal) => {
+const AllDemandsReport = async (demandsList, users, startModal, filters) => {
+  const {
+    initialDate, finalDate, demandStatus, currentCategory,
+  } = filters;
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
   const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
-  const arrayDeTest = await Promise.all(demandsList.map(async (demand) => {
+  const demandsFilterList = await Promise.all(demandsList.map(async (demand) => {
     const demandData = await getDemandData(demand._id, startModal);
     const clientData = await getClientData(demandData.clientID, startModal)
       .then((response) => response.data);
@@ -305,8 +308,7 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
 
     return [
       demandData, clientData, clientsFeatures,
-      sectors, demandData, updates,
-      userData,
+      updates, userData,
     ];
   }));
 
@@ -315,7 +317,12 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
       { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
       { text: '\nRelatório de Demandas\n\n', style: 'subTitle' },
       { columns: [{ text: [{ text: 'Usuário:  ', style: 'title' }, { text: `${users.name}`, style: 'leftAlign' }] }, { text: `Data: ${date}`, style: 'dateStyle' }] },
-      arrayDeTest.map((el) => (
+      { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
+      { text: `Status: ${demandStatus}`, style: 'filterStyle' },
+      { text: `Categoria: ${currentCategory}`, style: 'filterStyle' },
+      { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      demandsFilterList.map((el) => (
         [
           { text: '\n\n' },
           { text: [{ text: `Demanda: ${el[0].name}`, style: 'demandTitle' }] },
@@ -324,13 +331,13 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
               widths: ['*', '*'],
               body: [
                 [{ text: [{ text: 'Status:  ', style: 'title' }, `${el[0].open ? 'Aberta' : 'Concluída'}`], colSpan: 2 }, {}],
-                [{ text: [{ text: 'Usuário:  ', style: 'title' }, ` ${el[6]?.name}`], colSpan: 2 }, {}],
+                [{ text: [{ text: 'Usuário:  ', style: 'title' }, ` ${el[4]?.name}`], colSpan: 2 }, {}],
                 [{ text: [{ text: 'Categorias:  ', style: 'title' }, `${splitList(el[0].categoryID)}`], colSpan: 2 }, {}],
                 [{ text: [{ text: 'Processos:  ', style: 'title' }, `${el[0].process}`], colSpan: 2 }, {}],
                 [{ colSpan: 1, text: [{ text: 'Cliente: ', style: 'title' }, `${el[1].name}`] },
                   { colSpan: 1, text: [{ text: 'Característica: ', style: 'title' }, `${el[2].length === 0 ? '~Não possui' : splitList(el[2])}`] }],
                 [{ text: 'Atualizações', style: 'subTitleLeft', colSpan: 2 }, {}],
-                ...updatesList(el[5]),
+                ...updatesList(el[3]),
               ],
             },
           },
@@ -348,6 +355,12 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
         bold: true,
         alignment: 'center',
         decoration: 'underline',
+      },
+      filterTitle: {
+        fontSize: 16,
+      },
+      filterStyle: {
+        alignment: 'left',
       },
       subTitleLeft: {
         fontSize: 14,
