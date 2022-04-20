@@ -60,9 +60,13 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
 
   return (
     <div>
-      <h1>Esse é o modal</h1>
-      <div>
-        <select onChange={handleChangeSector}>
+      <h2>Selecione os filtros para gerar o relatório</h2>
+      <div style={{
+        display: 'flex',
+        marginTop: '15px',
+      }}>
+        Setor:
+        <select style={{ marginLeft: '5px', width: '30%' }} id="sectorselect" onChange={handleChangeSector}>
           {
             filterSector.map((sector) => (
               <option key={sector.name} value={sector._id}>
@@ -72,8 +76,12 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
           }
         </select>
       </div>
-      <div>
-        <select onChange={handleChangeCategory}>
+      <div style={{
+        display: 'flex',
+        marginTop: '15px',
+      }}>
+        Categoria:
+        <select style={{ marginLeft: '5px', width: '30%' }} onChange={handleChangeCategory}>
           {
             filterCategory.map((category) => (
               <option key={category.name || category} value={category.name || category}>
@@ -83,9 +91,11 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
           }
         </select>
       </div>
-      <Button onClick={() => handleGeneratePdf()}>
-        Baixar relatório
-      </Button>
+      <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0px' }}>
+        <Button onClick={() => handleGeneratePdf()}>
+          Baixar relatório
+        </Button>
+      </div>
       {
         isGeneratingPdf
         && (
