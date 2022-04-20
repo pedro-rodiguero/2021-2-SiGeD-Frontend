@@ -17,11 +17,6 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const [initialDate, setInitialDate] = useState(moment().subtract(30, 'days').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
 
-  useEffect(() => {
-    console.log(filterCategory);
-    console.log(moment('2022-03-14T20:27:02.000Z').format('YYYY-MM-DD') >= moment('2022-03-14T20:29:02.000Z').format('YYYY-MM-DD'));
-  }, []);
-
   const handleChangeSector = (e) => {
     setCurrentSector(String(e.target.value));
   };
@@ -54,43 +49,16 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   };
 
   useEffect(() => {
-    console.log('current sector', currentSector);
-    if (currentSector !== 'Todos') {
-      const demandsFiltered = allDemands.filter((demand) => (
-        demand.sectorHistory[demand.sectorHistory.length - 1].sectorID === currentSector
-      ));
-      setCurrentDemands(demandsFiltered);
-      return;
-    }
-    setCurrentDemands(allDemands);
-  }, [currentSector]);
-
-  useEffect(() => {
-    if (currentCategory !== 'Todas') {
-      const demandsFiltered = allDemands.filter((category) => (
-        category.categoryID.some((el) => el.name === currentCategory)
-      ));
-      setCurrentDemands(demandsFiltered);
-      return;
-    }
-    setCurrentDemands(allDemands);
-  }, [currentCategory]);
-
-  useEffect(() => {
     const flag = demandStatus === 'Ativas';
     const demandsFiltered = allDemands.filter((demand) => (
-      demand.open === flag
+      (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID === currentSector)
+      && (moment(demand.createdAt).format('YYYY-MM-DD') >= moment(initialDate).format('YYYY-MM-DD')
+      && moment(demand.createdAt).format('YYYY-MM-DD') <= moment(finalDate).format('YYYY-MM-DD'))
+      && (demand.open === flag)
+      && (demand.categoryID.some((el) => currentCategory === 'Todas' || el.name === currentCategory))
     ));
     setCurrentDemands(demandsFiltered);
-  }, [demandStatus]);
-
-  useEffect(() => {
-    const demandsFiltered = allDemands.filter((demand) => (
-      moment(demand.createdAt).format('YYYY-MM-DD') >= moment(initialDate).format('YYYY-MM-DD')
-      && moment(demand.createdAt).format('YYYY-MM-DD') <= moment(finalDate).format('YYYY-MM-DD')
-    ));
-    setCurrentDemands(demandsFiltered);
-  }, [initialDate, finalDate]);
+  }, [initialDate, finalDate, demandStatus, currentCategory, currentSector]);
 
   return (
     <div>
