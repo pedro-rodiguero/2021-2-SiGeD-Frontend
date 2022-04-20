@@ -7,7 +7,7 @@ import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles,
+  SearchDiv, TextLabel, styles, Button,
 } from '../Style';
 import colors from '../../../Constants/colors';
 import DropdownComponent from '../../../Components/DropdownComponent';
@@ -17,6 +17,7 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
+import { DemandBySector } from '../../../Utils/reports/printDemandReport';
 
 const StatisticBySectors = () => {
   const { token, user, startModal } = useProfileUser();
@@ -188,6 +189,17 @@ const StatisticBySectors = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
+            <Button onClick={() => DemandBySector({
+              sectorGraphData,
+              active,
+              clientID,
+              categoryActive,
+              initialDate,
+              finalDate,
+              startModal,
+            })}>
+              Baixar relatório
+            </Button>
           </TopDiv>
           <MiddleDiv>
             <Card>
