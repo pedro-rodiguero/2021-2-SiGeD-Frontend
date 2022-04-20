@@ -159,13 +159,105 @@ const DemandReport = async (id, user, startModal) => {
   return (null);
 };
 
+const DemandBySector = async (payload) => {
+  const {
+    sectorGraphData, active, clientID,
+    categoryActive, initialDate, finalDate,
+    startModal,
+  } = payload;
+
+  let clientData = {
+    name: 'Todos',
+  };
+  if (clientID) {
+    clientData = await getClientData(clientID, startModal)
+      .then((response) => response.data);
+  }
+
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
+
+  const document = {
+    content: [
+      { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
+      { text: '\nRelatório de Demandas por Setor\n\n', style: 'subTitle' },
+      { text: `Data de geração: ${date}`, style: 'dateStyle' },
+      { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
+      { text: `Status: ${active}`, style: 'filterStyle' },
+      { text: `Cliente: ${clientData.name}`, style: 'filterStyle' },
+      { text: `Categoria: ${categoryActive}`, style: 'filterStyle' },
+      { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
+      { text: '\n\n' },
+      {
+        table: {
+          widths: ['*', '*'],
+          body: [
+            [{ text: [{ text: 'Setor', style: 'demandTitle' }], colSpan: 1 }, { text: [{ text: 'Total de demandas', style: 'demandTitle' }], colSpan: 1 }],
+            ...sectorGraphData.map((sector) => (
+              [{ text: [{ text: `${sector?.name}`, style: 'title' }] }, { text: [{ text: `${sector?.total}`, style: 'title' }] }]
+            )),
+          ],
+        },
+      },
+    ],
+    styles: {
+      header: {
+        fontSize: 30,
+        bold: true,
+        alignment: 'center',
+      },
+      subTitle: {
+        fontSize: 22,
+        bold: true,
+        alignment: 'center',
+        decoration: 'underline',
+      },
+      filterTitle: {
+        fontSize: 16,
+      },
+      filterStyle: {
+        alignment: 'left',
+      },
+      dateStyle: {
+        alignment: 'right',
+      },
+      leftAlign: {
+        alignment: 'left',
+      },
+      title: {
+        bold: true,
+      },
+      demandTitle: {
+        fontSize: 16,
+        marginTop: 30,
+        bold: true,
+      },
+      important: {
+        color: '#FF0000',
+      },
+    },
+    defaultStyle: {
+      alignment: 'justify',
+    },
+
+  };
+  const docDefinitions = {
+    pageSize: 'A4',
+    pageMargins: 40,
+    content: [document.content],
+    styles: document.styles,
+    defaultStyle: document.defaultStyle,
+  };
+
+  pdfMake.createPdf(docDefinitions).print();
+
+  return (null);
+};
+
 const AllDemandsReport = async (demandsList, users, startModal) => {
   pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  console.log('users', users);
-  console.log('demandsList', demandsList);
-  console.log('startmodal', startModal);
   const date = moment.parseZone(new Date()).local(true).format('DD/MM/YYYY');
-  console.log('date', date);
   const arrayDeTest = await Promise.all(demandsList.map(async (demand) => {
     const demandData = await getDemandData(demand._id, startModal);
     const clientData = await getClientData(demandData.clientID, startModal)
@@ -212,13 +304,11 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
     });
 
     return [
-      await demandData, await clientData, await clientsFeatures,
-      await sectors, await demandData, await updates,
-      await userData,
+      demandData, clientData, clientsFeatures,
+      sectors, demandData, updates,
+      userData,
     ];
   }));
-
-  console.log(arrayDeTest);
 
   const document = {
     content: [
@@ -310,4 +400,4 @@ const AllDemandsReport = async (demandsList, users, startModal) => {
   return (null);
 };
 
-export { DemandReport, AllDemandsReport };
+export { DemandReport, AllDemandsReport, DemandBySector };
