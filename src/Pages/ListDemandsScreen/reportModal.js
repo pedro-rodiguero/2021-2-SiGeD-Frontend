@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { FaTruckLoading } from 'react-icons/fa';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useProfileUser } from '../../Context';
 import { AllDemandsReport } from '../../Utils/reports/printDemandReport';
 import { Button } from './Style';
@@ -46,7 +48,7 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
       await AllDemandsReport(currentDemands, user, startModal);
       setIsGeneratingPdf(false);
     } catch (error) {
-      console.log('erro');
+      toast.error('Houve um problema ao gerar o pdf 😬');
       setIsGeneratingPdf(false);
     }
   };
@@ -178,6 +180,7 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
           </div>
         )
       }
+      <ToastContainer />
     </div>
   );
 }
