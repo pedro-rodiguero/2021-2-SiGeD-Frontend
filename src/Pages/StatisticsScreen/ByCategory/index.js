@@ -28,6 +28,8 @@ const StatisticScreen = () => {
   const [sectorID, setSectorID] = useState('');
   const [categoryStatistics, setCategoryStatistics] = useState([]);
   const [categories, setCategories] = useState(['Todas']);
+  const [categoryID, setCategoryID] = useState('');
+  const [categoryActive, setCategoryActive] = useState('Todas');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
   const [clientID, setClientID] = useState(null);
@@ -40,6 +42,15 @@ const StatisticScreen = () => {
         setSectors([...sectors, ...response.data]);
       });
   };
+
+  useEffect(() => {
+    if (categoryActive !== 'Todas') {
+      const results = categories.find((element) => element.name === categoryActive);
+      setCategoryID(results._id);
+    } else {
+      setCategoryID(null);
+    }
+  }, [categoryActive]);
 
   const getCategoriesFromApi = async () => {
     try {
@@ -72,7 +83,7 @@ const StatisticScreen = () => {
 
   const getCategoriesStatistics = async (idSector) => {
     await getDemandsStatistics(
-      `statistic/category?isDemandActive=${query}&idSector=${idSector}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
+      `statistic/category?isDemandActive=${query}&idSector=${idSector}&idCategory=${categoryID}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -90,7 +101,7 @@ const StatisticScreen = () => {
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
-  }, [query, sectorID, finalDate, initialDate, clientID]);
+  }, [query, sectorID, categoryID, finalDate, initialDate, clientID]);
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
@@ -133,6 +144,21 @@ const StatisticScreen = () => {
                       backgroundColor: `${colors.secondary}`,
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
+                  />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Categoria:
+                  </TextLabel>
+                  <DropdownComponent
+                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
+                    style={styles.dropdownComponentStyle}
+                    optionStyle={{
+                      backgroundColor: `${colors.secondary}`,
+                    }}
+                    optionList={categories?.map(
+                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
+                    )}
                   />
                 </DropdownDiv>
                 <DropdownDiv>

@@ -30,6 +30,7 @@ const StatisticClientScreen = () => {
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
+  const [clientID, setClientID] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
@@ -94,7 +95,7 @@ const StatisticClientScreen = () => {
 
   const getClientsStatistics = async (idCategory) => {
     await getClientByDemands(
-      `statistic/client?isDemandActive=${query}&idSector=${sectorID}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/client?isDemandActive=${query}&idSector=${sectorID}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -127,7 +128,7 @@ const StatisticClientScreen = () => {
 
   useEffect(() => {
     getClientsStatistics(categoryID);
-  }, [query, sectorID, finalDate, initialDate, categoryID]);
+  }, [query, sectorID, clientID, finalDate, initialDate, categoryID]);
 
   useEffect(() => {
     if (clientList.length > 0) {
@@ -162,6 +163,23 @@ const StatisticClientScreen = () => {
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
                   />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Clientes:
+                  </TextLabel>
+                  <select
+                    onChange={(e) => setClientID(e.target.value)}
+                    value={clientID}
+                    style={styles.dropdownComponentStyle}
+                  >
+                    <option selected value="null">Todos</option>
+                    {
+                      clientList?.map((el) => (
+                        <option key={el._id} value={el._id}>{el.name}</option>
+                      ))
+                    }
+                  </select>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
