@@ -159,12 +159,18 @@ const DemandReport = async (id, user, startModal) => {
   return (null);
 };
 
-const DemandBySector = async (payload) => {
+const DemandStatistics = async (payload) => {
   const {
-    sectorGraphData, active, clientID,
+    statisticsData, active, clientID,
     categoryActive, initialDate, finalDate,
-    startModal,
+    startModal, reportType,
   } = payload;
+
+  const reportTranslate = {
+    CLIENTES: 'Cliente',
+    SECTORS: 'Setor',
+    CATEGORY: 'Categoria',
+  };
 
   let clientData = {
     name: 'Todos',
@@ -180,7 +186,7 @@ const DemandBySector = async (payload) => {
   const document = {
     content: [
       { text: 'Divisão de Proteção à Saúde do Servidor - DPSS', style: 'header' },
-      { text: '\nRelatório de Demandas por Setor\n\n', style: 'subTitle' },
+      { text: `\nRelatório de Demandas por ${reportTranslate[reportType]}\n\n`, style: 'subTitle' },
       { text: `Data de geração: ${date}`, style: 'dateStyle' },
       { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
       { text: `Status: ${active}`, style: 'filterStyle' },
@@ -193,9 +199,9 @@ const DemandBySector = async (payload) => {
         table: {
           widths: ['*', '*'],
           body: [
-            [{ text: [{ text: 'Setor', style: 'demandTitle' }], colSpan: 1 }, { text: [{ text: 'Total de demandas', style: 'demandTitle' }], colSpan: 1 }],
-            ...sectorGraphData.map((sector) => (
-              [{ text: [{ text: `${sector?.name}`, style: 'title' }] }, { text: [{ text: `${sector?.total}`, style: 'title' }] }]
+            [{ text: [{ text: reportTranslate[reportType], style: 'demandTitle' }], colSpan: 1 }, { text: [{ text: 'Total de demandas', style: 'demandTitle' }], colSpan: 1 }],
+            ...statisticsData.map((data) => (
+              [{ text: [{ text: `${data?.name}`, style: 'title' }] }, { text: [{ text: `${data?.total}`, style: 'title' }] }]
             )),
           ],
         },
@@ -413,4 +419,4 @@ const AllDemandsReport = async (demandsList, users, startModal, filters) => {
   return (null);
 };
 
-export { DemandReport, AllDemandsReport, DemandBySector };
+export { DemandReport, AllDemandsReport, DemandStatistics };
