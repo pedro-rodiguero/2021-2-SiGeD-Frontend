@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BsDownload } from 'react-icons/bs';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -106,6 +107,10 @@ const StatisticScreen = () => {
       });
   };
 
+  useEffect(() => {
+    console.log(categoryStatistics);
+  }, [categoryStatistics]);
+
   useEffect(() => getClientsFromApi(), []);
 
   return (
@@ -179,7 +184,10 @@ const StatisticScreen = () => {
                   margin: '10px 0',
                 }}>
                   <Button onClick={() => DemandStatistics({
-                    statisticsData: categoryStatistics,
+                    statisticsData: categoryStatistics.map((category) => ({
+                      name: category.categories[0].name,
+                      total: category.demandas,
+                    })),
                     active,
                     initialDate,
                     clientID,

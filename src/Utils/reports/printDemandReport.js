@@ -191,7 +191,7 @@ const DemandStatistics = async (payload) => {
       { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
       { text: `Status: ${active}`, style: 'filterStyle' },
       { text: `Cliente: ${clientData.name}`, style: 'filterStyle' },
-      { text: `Categoria: ${categoryActive}`, style: 'filterStyle' },
+      { text: `Categoria: ${categoryActive || ''}`, style: 'filterStyle' },
       { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
       { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
       { text: '\n\n' },
