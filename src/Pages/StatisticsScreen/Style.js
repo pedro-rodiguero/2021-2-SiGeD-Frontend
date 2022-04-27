@@ -84,7 +84,7 @@ export const CardTitle = styled.h2`
 `;
 
 export const TopDiv = styled.div`
-  height: 25%;
+  min-height: 30%;
   width: 90%;
   display: flex;
   flex-direction: column;
@@ -220,20 +220,23 @@ export const styles = {
 
 export const Button = styled.button`
   display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   border-radius: 4px;
   background-color: #1F3541;
   color: white;
-  font-size: 1.5vh;
+  font-size: 1.125rem;
   padding: 5px;
-  width: 20%;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
   transition: filter 0.2s;
+  height: 50px;
 
   &:hover {
     filter: brightness(80%);
+    cursor: pointer;
+  }
+  svg {
+    margin-left: 10px;
   }
 
   @media(max-width: 750px){
