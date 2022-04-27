@@ -81,14 +81,16 @@ const ClientUpdateScreen = () => {
   }, [clientFeaturesID]);
 
   const submit = async () => {
+    const phoneNoMask = updateClientInputPhone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
+    const secondaryPhoneNoMask = updateClientInputSecondaryPhone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
     const validMessage = validateFields(updateClientInputName,
       updateClientInputEmail, updateClientInputCpf,
-      updateClientInputPhone, updateClientInputSecondaryPhone);
+      phoneNoMask, secondaryPhoneNoMask);
     if (!validMessage.length) {
-      const data = await updateClient(
+      await updateClient(
         updateClientInputName, updateClientInputEmail,
-        updateClientInputCpf, updateClientInputPhone,
-        updateClientInputSecondaryPhone, updateClientInputAddress,
+        updateClientInputCpf, phoneNoMask,
+        secondaryPhoneNoMask, updateClientInputAddress,
         updateClientInputGender, updateClientInputBirthdate,
         updateClientInputAdministrativeRestrictions, updateClientInputHealthRestrictions,
         officeOption, updateLocation, selectedFeaturesID, id, startModal, user._id,

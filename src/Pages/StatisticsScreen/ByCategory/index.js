@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BsDownload } from 'react-icons/bs';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -7,7 +8,7 @@ import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles,
+  SearchDiv, TextLabel, styles, Button,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -17,6 +18,7 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
+import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
 
 const StatisticScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -116,6 +118,10 @@ const StatisticScreen = () => {
       });
   };
 
+  useEffect(() => {
+    console.log(categoryStatistics);
+  }, [categoryStatistics]);
+
   useEffect(() => getClientsFromApi(), []);
 
   return (
@@ -194,6 +200,35 @@ const StatisticScreen = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
+            {
+              categoryStatistics.length > 0
+              && (
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                  margin: '10px 0',
+                }}>
+                  <Button onClick={() => DemandStatistics({
+                    statisticsData: categoryStatistics.map((category) => ({
+                      name: category.categories[0].name,
+                      total: category.demandas,
+                    })),
+                    active,
+                    initialDate,
+                    clientID,
+                    finalDate,
+                    startModal,
+                    sectorActive,
+                    categoryActive,
+                    reportType: 'CATEGORY',
+                  })}>
+                    Baixar relatório
+                    <BsDownload />
+                  </Button>
+                </div>
+              )
+            }
           </TopDiv>
           <MiddleDiv>
             <Card>
