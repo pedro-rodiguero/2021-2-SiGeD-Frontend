@@ -3,11 +3,12 @@ import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
+import { BsDownload } from 'react-icons/bs';
 import moment from 'moment';
 import { getClientByDemands } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles,
+  SearchDiv, TextLabel, styles, Button,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -17,6 +18,7 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
+import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
 
 const StatisticClientScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -133,6 +135,10 @@ const StatisticClientScreen = () => {
     }
   }, [clientList]);
 
+  useEffect(() => {
+    console.log(clientGraphData);
+  }, [clientGraphData]);
+
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#D088FE', '#D0C49F', '#3FBB28', '#3F8042',
     '#EE88FE', '#EEC49F', '#11BB28', '#118042', '#D0FFFE', '#E08F9F', '#FF2928', '#6FED42'];
 
@@ -195,6 +201,30 @@ const StatisticClientScreen = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
+            {
+              clientGraphData.length > 0
+              && (
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                  margin: '10px 0',
+                }}>
+                  <Button onClick={() => DemandStatistics({
+                    statisticsData: clientGraphData,
+                    active,
+                    categoryActive,
+                    initialDate,
+                    finalDate,
+                    startModal,
+                    reportType: 'CLIENTES',
+                  })}>
+                    Baixar relatório
+                    <BsDownload />
+                  </Button>
+                </div>
+              )
+            }
           </TopDiv>
           <MiddleDiv>
             <Card>
