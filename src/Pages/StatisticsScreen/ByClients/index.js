@@ -3,11 +3,12 @@ import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
+import { BsDownload } from 'react-icons/bs';
 import moment from 'moment';
 import { getClientByDemands } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles,
+  SearchDiv, TextLabel, styles, Button,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -17,6 +18,7 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
+import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
 
 const StatisticClientScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -28,6 +30,7 @@ const StatisticClientScreen = () => {
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
+  const [clientID, setClientID] = useState(null);
   const [clientList, setClientList] = useState([]);
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
@@ -92,7 +95,7 @@ const StatisticClientScreen = () => {
 
   const getClientsStatistics = async (idCategory) => {
     await getClientByDemands(
-      `statistic/client?isDemandActive=${query}&idSector=${sectorID}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}`,
+      `statistic/client?isDemandActive=${query}&idSector=${sectorID}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -125,13 +128,17 @@ const StatisticClientScreen = () => {
 
   useEffect(() => {
     getClientsStatistics(categoryID);
-  }, [query, sectorID, finalDate, initialDate, categoryID]);
+  }, [query, sectorID, clientID, finalDate, initialDate, categoryID]);
 
   useEffect(() => {
     if (clientList.length > 0) {
       getClientsStatistics(null);
     }
   }, [clientList]);
+
+  useEffect(() => {
+    console.log(clientGraphData);
+  }, [clientGraphData]);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#D088FE', '#D0C49F', '#3FBB28', '#3F8042',
     '#EE88FE', '#EEC49F', '#11BB28', '#118042', '#D0FFFE', '#E08F9F', '#FF2928', '#6FED42'];
@@ -156,6 +163,23 @@ const StatisticClientScreen = () => {
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
                   />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Clientes:
+                  </TextLabel>
+                  <select
+                    onChange={(e) => setClientID(e.target.value)}
+                    value={clientID}
+                    style={styles.dropdownComponentStyle}
+                  >
+                    <option selected value="null">Todos</option>
+                    {
+                      clientList?.map((el) => (
+                        <option key={el._id} value={el._id}>{el.name}</option>
+                      ))
+                    }
+                  </select>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
@@ -195,6 +219,32 @@ const StatisticClientScreen = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
+            {
+              clientGraphData.length > 0
+              && (
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                  margin: '10px 0',
+                }}>
+                  <Button onClick={() => DemandStatistics({
+                    statisticsData: clientGraphData,
+                    active,
+                    categoryActive,
+                    initialDate,
+                    sectorActive,
+                    clientID,
+                    finalDate,
+                    startModal,
+                    reportType: 'CLIENTES',
+                  })}>
+                    Baixar relatório
+                    <BsDownload />
+                  </Button>
+                </div>
+              )
+            }
           </TopDiv>
           <MiddleDiv>
             <Card>

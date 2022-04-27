@@ -3,6 +3,7 @@ import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
+import { BsDownload } from 'react-icons/bs';
 import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
@@ -17,13 +18,15 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
-import { DemandBySector } from '../../../Utils/reports/printDemandReport';
+import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
 
 const StatisticBySectors = () => {
   const { token, user, startModal } = useProfileUser();
   const [sectors, setSectors] = useState(['Todos']);
   const [loading, setLoading] = useState(true);
   const [sectorGraphData, setSectorGraphData] = useState([]);
+  const [sectorActive, setSectorActive] = useState('Todos');
+  const [sectorID, setSectorID] = useState('');
   const [categories, setCategories] = useState(['Todas']);
   const [categoryActive, setCategoryActive] = useState('Todas');
   const [categoryID, setCategoryID] = useState('');
@@ -50,9 +53,18 @@ const StatisticBySectors = () => {
     }
   }, [categoryActive]);
 
+  useEffect(() => {
+    if (sectorActive !== 'Todos') {
+      const results = sectors.find((element) => element.name === sectorActive);
+      setSectorID(results._id);
+    } else {
+      setSectorID(null);
+    }
+  }, [sectorActive]);
+
   const getSectorStatistics = async (idCategory) => {
     await getDemandsStatistics(
-      `statistic/sector?isDemandActive=${query}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
+      `statistic/sector?isDemandActive=${query}}&idSector=${sectorID}&idCategory=${idCategory}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -109,7 +121,7 @@ const StatisticBySectors = () => {
 
   useEffect(() => {
     getSectorStatistics(categoryID);
-  }, [query, categoryID, finalDate, initialDate, clientID]);
+  }, [query, categoryID, sectorID, finalDate, initialDate, clientID]);
 
   const getClientsFromApi = async () => {
     await getClients(`clients?active=${null}`, startModal)
@@ -147,6 +159,21 @@ const StatisticBySectors = () => {
                       backgroundColor: `${colors.secondary}`,
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
+                  />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Setor:
+                  </TextLabel>
+                  <DropdownComponent
+                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
+                    style={styles.dropdownComponentStyle}
+                    optionStyle={{
+                      backgroundColor: `${colors.secondary}`,
+                    }}
+                    optionList={sectors?.map(
+                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
+                    )}
                   />
                 </DropdownDiv>
                 <DropdownDiv>
@@ -189,17 +216,32 @@ const StatisticBySectors = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
-            <Button onClick={() => DemandBySector({
-              sectorGraphData,
-              active,
-              clientID,
-              categoryActive,
-              initialDate,
-              finalDate,
-              startModal,
-            })}>
-              Baixar relatório
-            </Button>
+            {
+              sectorGraphData.length > 0
+              && (
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                  margin: '10px 0',
+                }}>
+                  <Button onClick={() => DemandStatistics({
+                    statisticsData: sectorGraphData,
+                    active,
+                    clientID,
+                    categoryActive,
+                    initialDate,
+                    sectorActive,
+                    finalDate,
+                    startModal,
+                    reportType: 'SECTORS',
+                  })}>
+                    Baixar relatório
+                    <BsDownload />
+                  </Button>
+                </div>
+              )
+            }
           </TopDiv>
           <MiddleDiv>
             <Card>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BsDownload } from 'react-icons/bs';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -7,7 +8,7 @@ import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles,
+  SearchDiv, TextLabel, styles, Button,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -17,6 +18,7 @@ import getCategoriesFromApiService from '../utils/services';
 import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
+import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
 
 const StatisticScreen = () => {
   const { token, user, startModal } = useProfileUser();
@@ -25,6 +27,8 @@ const StatisticScreen = () => {
   const [sectorID, setSectorID] = useState('');
   const [categoryStatistics, setCategoryStatistics] = useState([]);
   const [categories, setCategories] = useState(['Todas']);
+  const [categoryID, setCategoryID] = useState('');
+  const [categoryActive, setCategoryActive] = useState('Todas');
   const [initialDate, setInitialDate] = useState(moment('2021-01-01').format('YYYY-MM-DD'));
   const [finalDate, setFinalDate] = useState(moment().format('YYYY-MM-DD'));
   const [clientID, setClientID] = useState(null);
@@ -37,6 +41,15 @@ const StatisticScreen = () => {
         setSectors([...sectors, ...response.data]);
       });
   };
+
+  useEffect(() => {
+    if (categoryActive !== 'Todas') {
+      const results = categories.find((element) => element.name === categoryActive);
+      setCategoryID(results._id);
+    } else {
+      setCategoryID(null);
+    }
+  }, [categoryActive]);
 
   const getCategoriesFromApi = async () => {
     try {
@@ -69,7 +82,7 @@ const StatisticScreen = () => {
 
   const getCategoriesStatistics = async (idSector) => {
     await getDemandsStatistics(
-      `statistic/category?isDemandActive=${query}&idSector=${idSector}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
+      `statistic/category?isDemandActive=${query}&idSector=${idSector}&idCategory=${categoryID}&initialDate=${initialDate}&finalDate=${finalDate}&idClients=${clientID}`,
       startModal,
     )
       .then((response) => {
@@ -87,7 +100,7 @@ const StatisticScreen = () => {
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
-  }, [query, sectorID, finalDate, initialDate, clientID]);
+  }, [query, sectorID, categoryID, finalDate, initialDate, clientID]);
 
   useEffect(() => {
     getCategoriesStatistics(sectorID);
@@ -104,6 +117,10 @@ const StatisticScreen = () => {
         setClientList(clientSelectArray);
       });
   };
+
+  useEffect(() => {
+    console.log(categoryStatistics);
+  }, [categoryStatistics]);
 
   useEffect(() => getClientsFromApi(), []);
 
@@ -126,6 +143,21 @@ const StatisticScreen = () => {
                       backgroundColor: `${colors.secondary}`,
                     }}
                     optionList={['Todas', 'Ativas', 'Inativas']}
+                  />
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Categoria:
+                  </TextLabel>
+                  <DropdownComponent
+                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
+                    style={styles.dropdownComponentStyle}
+                    optionStyle={{
+                      backgroundColor: `${colors.secondary}`,
+                    }}
+                    optionList={categories?.map(
+                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
+                    )}
                   />
                 </DropdownDiv>
                 <DropdownDiv>
@@ -168,6 +200,35 @@ const StatisticScreen = () => {
                 />
               </SearchDiv>
             </FiltersDiv>
+            {
+              categoryStatistics.length > 0
+              && (
+                <div style={{
+                  display: 'flex',
+                  width: '100%',
+                  justifyContent: 'flex-end',
+                  margin: '10px 0',
+                }}>
+                  <Button onClick={() => DemandStatistics({
+                    statisticsData: categoryStatistics.map((category) => ({
+                      name: category.categories[0].name,
+                      total: category.demandas,
+                    })),
+                    active,
+                    initialDate,
+                    clientID,
+                    finalDate,
+                    startModal,
+                    sectorActive,
+                    categoryActive,
+                    reportType: 'CATEGORY',
+                  })}>
+                    Baixar relatório
+                    <BsDownload />
+                  </Button>
+                </div>
+              )
+            }
           </TopDiv>
           <MiddleDiv>
             <Card>
