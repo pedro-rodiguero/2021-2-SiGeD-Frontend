@@ -231,6 +231,7 @@ const StatisticBySectors = () => {
                     clientID,
                     categoryActive,
                     initialDate,
+                    sectorActive,
                     finalDate,
                     startModal,
                     reportType: 'SECTORS',

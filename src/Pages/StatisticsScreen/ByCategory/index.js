@@ -4,7 +4,6 @@ import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
 } from 'recharts';
-import { BsDownload } from 'react-icons/bs';
 import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
@@ -220,6 +219,8 @@ const StatisticScreen = () => {
                     clientID,
                     finalDate,
                     startModal,
+                    sectorActive,
+                    categoryActive,
                     reportType: 'CATEGORY',
                   })}>
                     Baixar relatório

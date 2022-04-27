@@ -233,6 +233,8 @@ const StatisticClientScreen = () => {
                     active,
                     categoryActive,
                     initialDate,
+                    sectorActive,
+                    clientID,
                     finalDate,
                     startModal,
                     reportType: 'CLIENTES',

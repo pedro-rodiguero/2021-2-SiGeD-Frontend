@@ -163,7 +163,7 @@ const DemandStatistics = async (payload) => {
   const {
     statisticsData, active, clientID,
     categoryActive, initialDate, finalDate,
-    startModal, reportType,
+    startModal, reportType, sectorActive,
   } = payload;
 
   const reportTranslate = {
@@ -192,6 +192,7 @@ const DemandStatistics = async (payload) => {
       { text: `Status: ${active}`, style: 'filterStyle' },
       { text: `Cliente: ${clientData.name}`, style: 'filterStyle' },
       { text: `Categoria: ${categoryActive || ''}`, style: 'filterStyle' },
+      { text: `Setor: ${sectorActive || ''}`, style: 'filterStyle' },
       { text: `Data inicial: ${moment.parseZone(new Date(initialDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
       { text: `Data final: ${moment.parseZone(new Date(finalDate)).local(true).format('DD/MM/YYYY')}`, style: 'filterStyle' },
       { text: '\n\n' },
