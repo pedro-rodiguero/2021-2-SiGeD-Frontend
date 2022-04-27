@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FaSistrix } from 'react-icons/fa';
-import { useParams, Redirect } from 'react-router-dom'; import moment from 'moment';
+import { useParams, Redirect } from 'react-router-dom';
+import moment from 'moment';
 import ProfileSidebarComponent from '../../Components/ProfileSidebarComponent';
 import { getDemands } from '../../Services/Axios/demandsServices';
 import ClientDemandData from '../../Components/ClientDemandData';
@@ -76,7 +77,6 @@ const ClientProfileScreen = () => {
         setAddress(data.address);
         setClient(data);
         setClientFeaturesID(data?.features);
-        console.log(data.birthdate);
       });
   };
 
