@@ -243,3 +243,31 @@ export const Button = styled.button`
     font-size: 1.3vh;
   }
 `;
+
+export const customStyles = {
+  option: (provided) => ({
+    ...provided,
+    borderBottom: '1px solid rgba(0, 0, 0, 0.2)',
+    color: 'black',
+    padding: '5%',
+  }),
+  control: () => ({
+    color: 'black',
+    display: 'flex',
+    borderRadius: '10px',
+    border: '1px solid #000',
+    width: '15vw',
+  }),
+  singleValue: (provided, state) => {
+    const opacity = state.isDisabled ? 0.5 : 1;
+    const transition = 'opacity 300ms';
+    const color = 'black';
+    return {
+      ...provided, opacity, transition, color,
+    };
+  },
+  input: () => ({
+    color: 'black',
+    background: 'white',
+  }),
+};
