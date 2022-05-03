@@ -144,7 +144,7 @@ const StatisticBySectors = () => {
 
   return (
     <Main>
-      { user ? (
+      {user ? (
         <Container>
           <TopDiv>
             <Title>Estatísticas - Demandas por Setor</Title>
@@ -165,22 +165,7 @@ const StatisticBySectors = () => {
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
-                    Setor:
-                  </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={sectors?.map(
-                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
-                    )}
-                  />
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Clientes:
+                    Cliente:
                   </TextLabel>
                   <div style={{ display: 'flex', width: '100%' }}>
                     <Select
@@ -196,16 +181,35 @@ const StatisticBySectors = () => {
                   <TextLabel>
                     Categoria:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={categories?.map(
-                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setCategoryActive(e.value)}
+                      defaultValue="Todas"
+                      options={categories.map((categorie) => ({
+                        value: categorie.name || categorie,
+                        label: categorie.name || categorie,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome da categoria"
+                    />
+                  </div>
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Setor:
+                  </TextLabel>
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setSectorActive(e.value)}
+                      defaultValue="Todos"
+                      options={sectors.map((sector) => ({
+                        value: sector.name || sector,
+                        label: sector.name || sector,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome do setor"
+                    />
+                  </div>
                 </DropdownDiv>
                 <Dropdown
                   initialDate={initialDate}
@@ -280,7 +284,7 @@ const StatisticBySectors = () => {
             </Card>
           </MiddleDiv>
         </Container>
-      ) : <h1>Carregando...</h1> }
+      ) : <h1>Carregando...</h1>}
     </Main>
   );
 };
