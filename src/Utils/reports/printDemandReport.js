@@ -189,7 +189,7 @@ const DemandStatistics = async (payload) => {
       { text: `\nRelatório de Demandas por ${reportTranslate[reportType]}\n\n`, style: 'subTitle' },
       { text: `Data de geração: ${date}`, style: 'dateStyle' },
       { text: '\nFiltros aplicados:\n', style: 'filterTitle' },
-      { text: `Status: ${active}`, style: 'filterStyle' },
+      { text: `Status: ${active === 'Todas' ? 'Ativas e Inativas' : active}`, style: 'filterStyle' },
       { text: `Cliente: ${clientData.name}`, style: 'filterStyle' },
       { text: `Categoria: ${categoryActive || ''}`, style: 'filterStyle' },
       { text: `Setor: ${sectorActive || ''}`, style: 'filterStyle' },
