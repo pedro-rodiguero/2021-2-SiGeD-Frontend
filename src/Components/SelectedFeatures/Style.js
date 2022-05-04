@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const SelectedBox = styled.div`
   width: 100%;
-  height: 10%;
+  height: 20%;
   font-size: 1rem;
   background-color: transparent;
   display: flex;
@@ -12,10 +12,6 @@ export const SelectedBox = styled.div`
   overflow-y: scroll;
   align-content: flex-start;
   margin-top: 25px;
-  &::-webkit-scrollbar {
-    display: none;
-  }
-  scrollbar-width: none;
 
   @media(max-width: 750px){
     flex: auto;

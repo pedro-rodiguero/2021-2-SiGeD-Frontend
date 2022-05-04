@@ -13,13 +13,29 @@ export const Main = styled.div`
 export const CardsContainer = styled.div`
     margin-top: 15vh;
     width: 65%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     @media(max-width: 750px){
         width: 100%;
         height: min-content;
+    }
+    overflow: auto;
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+      
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+    }
+       
+    ::-webkit-scrollbar-thumb {
+        background: #888; 
+    }
+      
+    ::-webkit-scrollbar-thumb:hover {
+        background: #555;
     }
 `;
 
