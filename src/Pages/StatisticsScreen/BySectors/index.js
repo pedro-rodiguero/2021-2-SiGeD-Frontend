@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -8,7 +9,7 @@ import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles, Button,
+  SearchDiv, TextLabel, styles, Button, customStyles,
 } from '../Style';
 import colors from '../../../Constants/colors';
 import DropdownComponent from '../../../Components/DropdownComponent';
@@ -131,6 +132,7 @@ const StatisticBySectors = () => {
             label: client.name,
             value: client._id,
           }));
+        clientSelectArray.unshift({ label: 'Todos', value: null });
         setClientList(clientSelectArray);
       });
   };
@@ -142,7 +144,7 @@ const StatisticBySectors = () => {
 
   return (
     <Main>
-      { user ? (
+      {user ? (
         <Container>
           <TopDiv>
             <Title>Estatísticas - Demandas por Setor</Title>
@@ -163,50 +165,51 @@ const StatisticBySectors = () => {
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
-                    Setor:
+                    Cliente:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={sectors?.map(
-                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
-                    )}
-                  />
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Clientes:
-                  </TextLabel>
-                  <select
-                    onChange={(e) => setClientID(e.target.value)}
-                    value={clientID}
-                    style={styles.dropdownComponentStyle}
-                  >
-                    <option selected value="null">Todos</option>
-                    {
-                      clientList?.map((el) => (
-                        <option key={el.value} value={el.value}>{el.label}</option>
-                      ))
-                    }
-                  </select>
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setClientID(e.value)}
+                      defaultValue={null}
+                      options={clientList}
+                      styles={customStyles}
+                      placeholder="Nome do cliente"
+                    />
+                  </div>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Categoria:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={categories?.map(
-                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setCategoryActive(e.value)}
+                      defaultValue="Todas"
+                      options={categories.map((categorie) => ({
+                        value: categorie.name || categorie,
+                        label: categorie.name || categorie,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome da categoria"
+                    />
+                  </div>
+                </DropdownDiv>
+                <DropdownDiv>
+                  <TextLabel>
+                    Setor:
+                  </TextLabel>
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setSectorActive(e.value)}
+                      defaultValue="Todos"
+                      options={sectors.map((sector) => ({
+                        value: sector.name || sector,
+                        label: sector.name || sector,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome do setor"
+                    />
+                  </div>
                 </DropdownDiv>
                 <Dropdown
                   initialDate={initialDate}
@@ -281,7 +284,7 @@ const StatisticBySectors = () => {
             </Card>
           </MiddleDiv>
         </Container>
-      ) : <h1>Carregando...</h1> }
+      ) : <h1>Carregando...</h1>}
     </Main>
   );
 };

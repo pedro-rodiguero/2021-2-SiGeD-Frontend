@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -8,7 +9,7 @@ import moment from 'moment';
 import { getClientByDemands } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles, Button,
+  SearchDiv, TextLabel, styles, Button, customStyles,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -35,6 +36,7 @@ const StatisticClientScreen = () => {
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
   const [clientGraphData, setClientGraphData] = useState([]);
+  const [clientOptions, setClientOptions] = useState([]);
 
   const getSectorsFromApi = async () => {
     await getSectors(startModal)
@@ -81,7 +83,6 @@ const StatisticClientScreen = () => {
     } else {
       setQuery(null);
     }
-    console.log(query);
   }, [active]);
 
   useEffect(() => {
@@ -134,11 +135,16 @@ const StatisticClientScreen = () => {
     if (clientList.length > 0) {
       getClientsStatistics(null);
     }
+    const clientsOptionsArr = clientList.map((client) => ({
+      value: client._id,
+      label: client.name,
+    }));
+    clientsOptionsArr.unshift({
+      value: null,
+      label: 'Todos',
+    });
+    setClientOptions(clientsOptionsArr);
   }, [clientList]);
-
-  useEffect(() => {
-    console.log(clientGraphData);
-  }, [clientGraphData]);
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#D088FE', '#D0C49F', '#3FBB28', '#3F8042',
     '#EE88FE', '#EEC49F', '#11BB28', '#118042', '#D0FFFE', '#E08F9F', '#FF2928', '#6FED42'];
@@ -148,7 +154,7 @@ const StatisticClientScreen = () => {
       { user ? (
         <Container>
           <TopDiv>
-            <Title>Estatísticas - Demanda por Cliente</Title>
+            <Title>Estatísticas - Demandas por Cliente</Title>
             <FiltersDiv>
               <SearchDiv>
                 <DropdownDiv>
@@ -166,50 +172,51 @@ const StatisticClientScreen = () => {
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
-                    Clientes:
+                    Cliente:
                   </TextLabel>
-                  <select
-                    onChange={(e) => setClientID(e.target.value)}
-                    value={clientID}
-                    style={styles.dropdownComponentStyle}
-                  >
-                    <option selected value="null">Todos</option>
-                    {
-                      clientList?.map((el) => (
-                        <option key={el._id} value={el._id}>{el.name}</option>
-                      ))
-                    }
-                  </select>
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setClientID(e.value)}
+                      defaultValue={null}
+                      options={clientOptions}
+                      styles={customStyles}
+                      placeholder="Nome do cliente"
+                    />
+                  </div>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Categoria:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={categories?.map(
-                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setCategoryActive(e.value)}
+                      defaultValue="Todas"
+                      options={categories.map((categorie) => ({
+                        value: categorie.name || categorie,
+                        label: categorie.name || categorie,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome da categoria"
+                    />
+                  </div>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Setor:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={sectors?.map(
-                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setSectorActive(e.value)}
+                      defaultValue="Todos"
+                      options={sectors.map((sector) => ({
+                        value: sector.name || sector,
+                        label: sector.name || sector,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome do setor"
+                    />
+                  </div>
                 </DropdownDiv>
                 <Dropdown
                   initialDate={initialDate}

@@ -7,7 +7,7 @@ import RedirectListButton from '../RedirectButton';
 
 const GenericListScreen = ({
   ButtonTitle, ButtonFunction, PageTitle, children, setWord, SearchWord, ListType,
-  redirectTo,
+  redirectTo, clientList,
 
 }) => (
   <Main>
@@ -24,6 +24,7 @@ const GenericListScreen = ({
             />
           </Search>
           {children[1]}
+          {clientList && children[2]}
         </DropDiv>
         <ButtonDiv>
           <RedirectListButton title={ButtonTitle} redirectTo={redirectTo} click={ButtonFunction} />
