@@ -74,11 +74,11 @@ const ClientForms = ({
   return (
     <ClientFormsColumnText>
       <RegisterInput long type="text" title="Nome" setText={setInputName} value={inputName} />
-      <RegisterInput long type="text" title="Email" setText={setInputEmail} value={inputEmail} />
+      <RegisterInput long type="text" title="E-mail" setText={setInputEmail} value={inputEmail} />
       <CpfInput type="text" title="CPF" setText={setInputCpf} value={inputCpf} />
-      <RegisterInput type="text" title="Endereco" setText={setInputAddress} value={inputAddress} />
+      <RegisterInput type="text" title="Endereço" setText={setInputAddress} value={inputAddress} />
       <Form.Group style={styles.formGroup}>
-        <Form.Label style={styles.formLabel}>Data de Nascimento:</Form.Label>
+        <Form.Label style={styles.formLabel}>Data de nascimento:</Form.Label>
         <DateInput
           type="date"
           value={inputBirthdate}
@@ -86,7 +86,7 @@ const ClientForms = ({
         />
       </Form.Group>
       <TelephoneInput type="text" title="Telefone principal" setText={setInputPhone} value={inputPhone} />
-      <TelephoneInput type="text" title="Telefone secundario" setText={setInputSecondaryPhone} value={secondaryPhone} />
+      <TelephoneInput type="text" title="Telefone secundário" setText={setInputSecondaryPhone} value={secondaryPhone} />
       <Form.Group style={styles.formGroup}>
         <Form.Label style={styles.formLabel}>Cargo:</Form.Label>
         <div style={styles.roleDiv}>
@@ -105,11 +105,14 @@ const ClientForms = ({
         </div>
       </Form.Group>
       <Form.Group style={styles.formGroup}>
-        <Form.Label style={styles.formLabel}>Lotacao:</Form.Label>
+        <Form.Label style={styles.formLabel}>Lotação:</Form.Label>
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
-            onChange={(Option) => setLocationOption(Option.target.value)}
+            onChange={(Option) => setLocationOption({
+              id: Option.target.value,
+              value: lotacao.find((el) => el._id === Option.target.value),
+            })}
             style={styles.borderStyle}
           >
             {!register
@@ -122,7 +125,7 @@ const ClientForms = ({
         </div>
       </Form.Group>
       <Form.Group style={styles.formGroup}>
-        <Form.Label style={styles.formLabel}>Genero:</Form.Label>
+        <Form.Label style={styles.formLabel}>Gênero:</Form.Label>
         <div style={styles.roleDiv}>
           <Dropdown
             as="select"
@@ -137,7 +140,7 @@ const ClientForms = ({
       </Form.Group>
       <Container long>
         <Label>
-          Caracteristicas:
+          Características:
         </Label>
         <Multiselect
           options={featuresList}
@@ -162,8 +165,8 @@ const ClientForms = ({
           closeOnSelect="false"
         />
       </Container>
-      <RegisterInput type="text" title="Restricoes Administrativas" setText={setInputAdministrativeRestriction} value={inputAdministrativeRestriction} />
-      <RegisterInput type="text" title="Restricoes de Saude" setText={setInputHealthRestrictions} value={inputHealthRestrictions} />
+      <RegisterInput type="text" title="Restrições administrativas" setText={setInputAdministrativeRestriction} value={inputAdministrativeRestriction} />
+      <RegisterInput type="text" title="Restrições de saúde" setText={setInputHealthRestrictions} value={inputHealthRestrictions} />
     </ClientFormsColumnText>
   );
 };

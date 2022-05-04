@@ -41,6 +41,7 @@ export const Dropdown = styled.div`
 width: 200px;
 height: 50px;
 border-radius: 15px;
+margin: 0 5px;
 
 @media(max-width: 750px){
   width: 60%;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Select from 'react-select';
 import { BsDownload } from 'react-icons/bs';
 import {
   Cell, ResponsiveContainer, Tooltip,
@@ -8,7 +9,7 @@ import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
   Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles, Button,
+  SearchDiv, TextLabel, styles, Button, customStyles,
 } from '../Style';
 import DropdownComponent from '../../../Components/DropdownComponent';
 import colors from '../../../Constants/colors';
@@ -35,6 +36,7 @@ const StatisticScreen = () => {
   const [clientList, setClientList] = useState([]);
   const [active, setActive] = useState('Todas');
   const [query, setQuery] = useState('all');
+
   const getSectorsFromApi = async () => {
     await getSectors(startModal)
       .then((response) => {
@@ -114,19 +116,16 @@ const StatisticScreen = () => {
             label: client.name,
             value: client._id,
           }));
+        clientSelectArray.unshift({ label: 'Todos', value: null });
         setClientList(clientSelectArray);
       });
   };
-
-  useEffect(() => {
-    console.log(categoryStatistics);
-  }, [categoryStatistics]);
 
   useEffect(() => getClientsFromApi(), []);
 
   return (
     <Main>
-      { user ? (
+      {user ? (
         <Container>
           <TopDiv>
             <Title>Estatísticas - Demandas por Categoria</Title>
@@ -147,50 +146,51 @@ const StatisticScreen = () => {
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
-                    Categoria:
+                    Cliente:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={categories?.map(
-                      (categoryx) => (categoryx.name ? categoryx.name : categoryx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setClientID(e.value)}
+                      defaultValue={null}
+                      options={clientList}
+                      styles={customStyles}
+                      placeholder="Nome do cliente"
+                    />
+                  </div>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
-                    Clientes:
+                    Categoria:
                   </TextLabel>
-                  <select
-                    onChange={(e) => setClientID(e.target.value)}
-                    value={clientID}
-                    style={styles.dropdownComponentStyle}
-                  >
-                    <option selected value="null">Todos</option>
-                    {
-                      clientList?.map((el) => (
-                        <option key={el.value} value={el.value}>{el.label}</option>
-                      ))
-                    }
-                  </select>
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setCategoryActive(e.value)}
+                      defaultValue="Todas"
+                      options={categories.map((categorie) => ({
+                        value: categorie.name || categorie,
+                        label: categorie.name || categorie,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome da categoria"
+                    />
+                  </div>
                 </DropdownDiv>
                 <DropdownDiv>
                   <TextLabel>
                     Setor:
                   </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={sectors?.map(
-                      (sectorx) => (sectorx.name ? sectorx.name : sectorx),
-                    )}
-                  />
+                  <div style={{ display: 'flex', width: '100%' }}>
+                    <Select
+                      onChange={(e) => setSectorActive(e.value)}
+                      defaultValue="Todas"
+                      options={sectors.map((sector) => ({
+                        value: sector.name || sector,
+                        label: sector.name || sector,
+                      }))}
+                      styles={customStyles}
+                      placeholder="Nome do setor"
+                    />
+                  </div>
                 </DropdownDiv>
                 <Dropdown
                   initialDate={initialDate}
@@ -268,7 +268,7 @@ const StatisticScreen = () => {
             </Card>
           </MiddleDiv>
         </Container>
-      ) : <h1>Carregando...</h1> }
+      ) : <h1>Carregando...</h1>}
     </Main>
   );
 };

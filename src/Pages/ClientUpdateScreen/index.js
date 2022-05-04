@@ -31,6 +31,7 @@ const ClientUpdateScreen = () => {
   const [baseImage, setBaseImage] = useState('');
   const { id } = useParams();
   const { startModal, user, token } = useProfileUser();
+  const [locationName, setLocationName] = useState('');
 
   const setExistingData = (response) => {
     const { data } = response;
@@ -48,6 +49,7 @@ const ClientUpdateScreen = () => {
     if (data.location == null) {
       data.location = 'location';
     }
+    setLocationName(data?.location?.name || '');
     setupdateLocation(data?.location._id);
     setClientFeaturesID(data?.features);
     setRegisterClientInputImage(data?.image);
@@ -79,6 +81,11 @@ const ClientUpdateScreen = () => {
     getClientFeaturesList();
     setSelectedFeaturesID(clientFeaturesID);
   }, [clientFeaturesID]);
+
+  const handleChangeLocation = (value) => {
+    setLocationName(value.value.name);
+    setupdateLocation(value.id);
+  };
 
   const submit = async () => {
     const phoneNoMask = updateClientInputPhone.replaceAll('(', '').replaceAll(')', '').replaceAll(' ', '').replaceAll('-', '');
@@ -116,7 +123,7 @@ const ClientUpdateScreen = () => {
         <GenericRegisterScreen
           sidebarList={[updateClientInputName, updateClientInputCpf,
             moment(updateClientInputBirthdate).format('DD/MM/YYYY'), updateClientInputGender,
-            updateClientInputAddress, officeOption, updateLocation]}
+            updateClientInputAddress, officeOption, locationName]}
           sidebarFooter={[updateClientInputEmail, updateClientInputPhone]}
           cancel={cancel}
           submit={submit}
@@ -148,7 +155,7 @@ const ClientUpdateScreen = () => {
             setInputAddress={setupdateClientInputAddress}
             inputAddress={updateClientInputAddress}
             setOfficeOption={setOfficeOption}
-            setLocationOption={setupdateLocation}
+            setLocationOption={handleChangeLocation}
             locationOption={updateLocation}
             featuresList={featuresList}
             setSelectedFeatures={setClientFeatures}

@@ -26,6 +26,7 @@ const ClientRegisterScreen = () => {
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [selectedFeaturesID, setSelectedFeaturesID] = useState([]);
   const [baseImage, setBaseImage] = useState('');
+  const [locationName, setLocationName] = useState('');
   const { startModal, user } = useProfileUser();
 
   const getFeaturesFromAPI = () => {
@@ -79,11 +80,16 @@ const ClientRegisterScreen = () => {
     return <Redirect to="/login" />;
   }
 
+  const handleChangeLocation = (value) => {
+    setLocationName(value.value.name);
+    setRegisterLocation(value.id);
+  };
+
   return (
     <div>
       <GenericRegisterScreen
         sidebarList={[registerClientInputName, registerClientInputCpf, moment(registerClientInputBirthdate).format('DD/MM/YYYY'),
-          registerClientInputAddress, officeOption, registerLocation]}
+          registerClientInputAddress, officeOption, locationName]}
         sidebarFooter={[registerClientInputEmail, registerClientInputPhone]}
         cancel={cancel}
         submit={submit}
@@ -115,7 +121,7 @@ const ClientRegisterScreen = () => {
           setInputAddress={setRegisterClientInputAddress}
           inputAddress={registerClientInputAddress}
           setOfficeOption={setOfficeOption}
-          setLocationOption={setRegisterLocation}
+          setLocationOption={handleChangeLocation}
           locationOption={registerLocation}
           featuresList={featuresList}
           setSelectedFeatures={setSelectedFeatures}

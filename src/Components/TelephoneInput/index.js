@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputMask from 'react-input-mask';
 import { Container, Label } from '../RegisterInput/Style';
 import { ErrorMessage } from '../ErrorMessage';
@@ -21,6 +21,10 @@ const TelephoneInput = ({
   const handleOnFocus = () => {
     setCurrentMask('(99) 99999-9999');
   };
+
+  useEffect(() => {
+    if (value) setCurrentPhone(value);
+  }, [value]);
 
   return (
     <Container long={long}>
