@@ -7,7 +7,6 @@ import {
 } from './Style';
 import { getUser } from '../../Services/Axios/userServices';
 import { useProfileUser } from '../../Context';
-import activeClient from '../StatisticsScreen/utils/alternateClient';
 
 const ListScreen = ({ newUser }) => {
   const { user, startModal } = useProfileUser();
@@ -17,7 +16,7 @@ const ListScreen = ({ newUser }) => {
 
   const getUsers = async () => {
     await getUser('users', startModal)
-      .then((response) => setUsers(activeClient(response.data)))
+      .then((response) => setUsers(response.data))
       .catch((err) => {
         console.error(`An unexpected error ocourred while getting users. ${err}`);
       });

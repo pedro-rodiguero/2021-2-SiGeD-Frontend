@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Select from 'react-select';
 import {
   Cell, ResponsiveContainer, Tooltip,
   BarChart, CartesianGrid, XAxis, Bar, YAxis,
@@ -8,18 +7,16 @@ import { BsDownload } from 'react-icons/bs';
 import moment from 'moment';
 import { getDemandsStatistics } from '../../../Services/Axios/demandsServices';
 import {
-  Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv, DropdownDiv,
-  SearchDiv, TextLabel, styles, Button, customStyles,
+  Main, Title, Container, Card, TopDiv, MiddleDiv, FiltersDiv,
+  SearchDiv, Button,
 } from '../Style';
-import colors from '../../../Constants/colors';
-import DropdownComponent from '../../../Components/DropdownComponent';
 import { getSectors } from '../../../Services/Axios/sectorServices';
 import { useProfileUser } from '../../../Context';
 import getCategoriesFromApiService from '../utils/services';
-import Dropdown from '../utils/Dropdown';
 import { getClients } from '../../../Services/Axios/clientServices';
 import activeClient from '../utils/alternateClient';
 import { DemandStatistics } from '../../../Utils/reports/printDemandReport';
+import StatisctsFilters from '../Filters';
 
 const StatisticBySectors = () => {
   const { token, user, startModal } = useProfileUser();
@@ -150,72 +147,18 @@ const StatisticBySectors = () => {
             <Title>Estatísticas - Demandas por Setor</Title>
             <FiltersDiv>
               <SearchDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Demandas:
-                  </TextLabel>
-                  <DropdownComponent
-                    OnChangeFunction={(Option) => setActive(Option.target.value)}
-                    style={styles.dropdownComponentStyle}
-                    optionStyle={{
-                      backgroundColor: `${colors.secondary}`,
-                    }}
-                    optionList={['Todas', 'Ativas', 'Inativas']}
-                  />
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Cliente:
-                  </TextLabel>
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Select
-                      onChange={(e) => setClientID(e.value)}
-                      defaultValue={null}
-                      options={clientList}
-                      styles={customStyles}
-                      placeholder="Nome do cliente"
-                    />
-                  </div>
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Categoria:
-                  </TextLabel>
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Select
-                      onChange={(e) => setCategoryActive(e.value)}
-                      defaultValue="Todas"
-                      options={categories.map((categorie) => ({
-                        value: categorie.name || categorie,
-                        label: categorie.name || categorie,
-                      }))}
-                      styles={customStyles}
-                      placeholder="Nome da categoria"
-                    />
-                  </div>
-                </DropdownDiv>
-                <DropdownDiv>
-                  <TextLabel>
-                    Setor:
-                  </TextLabel>
-                  <div style={{ display: 'flex', width: '100%' }}>
-                    <Select
-                      onChange={(e) => setSectorActive(e.value)}
-                      defaultValue="Todos"
-                      options={sectors.map((sector) => ({
-                        value: sector.name || sector,
-                        label: sector.name || sector,
-                      }))}
-                      styles={customStyles}
-                      placeholder="Nome do setor"
-                    />
-                  </div>
-                </DropdownDiv>
-                <Dropdown
+                <StatisctsFilters
+                  setActive={setActive}
+                  setClientID={setClientID}
+                  setCategoryActive={setCategoryActive}
+                  setSectorActive={setSectorActive}
+                  categories={categories}
+                  sectors={sectors}
+                  clientList={clientList}
                   initialDate={initialDate}
                   setInitialDate={setInitialDate}
-                  finalDate={finalDate}
                   setFinalDate={setFinalDate}
+                  finalDate={finalDate}
                 />
               </SearchDiv>
             </FiltersDiv>

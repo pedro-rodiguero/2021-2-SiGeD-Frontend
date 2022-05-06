@@ -6,6 +6,73 @@ import { getClientData, getClientFeatures } from '../../Services/Axios/clientSer
 import { getSectors } from '../../Services/Axios/sectorServices';
 import { getUser } from '../../Services/Axios/userServices';
 
+const documentstyles = {
+  header: {
+    fontSize: 30,
+    bold: true,
+    alignment: 'center',
+  },
+  subTitle: {
+    fontSize: 22,
+    bold: true,
+    alignment: 'center',
+    decoration: 'underline',
+  },
+  filterTitle: {
+    fontSize: 16,
+  },
+  filterStyle: {
+    alignment: 'left',
+  },
+  dateStyle: {
+    alignment: 'right',
+  },
+  leftAlign: {
+    alignment: 'left',
+  },
+  title: {
+    bold: true,
+  },
+  demandTitle: {
+    fontSize: 16,
+    marginTop: 30,
+    bold: true,
+  },
+  important: {
+    color: '#FF0000',
+  },
+  subTitleLeft: {
+    fontSize: 14,
+    bold: true,
+    alignment: 'center',
+  },
+  sessionStyle: {
+    background: '#ccc',
+  },
+  tableTitle: {
+    bold: true,
+    alignment: 'center',
+  },
+  tableLeftInfo: {
+    alignment: 'center',
+  },
+  defaultStyle: {
+    alignment: 'justify',
+  },
+};
+
+const defaultStyles = {
+  alignment: 'justify',
+};
+
+const docDefinitions = (content, styledefault, allstyles) => ({
+  pageSize: 'A4',
+  pageMargins: 40,
+  content: [content],
+  styles: allstyles,
+  defaultStyle: styledefault,
+});
+
 const splitList = (myList) => {
   let string = '';
 
@@ -101,60 +168,9 @@ const DemandReport = async (id, user, startModal) => {
         },
       },
     ],
-    styles: {
-      header: {
-        fontSize: 30,
-        bold: true,
-        alignment: 'center',
-      },
-      subTitle: {
-        fontSize: 22,
-        bold: true,
-        alignment: 'center',
-        decoration: 'underline',
-      },
-      subTitleLeft: {
-        fontSize: 16,
-        bold: true,
-        alignment: 'left',
-      },
-      sessionStyle: {
-        background: '#ccc',
-      },
-      tableTitle: {
-        bold: true,
-        alignment: 'center',
-      },
-      tableLeftInfo: {
-        alignment: 'center',
-      },
-      dateStyle: {
-        alignment: 'right',
-      },
-      leftAlign: {
-        alignment: 'left',
-      },
-      title: {
-        bold: true,
-      },
-      important: {
-        color: '#FF0000',
-      },
-    },
-    defaultStyle: {
-      alignment: 'justify',
-    },
-
-  };
-  const docDefinitions = {
-    pageSize: 'A4',
-    pageMargins: 40,
-    content: [document.content],
-    styles: document.styles,
-    defaultStyle: document.defaultStyle,
   };
 
-  pdfMake.createPdf(docDefinitions).print();
+  pdfMake.createPdf(docDefinitions(document.content, defaultStyles, documentstyles)).print();
 
   return (null);
 };
@@ -208,56 +224,9 @@ const DemandStatistics = async (payload) => {
         },
       },
     ],
-    styles: {
-      header: {
-        fontSize: 30,
-        bold: true,
-        alignment: 'center',
-      },
-      subTitle: {
-        fontSize: 22,
-        bold: true,
-        alignment: 'center',
-        decoration: 'underline',
-      },
-      filterTitle: {
-        fontSize: 16,
-      },
-      filterStyle: {
-        alignment: 'left',
-      },
-      dateStyle: {
-        alignment: 'right',
-      },
-      leftAlign: {
-        alignment: 'left',
-      },
-      title: {
-        bold: true,
-      },
-      demandTitle: {
-        fontSize: 16,
-        marginTop: 30,
-        bold: true,
-      },
-      important: {
-        color: '#FF0000',
-      },
-    },
-    defaultStyle: {
-      alignment: 'justify',
-    },
-
-  };
-  const docDefinitions = {
-    pageSize: 'A4',
-    pageMargins: 40,
-    content: [document.content],
-    styles: document.styles,
-    defaultStyle: document.defaultStyle,
   };
 
-  pdfMake.createPdf(docDefinitions).print();
+  pdfMake.createPdf(docDefinitions(document.content, defaultStyles, documentstyles)).print();
 
   return (null);
 };
@@ -351,71 +320,9 @@ const AllDemandsReport = async (demandsList, users, startModal, filters) => {
         ]
       )),
     ],
-    styles: {
-      header: {
-        fontSize: 30,
-        bold: true,
-        alignment: 'center',
-      },
-      subTitle: {
-        fontSize: 22,
-        bold: true,
-        alignment: 'center',
-        decoration: 'underline',
-      },
-      filterTitle: {
-        fontSize: 16,
-      },
-      filterStyle: {
-        alignment: 'left',
-      },
-      subTitleLeft: {
-        fontSize: 14,
-        bold: true,
-        alignment: 'center',
-      },
-      sessionStyle: {
-        background: '#ccc',
-      },
-      tableTitle: {
-        bold: true,
-        alignment: 'center',
-      },
-      tableLeftInfo: {
-        alignment: 'center',
-      },
-      dateStyle: {
-        alignment: 'right',
-      },
-      leftAlign: {
-        alignment: 'left',
-      },
-      title: {
-        bold: true,
-      },
-      demandTitle: {
-        fontSize: 16,
-        marginTop: 30,
-        bold: true,
-      },
-      important: {
-        color: '#FF0000',
-      },
-    },
-    defaultStyle: {
-      alignment: 'justify',
-    },
-
-  };
-  const docDefinitions = {
-    pageSize: 'A4',
-    pageMargins: 40,
-    content: [document.content],
-    styles: document.styles,
-    defaultStyle: document.defaultStyle,
   };
 
-  pdfMake.createPdf(docDefinitions).print();
+  pdfMake.createPdf(docDefinitions(document.content, defaultStyles, documentstyles)).print();
 
   return (null);
 };
