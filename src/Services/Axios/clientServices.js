@@ -82,6 +82,11 @@ export async function postClient(
     } else if (error.response.status !== 401) {
       startModal('Não foi possivel criar o cliente. Tente novamente mais tarde');
     }
+
+    if (error.response.status === 400 && error.response.data.message[0] === 'invalid cpf') {
+      startModal('CPF Invalido');
+    }
+
     console.error(`An unexpected error ocourred while creating a new client.${error}`);
   }
   return false;
