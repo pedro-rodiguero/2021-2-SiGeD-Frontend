@@ -10,8 +10,8 @@ import { getClients } from '../../Services/Axios/clientServices';
 const HomePageDemand = ({ demand, sectors, style }) => {
   const history = useHistory();
   const [clientName, setClientName] = useState('');
-  const sectorName = sectors?.filter((sectorByID) => (sectorByID._id
-    === demand.sectorHistory[demand.sectorHistory.length - 1].sectorID));
+  const [sectorName, setSectorName] = useState('');
+
   const renderDemandCategories = () => (demand?.categoryID?.map((category) => (
     <CategoryTag color={category?.color}>{category?.name}</CategoryTag>
   )));
@@ -23,9 +23,22 @@ const HomePageDemand = ({ demand, sectors, style }) => {
         console.error(`An unexpected error ocourred while getting the client name.${error}`);
       });
   };
+
   useEffect(() => {
     getClientName();
   }, [sectorName, demand]);
+
+  useEffect(() => {
+    const defineSector = () => {
+      if (demand.sectorHistory.length > 0) {
+        const name = sectors?.filter((sectorByID) => (sectorByID._id
+        === demand.sectorHistory[demand.sectorHistory.length - 1].sectorID));
+
+        setSectorName(name);
+      }
+    };
+    defineSector();
+  }, []);
 
   return (
     <DemandDiv onClick={() => history.push(`/visualizar/${demand._id}`)} style={style}>
