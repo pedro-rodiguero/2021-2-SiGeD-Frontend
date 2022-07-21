@@ -21,7 +21,8 @@ import activeClient from '../StatisticsScreen/utils/alternateClient';
 const ClientListScreen = () => {
   const { token, user, startModal } = useProfileUser();
   const [word, setWord] = useState();
-  const [filterClients, setFilterClients] = useState([]);
+  const [sort, setSort] = useState();
+  const [orientation, setOrientation] = useState(false);
   const [sectors, setSectors] = useState(['Todos']);
   const [sectorActive, setSectorActive] = useState('Todos');
   const [sectorID, setSectorID] = useState('');
@@ -30,7 +31,7 @@ const ClientListScreen = () => {
   const [query, setQuery] = useState(true);
 
   const getClientsFromApi = async () => {
-    await getClients(`clients?active=${query}`, startModal)
+    getClients(`clients?active=${query}${word ? `&filters={"name":"${word}"}` : ''}${sort ? `&sort={"${sort}":${orientation ? '1' : '-1'}}` : ''}&limit=20`, startModal)
       .then((response) => setClients(activeClient(response.data)));
   };
 
@@ -57,8 +58,6 @@ const ClientListScreen = () => {
           });
           return true;
         });
-        const clearArr = [...new Set(clientsList)];
-        setFilterClients(clearArr);
       });
   };
 
@@ -70,6 +69,10 @@ const ClientListScreen = () => {
       setSectorID(null);
     }
   }, [sectorActive]);
+
+  useEffect(() => {
+    setOrientation(false);
+  }, [sort]);
 
   useEffect(() => {
     if (user && token) {
@@ -87,13 +90,7 @@ const ClientListScreen = () => {
 
   useEffect(() => {
     getClientsFromApi();
-  }, [token, query, active]);
-
-  useEffect(() => {
-    setFilterClients(
-      clients.filter((client) => client.name.toLowerCase().includes(word?.toLowerCase())),
-    );
-  }, [word]);
+  }, [token, query, active, word, sort, orientation]);
 
   useEffect(() => {
     if (active === 'Inativos') {
@@ -103,18 +100,12 @@ const ClientListScreen = () => {
     }
   }, [active]);
 
-  useEffect(() => {
-    setFilterClients(clients);
-  }, [clients]);
-
   const listClients = () => {
     if (clients?.length === 0) {
       return <h1 style={styles.headerStyle}>Sem resultados</h1>;
     }
-    if (filterClients?.length === 0) {
-      return <h1 style={styles.headerStyle}>Sem resultados</h1>;
-    }
-    return filterClients?.map((client) => (
+
+    return clients?.map((client) => (
       <ClientProfileData
         client={client}
         key={client.email}
@@ -139,19 +130,54 @@ const ClientListScreen = () => {
       clientList
     >
       <TableHeader>
-        <TableTitle width={25}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'name') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('name');
+          }}
+          width={25}>
           <P>Nome</P>
         </TableTitle>
         <Bar />
-        <TableTitle width={25}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'email') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('email');
+          }}
+          width={25}
+        >
           <P>Email</P>
         </TableTitle>
         <Bar />
-        <TableTitle width={15}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'cpf') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('cpf');
+          }}
+          width={15}
+        >
           <P>CPF</P>
         </TableTitle>
         <Bar />
-        <TableTitle width={15}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'phone') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('phone');
+          }}
+          width={15}
+        >
           <P>Telefone</P>
         </TableTitle>
         <Bar />

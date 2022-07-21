@@ -24,7 +24,8 @@ const ProfessionalHomepage = () => {
 
   const listSectors = async () => {
     try {
-      const response = getFourSectors(startModal);
+      const response = await getFourSectors(startModal);
+      console.log(response);
       setSectors(response.data);
     } catch (error) {
       console.error(`An unexpected error ocourred while getting sectors.${error}`);
@@ -73,6 +74,7 @@ const ProfessionalHomepage = () => {
     if (sectors?.length === 0) {
       return <h1>Sem resultados</h1>;
     }
+
     return sectors?.map((sector, idx) => (
       <HomepageSector
         key={idx}
@@ -108,7 +110,6 @@ const ProfessionalHomepage = () => {
   };
 
   const renderDemands = () => {
-    console.log(demands);
     if (demands?.length === 0) {
       return <h1 style={{ textAlign: 'center', width: '100%' }}>Sem resultados</h1>;
     }
