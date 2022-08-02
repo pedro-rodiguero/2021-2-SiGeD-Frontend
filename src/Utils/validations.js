@@ -4,7 +4,7 @@ export const validateEmail = (email) => {
 };
 
 export const validateName = (name) => {
-  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,}$/;
+  const regex = /^[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ ]{2,30}$/;
   return regex.test(name);
 };
 
