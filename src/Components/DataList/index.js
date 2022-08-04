@@ -19,7 +19,7 @@ const DataList = ({
   const handleClose = () => setShow(false);
   const [optionsMenuState, setOptionsMenuState] = useState(false);
   const [modalState, setModalState] = useState(false);
-  const modalText = `Tem certeza que quer deletar essa ${type?.toLowerCase()}?`;
+  const modalText = `Tem certeza que quer desativar esse ${type?.toLowerCase()}?`;
 
   const toggleMenu = () => {
     setModalState(true);
@@ -111,7 +111,7 @@ const DataList = ({
             {user.role === 'admin' ? (
               <Li onClick={handleShow}>
                 <Button color="red">
-                  Remover
+                  Desativar
                   <Icon color="red">
                     <FaRegTrashAlt />
                   </Icon>
