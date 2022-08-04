@@ -13,6 +13,11 @@ const HomepageUsers = ({
       .then((response) => setUserSector(response.data));
   };
 
+  const translateRole = (role) => {
+    const rolesDict = { admin: 'Administrador', professional: 'Profissional', receptionist: 'Recepcionista' };
+    return rolesDict[role];
+  };
+
   useEffect(() => {
     getSectorFromAPI(user?.sector);
   }, []);
@@ -24,7 +29,7 @@ const HomepageUsers = ({
           <P>{user?.name}</P>
         </TableContent>
         <TableContent width={33.3}>
-          <P>{user?.role}</P>
+          <P>{translateRole(user?.role)}</P>
         </TableContent>
         <TableContent width={33.3}>
           <P>{userSector?.name}</P>

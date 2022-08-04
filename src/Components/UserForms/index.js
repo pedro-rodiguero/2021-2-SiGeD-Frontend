@@ -51,9 +51,9 @@ const UserForms = ({
             style={styles.dropdownStyle}
             onChange={(Option) => setInputRole(Option.target.value)}
           >
-            <option>Administrador(a)</option>
-            <option>Profissional</option>
-            <option>Recepcionista</option>
+            <option value="admin">Administrador(a)</option>
+            <option value="professional">Profissional</option>
+            <option value="receptionist">Recepcionista</option>
           </Dropdown>
         </div>
       </Form.Group>
