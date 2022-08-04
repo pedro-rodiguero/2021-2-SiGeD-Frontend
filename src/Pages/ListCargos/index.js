@@ -5,7 +5,7 @@ import {
   TableHeader, TableTitle, P, Bar,
 } from './Style';
 import {
-  getCargos, createCargo, updateCargo, deleteCargo,
+  getCargos, createCargo, updateCargo, deactivateRole,
 } from '../../Services/Axios/clientServices';
 import { useProfileUser } from '../../Context';
 import DataList from '../../Components/DataList';
@@ -52,7 +52,7 @@ const WorkspaceListScreen = () => {
         content={workspace}
         getContent={getWorkspacesFromApi}
         color="black"
-        axiosDelete={deleteCargo}
+        axiosDelete={deactivateRole}
         updateContent={updateCargo}
         type="Cargos"
       />

@@ -8,7 +8,7 @@ export function ErrorMessage({ input, title }) {
     case 'Nome':
       if (input && !validateName(input)) {
         return (
-          <p style={styles.text}>Credenciais Inválidas</p>
+          <p style={styles.text}>Credenciais Inválidas, nome deve possuir mais de 2 a 30 letras!</p>
         );
       }
       break;
