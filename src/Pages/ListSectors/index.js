@@ -6,7 +6,7 @@ import {
 } from './Style';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
-  getSectors, postSectors, updateSectors, deleteSector,
+  getSectors, postSectors, updateSectors, deleteSector, deactivateSector
 } from '../../Services/Axios/sectorServices';
 import DataList from '../../Components/DataList';
 import { useProfileUser } from '../../Context';
@@ -53,7 +53,7 @@ const ListSectors = () => {
         getContent={listSectors}
         backgroundColor={undefined}
         color="black"
-        axiosDelete={deleteSector}
+        axiosDelete={deactivateSector}
         updateContent={updateSectors}
         type="Setor"
       />

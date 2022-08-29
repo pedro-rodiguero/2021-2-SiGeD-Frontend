@@ -284,6 +284,21 @@ export const deleteWorkspace = async (id, startModal) => {
   return false;
 };
 
+export const deactivateWorkspace = async (id, startModal) => {
+  try {
+    const res = await APIClients.put(`/lotacao/deactivate/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
+
 export async function getCargos(url, startModal) {
   try {
     const response = await APICargos.get(url);
