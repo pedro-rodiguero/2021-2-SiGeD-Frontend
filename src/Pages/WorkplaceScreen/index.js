@@ -5,8 +5,9 @@ import {
   TableHeader, TableTitle, P, Bar,
 } from './Style';
 import {
-  getClients, createWorkspace, updateWorkspace, deleteWorkspace, deactivateWorkspace,
+  getClients, createWorkspace, updateWorkspace, deactivateWorkspace,
 } from '../../Services/Axios/clientServices';
+// import { deleteWorkspace } from '../../Services/Axios/clientServices';
 import { useProfileUser } from '../../Context';
 import DataList from '../../Components/DataList';
 import ModalComp from '../../Components/ModalComp';

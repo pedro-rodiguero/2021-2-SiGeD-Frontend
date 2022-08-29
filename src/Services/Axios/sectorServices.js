@@ -95,7 +95,6 @@ export const deleteSector = async (id, startModal) => {
   }
 };
 
-
 export const deactivateSector = async (id, startModal) => {
   try {
     await APISectors.put(`/sector/deactivate/${id}`);
@@ -108,4 +107,3 @@ export const deactivateSector = async (id, startModal) => {
     console.error(error);
   }
 };
-
