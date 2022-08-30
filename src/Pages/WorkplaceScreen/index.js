@@ -22,7 +22,7 @@ const WorkspaceListScreen = () => {
   const toggleModal = () => setStatusModal(!statusModal);
 
   const getWorkspacesFromApi = async () => {
-    await getClients('lotacao', startModal)
+    getClients('/lotacao/actives', startModal)
       .then((response) => setWorkspaces(response.data));
   };
 
