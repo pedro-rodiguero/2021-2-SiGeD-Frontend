@@ -15,6 +15,21 @@ export async function getSectors(startModal) {
   return false;
 }
 
+export async function getActivesSectors(startModal) {
+  try {
+    const response = await APISectors.get('sector-active');
+    return response;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal('Não foi possível obter a lista de setores, tente novamente mais tarde.');
+    }
+    console.error(`An unexpected error ocourred while retrieving the sectors list.${error}`);
+  }
+  return false;
+}
+
 export async function getFourSectors(startModal) {
   try {
     const response = await APISectors.get('/sector/newest-four');

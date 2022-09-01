@@ -58,7 +58,7 @@ const ClientForms = ({
   const { id } = useParams();
   useEffect(() => {
     async function loadLotacao() {
-      const response = await getClients('/lotacao', startModal);
+      const response = await getClients('/lotacao/actives', startModal);
       const roleResponse = await getCargos('/role', startModal);
       if (id) {
         const lotacaoinforesponse = await getClients(`clients/${id}`, startModal);
