@@ -188,6 +188,8 @@ const ViewDemandsScreen = () => {
     });
   };
 
+  const activeSectors = () => sectorsResponse?.filter((item) => item?.status === 'ativado');
+
   if (!localStorage.getItem('@App:token')) {
     return <Redirect to="/login" />;
   }
@@ -269,7 +271,7 @@ const ViewDemandsScreen = () => {
               demand={demand}
               getDemandApi={getDemandApi}
               showUpdates={showUpdates}
-              sectorsResponse={sectorsResponse}
+              sectorsResponse={activeSectors()}
               changeState={changeState}
               setChangeState={setChangeState}
               handleShowHistory={handleShowHistory}
