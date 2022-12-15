@@ -67,6 +67,7 @@ const OtherRoutes = () => {
               <Route path="/estatisticas/setor" exact component={StatisticBySectors} />
               <Route path="/estatisticas/cliente" exact component={StatisticClientScreen} />
               <Route path="/lotacoes/" exact component={WorkspaceListScreen} />
+              <Route path="/alterar-senha" exact component={ChangePasswordScreen} />
               <Redirect path="*" to="/" />
             </Switch>
           )
