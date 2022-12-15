@@ -26,7 +26,7 @@
     "react-media": "^1.10.0",
     "react-modal": "^3.12.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^5.0.1",
+    "react-scripts": "4.0.2",
     "react-select": "^4.3.0",
     "react-select-search": "^3.0.5",
     "react-toastify": "^8.2.0",
@@ -35,7 +35,7 @@
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "WATCHPACK_POLLING=true react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --coverage --watchAll=false --passWithNoTests",
     "eject": "react-scripts eject"
@@ -58,17 +58,12 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
-    "//": "See https://github.com/facebook/create-react-app/issues/11773",
-    "react-error-overlay": "6.0.9"
-  },
   "devDependencies": {
     "eslint": "^7.21.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "react-error-overlay": "6.0.9"
+    "eslint-plugin-react-hooks": "^4.2.0"
   }
 }
