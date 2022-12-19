@@ -139,7 +139,6 @@ export async function changePassword(
     const response = await APIUsers.put(`change-password/${id}`, {
       pass,
     });
-    console.log(response);
     if (response.status === 400) {
       startModal('A senha deve conter pelo menos 6 caracteres');
       console.error(response.data.error);

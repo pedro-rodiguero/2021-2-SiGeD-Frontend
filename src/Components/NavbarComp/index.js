@@ -73,9 +73,6 @@ const NavbarComp = () => {
                     <NavDropdown.Item><Nav.Link as={Link} to="/cadastro" style={{ color: 'black' }}>Cadastro</Nav.Link></NavDropdown.Item>
                     <NavDropdown.Item><Nav.Link as={Link} to="/usuarios" style={{ color: 'black' }}>Lista de Usuários</Nav.Link></NavDropdown.Item>
                   </NavDropdown>
-                  <Nav.Link as={Link} to="/alterar-senha" style={styles.navbarText}>
-                    Alterar Senha
-                  </Nav.Link>
                   <Nav.Link as={Link} to="/setores" style={styles.navbarText}>
                     Setores
                   </Nav.Link>
