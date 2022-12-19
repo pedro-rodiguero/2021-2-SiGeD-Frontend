@@ -82,6 +82,11 @@ export async function postClient(
     } else if (error.response.status !== 401) {
       startModal('Não foi possivel criar o cliente. Tente novamente mais tarde');
     }
+
+    if (error.response.status === 400 && error.response.data.message[0] === 'invalid cpf') {
+      startModal('CPF Invalido');
+    }
+
     console.error(`An unexpected error ocourred while creating a new client.${error}`);
   }
   return false;
@@ -211,13 +216,13 @@ export const updateFeature = async (
 
 export const deleteFeature = async (id, startModal) => {
   try {
-    const res = await APIClients.delete(`/feature/delete/${id}`);
+    const res = await APIClients.patch(`/feature/desactive/${id}`);
     return res;
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
     } else if (error.response.status !== 401) {
-      startModal(`Não foi possivel deletar a categoria.\n${error}`);
+      startModal(`Não foi possivel remover a categoria.\n${error}`);
     }
     console.error(error);
   }
@@ -267,6 +272,21 @@ export const updateWorkspace = async (
 export const deleteWorkspace = async (id, startModal) => {
   try {
     const res = await APIClients.delete(`/lotacao/delete/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
+
+export const deactivateWorkspace = async (id, startModal) => {
+  try {
+    const res = await APIClients.put(`/lotacao/deactivate/${id}`);
     return res;
   } catch (error) {
     if (error.response.status === 500) {
@@ -337,6 +357,21 @@ export const updateCargo = async (
 export const deleteCargo = async (id, startModal) => {
   try {
     const res = await APICargos.delete(`/role/${id}`);
+    return res;
+  } catch (error) {
+    if (error.response.status === 500) {
+      startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status !== 401) {
+      startModal(`Não foi possivel deletar a lotação.\n${error}`);
+    }
+    console.error(error);
+  }
+  return false;
+};
+
+export const deactivateRole = async (id, startModal) => {
+  try {
+    const res = await APICargos.patch(`/role/${id}/deactivate`);
     return res;
   } catch (error) {
     if (error.response.status === 500) {

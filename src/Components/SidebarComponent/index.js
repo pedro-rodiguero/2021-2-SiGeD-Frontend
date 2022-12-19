@@ -31,6 +31,11 @@ const SidebarComponent = ({
     }
   };
 
+  const translateRole = (role) => {
+    const rolesDict = { admin: 'Administrador', professional: 'Profissional', receptionist: 'Recepcionista' };
+    return rolesDict[role] ? rolesDict[role] : role;
+  };
+
   useEffect(() => {
     setInputImage(baseImage);
   }, [baseImage]);
@@ -78,7 +83,9 @@ const SidebarComponent = ({
     <Sidebar>
       {renderImage()}
       <SidebarText>
-        {sidebarList.map((sidebarCardText, index) => <p key={index}>{sidebarCardText}</p>)}
+        {
+          sidebarList.map((cardText, index) => <p key={index}>{translateRole(cardText)}</p>)
+        }
       </SidebarText>
       { sidebarFooter
         && (

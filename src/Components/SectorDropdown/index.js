@@ -3,7 +3,7 @@ import Select from 'react-select';
 import RightBoxInputs from './Style';
 import { Label } from '../UserDropdown/Style';
 import customStyles from './dropdownStyle';
-import { getSectors } from '../../Services/Axios/sectorServices';
+import { getActivesSectors } from '../../Services/Axios/sectorServices';
 import { useProfileUser } from '../../Context';
 
 const SectorDropdown = ({ setSector, sectorName }) => {
@@ -13,7 +13,7 @@ const SectorDropdown = ({ setSector, sectorName }) => {
   const { startModal } = useProfileUser();
 
   const listSectors = async () => {
-    await getSectors(startModal)
+    await getActivesSectors(startModal)
       .then((response) => setListOfSectors(response.data))
       .catch((error) => {
         console.error(`An unexpected error ocourred while getting sectors.${error}`);

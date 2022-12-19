@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import Select from 'react-select';
 import moment from 'moment';
+import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
 import ClientProfileData from '../../Components/ClientProfileData';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
@@ -21,7 +22,9 @@ import activeClient from '../StatisticsScreen/utils/alternateClient';
 const ClientListScreen = () => {
   const { token, user, startModal } = useProfileUser();
   const [word, setWord] = useState();
-  const [filterClients, setFilterClients] = useState([]);
+  const [sort, setSort] = useState();
+  const [page, setPage] = useState(0);
+  const [orientation, setOrientation] = useState(false);
   const [sectors, setSectors] = useState(['Todos']);
   const [sectorActive, setSectorActive] = useState('Todos');
   const [sectorID, setSectorID] = useState('');
@@ -30,7 +33,7 @@ const ClientListScreen = () => {
   const [query, setQuery] = useState(true);
 
   const getClientsFromApi = async () => {
-    await getClients(`clients?active=${query}`, startModal)
+    getClients(`clients?active=${query}${word ? `&filters={"name":"${word}"}` : ''}${sort ? `&sort={"${sort}":${orientation ? '1' : '-1'}}` : ''}&limit=20${page ? `&page=${page}` : ''}`, startModal)
       .then((response) => setClients(activeClient(response.data)));
   };
 
@@ -57,8 +60,6 @@ const ClientListScreen = () => {
           });
           return true;
         });
-        const clearArr = [...new Set(clientsList)];
-        setFilterClients(clearArr);
       });
   };
 
@@ -70,6 +71,10 @@ const ClientListScreen = () => {
       setSectorID(null);
     }
   }, [sectorActive]);
+
+  useEffect(() => {
+    setOrientation(false);
+  }, [sort]);
 
   useEffect(() => {
     if (user && token) {
@@ -87,13 +92,7 @@ const ClientListScreen = () => {
 
   useEffect(() => {
     getClientsFromApi();
-  }, [token, query, active]);
-
-  useEffect(() => {
-    setFilterClients(
-      clients.filter((client) => client.name.toLowerCase().includes(word?.toLowerCase())),
-    );
-  }, [word]);
+  }, [token, query, active, word, sort, orientation, page]);
 
   useEffect(() => {
     if (active === 'Inativos') {
@@ -103,18 +102,12 @@ const ClientListScreen = () => {
     }
   }, [active]);
 
-  useEffect(() => {
-    setFilterClients(clients);
-  }, [clients]);
-
   const listClients = () => {
     if (clients?.length === 0) {
       return <h1 style={styles.headerStyle}>Sem resultados</h1>;
     }
-    if (filterClients?.length === 0) {
-      return <h1 style={styles.headerStyle}>Sem resultados</h1>;
-    }
-    return filterClients?.map((client) => (
+
+    return clients?.map((client) => (
       <ClientProfileData
         client={client}
         key={client.email}
@@ -128,31 +121,91 @@ const ClientListScreen = () => {
     return <Redirect to="/login" />;
   }
 
+  const more = () => {
+    const aux = page + 1;
+    setPage(aux);
+  };
+
+  const less = () => {
+    const aux = page - 1;
+    setPage(aux);
+  };
+
   return (
     <GenericListScreen
       ButtonTitle="Novo Cliente"
       PageTitle="Clientes"
       SearchWord={word}
+      page={page}
+      more={more}
+      less={less}
       setWord={setWord}
       ListType={listClients()}
       redirectTo="/cliente"
       clientList
     >
       <TableHeader>
-        <TableTitle width={25}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'name') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('name');
+          }}
+          width={25}>
           <P>Nome</P>
+          {
+            sort === 'name' && orientation ? <AiFillCaretUp style={{ alignSelf: 'center' }} /> : <AiFillCaretDown style={{ alignSelf: 'center' }} />
+          }
         </TableTitle>
         <Bar />
-        <TableTitle width={25}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'email') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('email');
+          }}
+          width={25}
+        >
           <P>Email</P>
+          {
+            sort === 'email' && orientation ? <AiFillCaretUp style={{ alignSelf: 'center' }} /> : <AiFillCaretDown style={{ alignSelf: 'center' }} />
+          }
         </TableTitle>
         <Bar />
-        <TableTitle width={15}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'cpf') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('cpf');
+          }}
+          width={15}
+        >
           <P>CPF</P>
+          {
+            sort === 'cpf' && orientation ? <AiFillCaretUp style={{ alignSelf: 'center' }} /> : <AiFillCaretDown style={{ alignSelf: 'center' }} />
+          }
         </TableTitle>
         <Bar />
-        <TableTitle width={15}>
+        <TableTitle
+          onClick={() => {
+            if (sort === 'phone') {
+              setOrientation(!orientation);
+              return;
+            }
+            setSort('phone');
+          }}
+          width={15}
+        >
           <P>Telefone</P>
+          {
+            sort === 'phone' && orientation ? <AiFillCaretUp style={{ alignSelf: 'center' }} /> : <AiFillCaretDown style={{ alignSelf: 'center' }} />
+          }
         </TableTitle>
         <Bar />
         <TableTitle width={19}>
@@ -178,6 +231,25 @@ const ClientListScreen = () => {
         }}>
           <Select
             onChange={(e) => setSectorActive(e.value)}
+            defaultValue="Todos"
+            options={sectors.map((sector) => ({
+              value: sector.name || sector,
+              label: sector.name || sector,
+            }))}
+            styles={customStyles}
+            placeholder="Nome do setor"
+          />
+        </div>
+      </Dropdown>
+      <Dropdown>
+        <div style={{
+          display: 'flex',
+          width: '100%',
+          height: '100%',
+          alignItems: 'center',
+        }}>
+          <Select
+            onChange={(e) => setPage(e.value)}
             defaultValue="Todos"
             options={sectors.map((sector) => ({
               value: sector.name || sector,

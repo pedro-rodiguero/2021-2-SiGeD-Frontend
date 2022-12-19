@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form } from 'react-bootstrap';
 import RegisterInput from '../RegisterInput';
 import { UserFormsColumnText, Dropdown, styles } from './Style';
-import { getSectors } from '../../Services/Axios/sectorServices';
+import { getActivesSectors } from '../../Services/Axios/sectorServices';
 import DropdownComponent from '../DropdownComponent';
 import colors from '../../Constants/colors';
 import { useProfileUser } from '../../Context';
@@ -23,7 +23,7 @@ const UserForms = ({
   const { startModal } = useProfileUser();
 
   const getSectorsFromApi = async () => {
-    await getSectors(startModal)
+    await getActivesSectors(startModal)
       .then((response) => {
         setSectors(response?.data);
         setInputSector(response?.data[0]?.name);
@@ -51,9 +51,9 @@ const UserForms = ({
             style={styles.dropdownStyle}
             onChange={(Option) => setInputRole(Option.target.value)}
           >
-            <option>Administrador(a)</option>
-            <option>Profissional</option>
-            <option>Recepcionista</option>
+            <option value="admin">Administrador(a)</option>
+            <option value="professional">Profissional</option>
+            <option value="receptionist">Recepcionista</option>
           </Dropdown>
         </div>
       </Form.Group>

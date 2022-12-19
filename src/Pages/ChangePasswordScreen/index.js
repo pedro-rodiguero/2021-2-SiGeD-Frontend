@@ -11,13 +11,24 @@ const ChangePasswordScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState();
   const { handleChangePassword } = useProfileUser();
 
+  const isPassLengthValid = () => password?.length >= 6;
+  const isPassValid = () => !!password && (password === confirmPassword && isPassLengthValid());
+
   return (
     <BackgroundContainer>
       <CenterContainer>
         <Title>Altere sua senha</Title>
-
-        <p style={{ color: 'red', padding: 0, visibility: password === confirmPassword && 'hidden' }}>As senhas são diferentes</p>
-
+        <div>
+          <table style={{ visibility: (isPassValid() || !password) && 'hidden' }}>
+            <tr>
+              <td>
+                As senhas devem:
+                <div style={{ color: 'red', padding: 0, visibility: (password === confirmPassword || !password) && 'hidden' }}>Ser iguais</div>
+                <div style={{ color: 'red', padding: 0, visibility: (isPassLengthValid() || !password) && 'hidden' }}>Conter ao menos 6 caracteres</div>
+              </td>
+            </tr>
+          </table>
+        </div>
         <InputDiv>
           <InputIcon>
             <FaLock />
@@ -26,10 +37,8 @@ const ChangePasswordScreen = () => {
             placeholder="Senha"
             type="password"
             onChange={(text) => setPassword(text.target.value)}
-            value={password || ''}
-          />
+            value={password || ''} />
         </InputDiv>
-
         <InputDiv>
           <InputIcon>
             <FaLock />
@@ -38,11 +47,9 @@ const ChangePasswordScreen = () => {
             placeholder="Confirmar Senha"
             type="password"
             onChange={(text) => setConfirmPassword(text.target.value)}
-            value={confirmPassword || ''}
-          />
+            value={confirmPassword || ''} />
         </InputDiv>
-
-        <BigButton title="Salvar" type="primary" changeButton={() => handleChangePassword(password, confirmPassword)} />
+        <BigButton title="Salvar" type="primary" changeButton={() => isPassValid() && handleChangePassword(password, confirmPassword)} />
       </CenterContainer>
     </BackgroundContainer>
   );

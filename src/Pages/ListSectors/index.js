@@ -6,8 +6,9 @@ import {
 } from './Style';
 import GenericListScreen from '../../Components/GenericListScreen';
 import {
-  getSectors, postSectors, updateSectors, deleteSector,
+  postSectors, updateSectors, deactivateSector, getActivesSectors,
 } from '../../Services/Axios/sectorServices';
+// import { deleteSector } from '../../Services/Axios/sectorServices';
 import DataList from '../../Components/DataList';
 import { useProfileUser } from '../../Context';
 
@@ -21,7 +22,7 @@ const ListSectors = () => {
   const toggleModal = () => setStatusModal(!statusModal);
 
   const listSectors = async () => {
-    await getSectors(startModal)
+    await getActivesSectors(startModal)
       .then((response) => setSectors(response.data))
       .catch((error) => {
         console.error(`An unexpected error ocourred while getting sectors.${error}`);
@@ -53,7 +54,7 @@ const ListSectors = () => {
         getContent={listSectors}
         backgroundColor={undefined}
         color="black"
-        axiosDelete={deleteSector}
+        axiosDelete={deactivateSector}
         updateContent={updateSectors}
         type="Setor"
       />

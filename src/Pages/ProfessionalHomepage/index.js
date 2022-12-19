@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import HomepageHeader from '../../Components/HomepageHeader';
 import HomepageSector from '../../Components/HomepageSector';
 import HomepageCharts from '../../Components/HomepageCharts';
@@ -23,48 +23,58 @@ const ProfessionalHomepage = () => {
   const [demands, setDemands] = useState([]);
 
   const listSectors = async () => {
-    await getFourSectors(startModal)
-      .then((response) => setSectors(response.data))
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting sectors.${error}`);
-      });
+    try {
+      const response = await getFourSectors(startModal);
+      console.log(response);
+      setSectors(response.data);
+    } catch (error) {
+      console.error(`An unexpected error ocourred while getting sectors.${error}`);
+    }
   };
 
   const listUsers = async () => {
-    await getFourUsers(startModal)
-      .then((response) => setUsers(response.data))
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting users.${error}`);
-      });
+    try {
+      const response = await getFourUsers(startModal);
+      setUsers(response.data);
+    } catch (error) {
+      console.error(`An unexpected error ocourred while getting users.${error}`);
+    }
   };
 
   const listClients = async () => {
-    await getFourClients(startModal)
-      .then((response) => setClients(response.data))
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting clients.${error}`);
-      });
+    try {
+      const response = await getFourClients(startModal);
+      setClients(response.data);
+    } catch (error) {
+      console.error(`An unexpected error ocourred while getting clients.${error}`);
+    }
   };
 
   const listDemands = async () => {
-    await getFourDemands(startModal)
-      .then((response) => setDemands(response.data))
-      .catch((error) => {
-        console.error(`An unexpected error ocourred while getting demands.${error}`);
-      });
+    try {
+      const response = await getFourDemands(startModal);
+      setDemands(response.data);
+    } catch (error) {
+      console.error(`An unexpected error ocourred while getting demands.${error}`);
+    }
+  };
+
+  const initPage = async () => {
+    await listSectors();
+    await listUsers();
+    await listClients();
+    await listDemands();
   };
 
   useEffect(() => {
-    listSectors();
-    listUsers();
-    listClients();
-    listDemands();
-  }, [user]);
+    initPage();
+  }, []);
 
   const renderSectors = () => {
     if (sectors?.length === 0) {
       return <h1>Sem resultados</h1>;
     }
+
     return sectors?.map((sector, idx) => (
       <HomepageSector
         key={idx}
@@ -73,7 +83,7 @@ const ProfessionalHomepage = () => {
     ));
   };
 
-  const renderUsers = () => {
+  const renderUsers = useCallback(() => {
     if (users?.length === 0) {
       return <h1>Sem resultados</h1>;
     }
@@ -84,7 +94,7 @@ const ProfessionalHomepage = () => {
         startModal={startModal}
       />
     ));
-  };
+  }, [users]);
 
   const renderClients = () => {
     if (clients?.length === 0) {
@@ -103,6 +113,8 @@ const ProfessionalHomepage = () => {
     if (demands?.length === 0) {
       return <h1 style={{ textAlign: 'center', width: '100%' }}>Sem resultados</h1>;
     }
+    // return <h1 style={{ textAlign: 'center', width: '100%' }}>Sem resultados</h1>;
+
     return demands?.map((demand, idx) => (
       <HomePageDemand
         demand={demand}

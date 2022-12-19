@@ -31,13 +31,11 @@ export const Header = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
 
   @media(max-width: 750px){
     height: max-content;
     width: 85%;
     justify-content: space-between;
-    align-items: center;
     flex-direction: row;
     justify-self: center;
     align-self: center;
@@ -72,12 +70,31 @@ export const ButtonDiv = styled.div`
 }
 `;
 
+export const PageDiv = styled.div`
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ width: 100%;
+ margin-bottom: 10%;
+ justify-content: space-around;
+`;
+
+export const PageSpan = styled.div`
+
+`;
+
+export const PageButton = styled.button`
+  border: none;
+  background: transparent;
+`;
+
 export const ContentBox = styled.div`
   width: 100%;
   height: 45%;
   box-sizing: border-box;
   border-radius: 0.5rem;
   margin: 1% auto;
+  margin-top: 4%;
   overflow: hidden;
 
   @media(max-width: 750px){
