@@ -371,7 +371,7 @@ export const deleteCargo = async (id, startModal) => {
 
 export const deactivateRole = async (id, startModal) => {
   try {
-    const res = await APICargos.patch(`/role/${id}/deactivate`);
+    const res = await APICargos.delete(`/role/${id}`);
     return res;
   } catch (error) {
     if (error.response.status === 500) {
