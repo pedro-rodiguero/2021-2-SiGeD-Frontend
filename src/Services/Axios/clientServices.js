@@ -376,6 +376,8 @@ export const deactivateRole = async (id, startModal) => {
   } catch (error) {
     if (error.response.status === 500) {
       startModal('O tempo da sua sessão expirou, faça o login novamente');
+    } else if (error.response.status === 409) {
+      startModal('Não foi possivel deletar cargo,\nCliente com o cargo já existente.');
     } else if (error.response.status !== 401) {
       startModal(`Não foi possivel deletar a lotação.\n${error}`);
     }
