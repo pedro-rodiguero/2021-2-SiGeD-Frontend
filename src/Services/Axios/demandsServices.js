@@ -116,7 +116,16 @@ export async function getFourDemands(startModal) {
 }
 
 export async function createDemand(
-  name, description, process, categoryID, sectorID, userID, clientID, startModal, demandDate,
+  name,
+  description,
+  process,
+  categoryID,
+  sectorID,
+  userID,
+  responsibleUserName,
+  clientID,
+  startModal,
+  demandDate,
 ) {
   try {
     const response = await APIDemands.post('demand/create', {
@@ -126,6 +135,7 @@ export async function createDemand(
       categoryID,
       sectorID,
       userID,
+      responsibleUserName,
       clientID,
       demandDate,
     });
@@ -202,10 +212,11 @@ export async function updateDemandSector(sectorID, id, startModal) {
   }
 }
 
-export async function forwardDemand(sectorID, id, startModal) {
+export async function forwardDemand(sectorID, responsibleUserName, id, startModal) {
   try {
     const response = await APIDemands.put(`demand/forward/${id}`, {
       sectorID,
+      responsibleUserName,
     });
     if (response.data.status) {
       startModal('Não foi possível encaminhar a demanda');

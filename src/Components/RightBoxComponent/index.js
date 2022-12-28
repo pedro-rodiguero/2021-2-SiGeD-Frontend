@@ -56,6 +56,8 @@ const RightBoxComponent = ({ children, clientID, clientName }) => {
         {children[2]}
 
         {children[3]}
+
+        {children[4]}
       </>
     </RightBox>
   );

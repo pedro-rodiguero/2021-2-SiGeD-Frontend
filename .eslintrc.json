@@ -24,7 +24,7 @@
     "react/react-in-jsx-scope": "off",
     "no-underscore-dangle": "off",
     "react/no-array-index-key": "off",
-    "react/jsx-closing-bracket-location": "off"
-
+    "react/jsx-closing-bracket-location": "off",
+    "linebreak-style": "off"
   }
 }
