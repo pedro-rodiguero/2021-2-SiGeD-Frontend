@@ -49,7 +49,6 @@ const SendDemandModal = ({
 
   const forwardDemandFunct = () => {
     const currentStatusDemand = demand.sectorHistory[demand.sectorHistory.length - 1];
-    console.log(responsibleUserName);
     if (currentStatusDemand.sectorID === sectorOptionByID?._id
         && currentStatusDemand.responsibleUserName === responsibleUserName) {
       startModal('A demanda não pode ser encaminhada para o setor e usuário atuais dela.');
