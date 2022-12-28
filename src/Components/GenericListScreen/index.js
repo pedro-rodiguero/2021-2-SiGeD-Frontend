@@ -14,27 +14,25 @@ const GenericListScreen = ({
   ButtonTitle, ButtonFunction, PageTitle, children, setWord, SearchWord, ListType,
   redirectTo, clientList, page, more, less,
 
-}) => {
-  console.log(page);
-  return (
-    <Main>
-      <Container>
-        <Title>{PageTitle}</Title>
-        <Header>
-          <DropDiv width="475px">
-            <Search>
-              <SearchInput
-                type="text"
-                icon={<FaSistrix />}
-                value={SearchWord}
-                setWord={(value) => setWord(value)}
+}) => (
+  <Main>
+    <Container>
+      <Title>{PageTitle}</Title>
+      <Header>
+        <DropDiv width="475px">
+          <Search>
+            <SearchInput
+              type="text"
+              icon={<FaSistrix />}
+              value={SearchWord}
+              setWord={(value) => setWord(value)}
             />
-            </Search>
-            {children[1]}
-            {clientList && children[2]}
-          </DropDiv>
-          <ButtonDiv>
-            {page >= 0
+          </Search>
+          {children[1]}
+          {clientList && children[2]}
+        </DropDiv>
+        <ButtonDiv>
+          {page >= 0
           && (
           <PageDiv>
             {page !== 0 && (
@@ -48,22 +46,21 @@ const GenericListScreen = ({
             </PageButton>
           </PageDiv>
           )}
-            <RedirectListButton
-              title={ButtonTitle}
-              redirectTo={redirectTo}
-              click={ButtonFunction} />
-          </ButtonDiv>
-        </Header>
+          <RedirectListButton
+            title={ButtonTitle}
+            redirectTo={redirectTo}
+            click={ButtonFunction} />
+        </ButtonDiv>
+      </Header>
 
-        <ContentBox>
-          {children[0]}
-          <List>
-            {ListType}
-          </List>
-        </ContentBox>
-      </Container>
-    </Main>
-  );
-};
+      <ContentBox>
+        {children[0]}
+        <List>
+          {ListType}
+        </List>
+      </ContentBox>
+    </Container>
+  </Main>
+);
 
 export default GenericListScreen;

@@ -25,7 +25,6 @@ const ProfessionalHomepage = () => {
   const listSectors = async () => {
     try {
       const response = await getFourSectors(startModal);
-      console.log(response);
       setSectors(response.data);
     } catch (error) {
       console.error(`An unexpected error ocourred while getting sectors.${error}`);

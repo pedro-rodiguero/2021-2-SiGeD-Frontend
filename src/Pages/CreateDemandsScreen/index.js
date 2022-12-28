@@ -9,12 +9,13 @@ import RightBoxComponent from '../../Components/RightBoxComponent';
 import { createDemand } from '../../Services/Axios/demandsServices';
 import DemandsDescription from '../../Components/DemandsDescription';
 import SelectedCategories from '../../Components/SelectedCategories';
-import UserDropdown from '../../Components/UserDropdown';
+import ClientDropdown from '../../Components/ClientDropdown';
 import { getClients } from '../../Services/Axios/clientServices';
 import TinyButton from '../../Components/TinyButton';
 import ConfirmDemandModal from '../../Components/ConfirmDemandModal';
 import { useProfileUser } from '../../Context';
 import removeCategory from '../../Utils/functions';
+import UserDropdown from "../../Components/UserDropdown";
 
 const CreateDemandsScreen = () => {
   const [show, setShow] = useState(false);
@@ -28,6 +29,8 @@ const CreateDemandsScreen = () => {
   const [sectorID, setSectorID] = useState('');
   const [categoriesIDs, setCategoriesIDs] = useState([]);
   const [clientID, setClientID] = useState('');
+  const [username, setUsername] = useState('');
+
   const [clientName, setClientName] = useState('');
   const [demandDate, setDemandDate] = useState(moment().format('YYYY-MM-DD'));
   const { user, startModal } = useProfileUser();
@@ -38,9 +41,7 @@ const CreateDemandsScreen = () => {
       .then((response) => setClients(response.data));
   };
 
-  useEffect(() => {
-    getClientsFromApi();
-  }, []);
+  useEffect(() => { getClientsFromApi() }, []);
 
   useEffect(() => {
     const IDs = selectedCategories?.map((selectedCategory) => selectedCategory._id);
@@ -66,13 +67,11 @@ const CreateDemandsScreen = () => {
   };
 
   const validateInputs = () => {
-    if (!name || !description || !sectorID || !clientID || categoriesIDs === undefined) {
-      return false;
-    }
-    return true;
+    return !(!name || !description || !sectorID || !clientID || categoriesIDs === undefined);
   };
 
   const submit = async () => {
+    const responsibleUserName = username;
     if (validateInputs()) {
       startModal('Demanda criada com sucesso!');
       const data = await createDemand(
@@ -82,6 +81,7 @@ const CreateDemandsScreen = () => {
         categoriesIDs,
         sectorID,
         user._id,
+        responsibleUserName,
         clientID,
         startModal,
         demandDate,
@@ -115,28 +115,28 @@ const CreateDemandsScreen = () => {
         setDemandDate={setDemandDate}
         submit={handleShow}
         cancel={cancel}
-        buttomName="Cadastrar"
-      />
+        buttomName="Cadastrar" />
       <RightBoxComponent
         clientID={clientID}
-        clientName={clientName}
-      >
-        <UserDropdown
+        clientName={clientName} >
+        <ClientDropdown
           clients={clients}
           setClientID={setClientID}
-          setClientName={setClientName}
-        />
+          setClientName={setClientName} />
         <SectorDropdown
+          externalStyles={{ height: 'unset' }}
           setSector={setSectorID}
-          sector={sectorID}
-        />
+          sector={sectorID} />
+        <UserDropdown
+          noSelectedLabel="Usuário Setor (opcional)"
+          externalFilters={{ sector: sectorID, open: 'any' }}
+          setUsername={setUsername}
+          waitForFilter />
         <CategoryDiv
-          pushCategory={pushCategory}
-        />
+          pushCategory={pushCategory} />
         <SelectedCategories
           selectedCategories={selectedCategories}
-          removeCategory={deleteCategory}
-        />
+          removeCategory={deleteCategory} />
       </RightBoxComponent>
       <Footer>
         <TinyButton type="secondary" title="Cancelar" click={cancel} />

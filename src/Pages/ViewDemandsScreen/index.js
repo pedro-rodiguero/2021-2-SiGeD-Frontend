@@ -140,8 +140,8 @@ const ViewDemandsScreen = () => {
       return 0;
     });
     return list.map((value, index) => {
-      if ((value.userName && value.visibilityRestriction === false)
-        || (value.userName && (value.userSector === user.sector))) {
+      if (value.userName
+          && (value.visibilityRestriction === false || value.userSector === user.sector)) {
         return (
           <TimelineItem style={{ marginLeft: '8%' }} key={index}>
             <TimelineOppositeContent style={{ display: 'none' }} />
@@ -165,7 +165,7 @@ const ViewDemandsScreen = () => {
         return false;
       }
 
-      const sectorName = sectorsResponse?.filter((sectorByID) => sectorByID._id === value.sectorID);
+      const sector = sectorsResponse?.find((sectorByID) => sectorByID._id === value.sectorID);
       return (
         <TimelineItem style={{ marginLeft: '8%' }} key={index}>
           <TimelineOppositeContent style={{ display: 'none' }} />
@@ -176,9 +176,15 @@ const ViewDemandsScreen = () => {
           <TimelineContent>
             <ForwardedDemandDiv>
               <p>
-                Setor:
-                {' '}
-                {sectorName[0]?.name}
+                {'Setor: '}
+                {sector?.name}
+                {value?.responsibleUserName
+                  && (
+                  <p style={{ marginTop: '5px' }}>
+                    {'Usuário: '}
+                    {value?.responsibleUserName}
+                  </p>
+                  )}
               </p>
               <p style={{ marginRight: '12%' }}>{moment.parseZone(value.createdAt).local(true).format('DD/MM/YYYY')}</p>
             </ForwardedDemandDiv>

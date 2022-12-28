@@ -7,7 +7,13 @@ import { ForwardDiv, ForwardIcon } from './Style';
 import { useProfileUser } from '../../Context';
 
 const SendDemandModal = ({
-  sectorOption, demand, getDemandApi, sectorsResponse, changeState, setChangeState,
+  sectorOption,
+  demand,
+  getDemandApi,
+  sectorsResponse,
+  changeState,
+  setChangeState,
+  responsibleUserName,
 }) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -37,21 +43,22 @@ const SendDemandModal = ({
     },
   };
 
-  const sectorOptionByID = sectorsResponse?.filter(
+  const sectorOptionByID = sectorsResponse?.find(
     (sectorByID) => sectorByID.name === sectorOption,
   );
 
   const forwardDemandFunct = () => {
-    if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID
-      === sectorOptionByID[0]?._id) {
-      startModal('A demanda não pode ser encaminhada para o setor atual dela.');
+    const currentStatusDemand = demand.sectorHistory[demand.sectorHistory.length - 1];
+    if (currentStatusDemand.sectorID === sectorOptionByID?._id
+        && currentStatusDemand.responsibleUserName === responsibleUserName) {
+      startModal('A demanda não pode ser encaminhada para o setor e usuário atuais dela.');
     } else {
       handleShow();
     }
   };
 
   const submit = () => {
-    forwardDemand(sectorOptionByID[0]?._id, demand._id, startModal);
+    forwardDemand(sectorOptionByID?._id, responsibleUserName, demand._id, startModal);
     getDemandApi();
     setChangeState(!changeState);
   };
