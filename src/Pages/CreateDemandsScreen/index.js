@@ -128,7 +128,8 @@ const CreateDemandsScreen = () => {
           setSector={setSectorID}
           sector={sectorID} />
         <UserDropdown
-          noSelectedLabel="Usuário Setor (opcional)"
+          placeholder="Responsável setor (opcional)"
+          label="Responsável"
           externalFilters={{ sector: sectorID, open: 'any' }}
           setUsername={setUsername}
           waitForFilter />
