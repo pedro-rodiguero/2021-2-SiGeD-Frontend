@@ -16,6 +16,7 @@ export const AddCategory = styled.div`
 
 export const styles = {
   editIconStyle: {
+    marginTop: '10px',
     cursor: 'pointer',
   },
 };

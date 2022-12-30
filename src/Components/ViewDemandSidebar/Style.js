@@ -183,7 +183,7 @@ export const P = styled.div`
 
 export const CategoryField = styled.div`
     width: 100%;
-    height: 50%;
+    height: 100%;
 `;
 
 export const CategoryName = styled.div`
@@ -211,7 +211,7 @@ export const CategoryName = styled.div`
 
 export const AlertContainer = styled.div`
     width: 100%;
-    height: 50%;
+    height: 100%;
 `;
 
 export const AlertTitle = styled.p`

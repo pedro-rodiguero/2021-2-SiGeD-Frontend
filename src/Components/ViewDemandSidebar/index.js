@@ -190,7 +190,7 @@ const ViewDemandSidebar = ({
           <SelectionBox>
             <CategoryField>
               <p>
-                Categoria:
+                Categorias:
               </p>
               <SelectedCategories
                 selectedCategories={selectedCategories}
@@ -231,16 +231,13 @@ const ViewDemandSidebar = ({
                 user={user}
                 title="Cadastrar"
               />
+              { user.role === 'admin' && (
+              <TextButton onClick={() => handleShowHistory()} style={{ marginTop: '15px' }}>
+                Histórico de alterações
+              </TextButton>
+              )}
             </AlertContainer>
           </SelectionBox>
-        )}
-        { user.role === 'admin'
-        && (
-          <TextButton
-            onClick={() => handleShowHistory()}
-          >
-            Histórico de alterações
-          </TextButton>
         )}
       </ContentBox>
     </RightBox>
