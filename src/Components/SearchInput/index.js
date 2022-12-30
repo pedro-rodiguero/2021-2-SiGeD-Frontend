@@ -5,13 +5,19 @@ const SearchInput = ({
   type,
   icon,
   setWord,
+  title,
+  placeholder = 'Pesquisar...',
 }) => (
   <div style={styles.search}>
     <div style={styles.icon}>
       {icon}
     </div>
-
-    <input type={type} placeholder="Pesquisar..." style={styles.generic} onChange={(word) => setWord(word.target.value)} />
+    <input
+      title={title}
+      type={type}
+      placeholder={placeholder}
+      style={styles.generic}
+      onChange={(word) => setWord(word.target.value)} />
   </div>
 );
 

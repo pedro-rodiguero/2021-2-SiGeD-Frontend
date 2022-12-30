@@ -109,6 +109,7 @@ export const Dropdown = styled.div`
 export const DropdownField = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 10px;
   width: ${(props) => `${props.width}`};
   @media(max-width: 750px) {
     width: 100%;

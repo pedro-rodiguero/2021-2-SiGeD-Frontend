@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { FaSistrix } from 'react-icons/fa';
@@ -28,20 +29,23 @@ const customStyles = {
 
 const ListDemandsScreen = () => {
   const { token, user, startModal } = useProfileUser();
-  const [word, setWord] = useState();
-  const [filterDemands, setFilterDemands] = useState([]);
-  const [filterSector, setFilterSector] = useState(['Todos']);
-  const [filterCategory, setFilterCategory] = useState(['Todas']);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  // "Stable" values
+  const [filteredDemandsFinal, setFilteredDemands] = useState([]);
   const [demands, setDemands] = useState([]);
   const [sectors, setSectors] = useState([]);
   const [dropdownYears, setDropdownYears] = useState([]);
-  const [filterYear, setFilterYear] = useState('2022');
-  const [categories, setCategories] = useState([]);
-  const [sectorActive, setSectorActive] = useState('Todos');
-  const [categoryActive, setCategoryActive] = useState('Todas');
-  const [active, setActive] = useState('Ativos');
-  const [query, setQuery] = useState(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [dropdownSector, setDropdownSector] = useState(['Todos']);
+  const [dropdownCategory, setDropdownCategory] = useState(['Todas']);
+
+  // Filter fields controllers
+  const [word, setWord] = useState('');
+  const [open, setOpen] = useState('Ativos');
+  const [currentSector, setCurrentSector] = useState('Todos');
+  const [category, setCategory] = useState('Todas');
+  const [filterYear, setFilterYear] = useState(new Date().getFullYear().toString());
+  const [query, setQuery] = useState('');
 
   const openModal = () => {
     setModalOpen(true);
@@ -51,146 +55,118 @@ const ListDemandsScreen = () => {
     setModalOpen(false);
   };
 
-  const getDemandsFromApi = async () => {
-    // Por default, traz como resultado somente as demandas ativas,
-    // de todos os setores, de todas as categorias
-    await getDemandsWithClientsNames(`clientsNames?open=${query}&sectorActive=${sectorActive}`, startModal)
-      .then((response) => {
-        setDemands(response.data);
-      });
+  const getDemandsFromApi = () => getDemandsWithClientsNames(`clientsNames?open=${query}`, startModal);
+
+  const getSectorsFromApi = () => getSectors(startModal);
+
+  const getCategoriesFromApi = () => getCategories('category', startModal);
+
+  const filterByOpenStatus = () => {
+    switch (open) {
+      case 'Encerradas':
+        setQuery(false);
+        break;
+      case 'Em andamento':
+        setQuery(true);
+        break;
+      default:
+        setQuery(null);
+        break;
+    }
   };
 
-  const getSectorsFromApi = async () => {
-    await getSectors(startModal)
-      .then((response) => {
-        setSectors(response?.data);
-        setSectorActive(response?.data[0]?.name);
-      });
-  };
-  const getCategoriesFromApi = async () => {
-    await getCategories('category', startModal)
-      .then((response) => {
-        setCategories(response.data);
-      });
-    setSectorActive('Todos');
+  const filterByCurrentSector = (demand) => {
+    if (!currentSector || currentSector === 'Todos') {
+      return true;
+    }
+    const sectorId = dropdownSector?.find((s) => s.name === currentSector)._id;
+    return demand.sectorHistory.at(-1).sectorID === sectorId;
   };
 
-  const filterDemandByYear = () => {
-    const filteredDemands = [];
-    demands.filter((demand) => {
-      const year = new Date(demand.createdAt).getFullYear().toString();
-      if (year === filterYear) {
-        filteredDemands.push(demand);
-      }
-      return undefined;
-    });
-    setFilterDemands(filteredDemands);
+  const filterByCategory = (demand) => {
+    if (!category || category === 'Todas') {
+      return true;
+    }
+    return demand.categoryID.some((c) => c.name === category);
+  };
+
+  const filterByWord = (demand) => {
+    const cleanSearchWord = word?.toLowerCase().trim();
+    if (!cleanSearchWord) {
+      return true;
+    }
+    return ['name', 'description'].some((key) => demand[key].toLowerCase().includes(cleanSearchWord)
+           || demand.clientName.toLowerCase().includes(cleanSearchWord)
+           || demand.process.some((p) => p.toLowerCase().includes(cleanSearchWord)));
+  };
+
+  const filterByYear = (demand) => {
+    if (!filterYear || filterYear === 'Sem filtro') {
+      return true;
+    }
+    const year = new Date(demand.createdAt).getFullYear().toString();
+    return year === filterYear;
   };
 
   const listYears = () => {
-    const years = [];
-    demands?.map((demand) => {
-      const year = new Date(demand.createdAt).getFullYear();
-      if (!years.find((y) => y === year)) {
-        years.push(year);
-      }
-      return undefined;
-    });
-    years.push('Sem filtro');
-    setDropdownYears(years);
+    if (demands) {
+      const years = [];
+      years.push('Sem filtro');
+      demands?.forEach((demand) => {
+        const year = new Date(demand.createdAt).getFullYear();
+        if (!years.some((y) => y === year)) years.push(year);
+      });
+      setDropdownYears(years);
+    }
   };
 
-  useEffect(() => {
+  const filter = () => {
+    if (demands && demands.length) {
+      const filteredDemands = demands.filter((demand) => filterByWord(demand)
+                                                          && filterByYear(demand)
+                                                          && filterByCurrentSector(demand)
+                                                          && filterByCategory(demand));
+      setFilteredDemands(filteredDemands);
+    }
+  };
+
+  useEffect(async () => {
     if (token && user) {
-      getDemandsFromApi();
-      getSectorsFromApi();
-      getCategoriesFromApi();
+      const result = await Promise.all([
+        getDemandsFromApi(),
+        getSectorsFromApi(),
+        getCategoriesFromApi()]);
+
+      setDemands(result[0].data);
+
+      setSectors(result[1].data);
+      setDropdownSector([{ name: 'Todos' }, ...result[1].data]);
+
+      setDropdownCategory([{ name: 'Todas' }, ...result[2].data]);
     }
   }, [token, user]);
 
-  useEffect(() => {
-    setFilterDemands(
-      demands.filter((demand) => demand.name.toLowerCase().includes(word?.toLowerCase())
-        || demand.clientName.toLowerCase().includes(word?.toLowerCase())
-        || demand.process.toLowerCase().includes(word?.toLowerCase())),
-    );
-  }, [word]);
+  useEffect(() => filter(), [word, currentSector, category, filterYear]);
+
+  useEffect(() => filterByOpenStatus(), [open]);
+
+  useEffect(() => { getDemandsFromApi().then((result) => setDemands(result.data)); }, [query]);
 
   useEffect(() => {
-    if (active === 'Inativas') {
-      setQuery(false);
-    } else if (active === 'Todas') {
-      setQuery(null);
-    } else {
-      setQuery(true);
-    }
-  }, [active]);
-
-  useEffect(() => {
-    if (!dropdownYears.find((ano) => (ano === filterYear))) {
-      setFilterYear('Sem filtro');
-    }
-    getDemandsFromApi();
-    if (filterYear !== 'Sem filtro') {
-      filterDemandByYear();
-    } else {
-      setFilterDemands(demands);
-    }
-  }, [query]);
-
-  useEffect(() => {
-    setFilterDemands(demands);
     listYears();
+    filter();
   }, [demands]);
 
-  useEffect(() => {
-    setFilterSector([{ name: 'Todos' }, ...sectors]);
-  }, [sectors]);
-
-  useEffect(() => {
-    if (filterYear !== 'Sem filtro') {
-      filterDemandByYear();
-    } else {
-      setFilterDemands(demands);
-    }
-  }, [filterYear]);
-
-  useEffect(() => {
-    setFilterCategory([...filterCategory, ...categories]);
-  }, [categories]);
-
   const listDemands = () => {
-    if (demands?.length === 0 || filterDemands?.length === 0) {
-      return <h1>Sem resultados para esses filtros</h1>;
-    }
-    return filterDemands?.map((demand) => {
-      const sector = filterSector?.filter(
-        (listSector) => (listSector.name === sectorActive ? listSector : false),
-      );
-
-      if (sectorActive !== 'Todos') {
-        if (demand.sectorHistory[demand.sectorHistory.length - 1].sectorID !== sector[0]?._id) {
-          return false;
-        }
-      }
-
-      if (categoryActive !== 'Todas') {
-        const results = demand.categoryID.filter(
-          (demandCategory) => (demandCategory.name === categoryActive ? demandCategory : false),
-        );
-        if (results.length === 0) {
-          return false;
-        }
-      }
-      return (
-        <DemandData
-          sector={sector}
-          demand={demand}
-          key={demand._id}
-          sectors={sectors}
-        />
-      );
-    });
+    if (!demands?.length) return <h1>Sem demandas cadastradas</h1>;
+    if (!filteredDemandsFinal?.length) return <h1>Sem resultados para esses filtros</h1>;
+    return filteredDemandsFinal?.map((demand) => (
+      <DemandData
+        sector={dropdownSector?.find((s) => (s.name === currentSector))}
+        demand={demand}
+        key={demand._id}
+        sectors={sectors} />
+    ));
   };
 
   if (!localStorage.getItem('@App:token')) {
@@ -206,10 +182,12 @@ const ListDemandsScreen = () => {
             <ScreenSearch>
               <SearchInput
                 type="text"
+                title="Pesquise por nome, descrição, cliente ou processo"
+                placeholder="Pesquise por nome, descrição, cliente ou processo"
                 icon={<FaSistrix />}
                 value={word}
                 setWord={(value) => setWord(value)}
-                style={{ width: '50%' }}
+                style={{ width: '90%' }}
               />
               {
                 demands.length > 0
@@ -220,43 +198,41 @@ const ListDemandsScreen = () => {
                 )
               }
             </ScreenSearch>
-            <Dropdown>
-              <DropdownField>
-                <p style={{ marginBottom: '0' }}>Status: </p>
+            <Dropdown style={{ width: '800px' }}>
+              <DropdownField width="70%">
+                <p style={{ marginBottom: '0' }}>Setor:</p>
                 <DropdownComponent
-                  OnChangeFunction={(Option) => setActive(Option.target.value)}
+                  OnChangeFunction={(Option) => setCurrentSector(Option.target.value)}
                   style={styles.dropdownComponentStyle}
                   optionStyle={{
                     backgroundColor: `${colors.secondary}`,
                   }}
-                  optionList={['Todas', 'Ativas', 'Inativas']}
+                  optionList={dropdownSector?.map((sector) => sector.name)}
                 />
               </DropdownField>
-              <DropdownField width="25%">
-                <p style={{ marginBottom: '0' }}>Setores:</p>
-                <DropdownComponent
-                  OnChangeFunction={(Option) => setSectorActive(Option.target.value)}
-                  style={styles.dropdownComponentStyle}
-                  optionStyle={{
-                    backgroundColor: `${colors.secondary}`,
-                  }}
-                  optionList={filterSector?.map((sector) => sector.name)}
-                />
-              </DropdownField>
-              <DropdownField width="25%">
+              <DropdownField width="50%">
                 <p style={{ marginBottom: '0' }}>Categoria: </p>
                 <DropdownComponent
-                  OnChangeFunction={(Option) => setCategoryActive(Option.target.value)}
+                  OnChangeFunction={(Option) => setCategory(Option.target.value)}
                   style={styles.dropdownComponentStyle}
                   optionStyle={{
                     backgroundColor: `${colors.secondary}`,
                   }}
-                  optionList={filterCategory?.map(
-                    (category) => (category.name ? category.name : category),
-                  )}
+                  optionList={dropdownCategory?.map((c) => c.name)}
                 />
               </DropdownField>
-              <DropdownField>
+              <DropdownField width="50%">
+                <p style={{ marginBottom: '0' }}>Situação: </p>
+                <DropdownComponent
+                  OnChangeFunction={(Option) => setOpen(Option.target.value)}
+                  style={styles.dropdownComponentStyle}
+                  optionStyle={{
+                    backgroundColor: `${colors.secondary}`,
+                  }}
+                  optionList={['Todas', 'Em andamento', 'Encerradas']}
+                />
+              </DropdownField>
+              <DropdownField width="40%">
                 <p style={{ marginBottom: '0' }}>Anos: </p>
                 <DropdownComponent
                   OnChangeFunction={(Option) => setFilterYear(Option.target.value)}
@@ -274,12 +250,11 @@ const ListDemandsScreen = () => {
               isOpen={modalOpen}
               onRequestClose={closeModal}
               contentLabel="Filtro de relatório"
-              style={customStyles}
-            >
+              style={customStyles}>
               <ReportModal
                 allDemands={demands}
-                filterSector={filterSector.slice(1)}
-                filterCategory={filterCategory}
+                filterSector={dropdownSector.slice(1)}
+                filterCategory={dropdownCategory}
               />
             </Modal>
             <ScreenList>

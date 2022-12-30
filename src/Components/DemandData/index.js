@@ -12,7 +12,7 @@ import { useProfileUser } from '../../Context';
 const DemandData = ({ demand, sectors }) => {
   const { user, startModal } = useProfileUser();
   const sectorName = sectors?.filter((sectorByID) => (sectorByID._id
-    === demand.sectorHistory[demand.sectorHistory.length - 1].sectorID));
+    === demand.sectorHistory.at(-1).sectorID));
 
   const renderDemandCategories = () => (demand.categoryID?.map((category) => (
     <CategoryName color={category.color}>{category.name}</CategoryName>
@@ -56,12 +56,16 @@ const DemandData = ({ demand, sectors }) => {
           id={demand.clientID}
           style={styles.link}
         >
-          {demand.clientName}
+          {` ${demand.clientName}`}
         </Link>
       </ClientName>
       <SectorName>
         Setor:
-        {sectorName[0]?.name}
+        {` ${sectorName[0]?.name}`}
+      </SectorName>
+      <SectorName>
+        Responsável:
+        {` ${demand.sectorHistory.at(-1).responsibleUserName || 'Não atribuído'}`}
       </SectorName>
       <div style={styles.divStyle}>
         <ProcessNumber>
