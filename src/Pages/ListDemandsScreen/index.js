@@ -44,7 +44,7 @@ const ListDemandsScreen = () => {
   const [open, setOpen] = useState('Ativos');
   const [currentSector, setCurrentSector] = useState('Todos');
   const [category, setCategory] = useState('Todas');
-  const [filterYear, setFilterYear] = useState(new Date().getFullYear().toString());
+  const [filterYear, setFilterYear] = useState('');
   const [query, setQuery] = useState('');
 
   const openModal = () => {
@@ -113,7 +113,7 @@ const ListDemandsScreen = () => {
       const years = [];
       years.push('Sem filtro');
       demands?.forEach((demand) => {
-        const year = new Date(demand.createdAt).getFullYear();
+        const year = new Date(demand.createdAt).getFullYear().toString();
         if (!years.some((y) => y === year)) years.push(year);
       });
       setDropdownYears(years);
@@ -156,6 +156,10 @@ const ListDemandsScreen = () => {
     listYears();
     filter();
   }, [demands]);
+
+  useEffect(() => {
+    if (dropdownYears.length && dropdownYears[1]) setFilterYear(dropdownYears[1].toString());
+  }, [dropdownYears]);
 
   const listDemands = () => {
     if (!demands?.length) return <h1>Sem demandas cadastradas</h1>;
@@ -240,6 +244,7 @@ const ListDemandsScreen = () => {
                   optionStyle={{
                     backgroundColor: `${colors.secondary}`,
                   }}
+                  value={filterYear}
                   optionList={dropdownYears}
                 />
               </DropdownField>
