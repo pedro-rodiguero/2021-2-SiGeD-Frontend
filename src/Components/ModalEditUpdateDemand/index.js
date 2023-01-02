@@ -1,6 +1,5 @@
 import { Modal } from 'react-bootstrap';
 import React, { useState } from 'react';
-import moment from 'moment-timezone';
 import { Checkbox, FormControlLabel } from '@material-ui/core';
 import { useProfileUser } from '../../Context';
 import {
@@ -18,7 +17,6 @@ const ModalEditUpdateDemand = ({
   description,
   updateDemandID,
   demandID,
-  createdAt,
   userSector,
   setChangeState,
   changeState,
@@ -50,20 +48,6 @@ const ModalEditUpdateDemand = ({
     );
     setUpdateVisibility(true);
     handleClose();
-  };
-
-  const validateEdit = async () => {
-    const data = moment(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate();
-    const updateData = moment(createdAt, 'YYYY-MM-DDTHH:mm:ss').toDate();
-    const stringDate = moment(updateData).add(30, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
-    const formatDate = moment(stringDate, 'YYYY-MM-DDTHH:mm:ss').toDate();
-
-    if (moment(data).isAfter(formatDate)) {
-      startModal('Não é possível editar essa atualização.');
-    } else {
-      await editUpdate()
-        .then(() => setChangeState(!changeState));
-    }
   };
 
   return (
@@ -124,7 +108,7 @@ const ModalEditUpdateDemand = ({
               style={styles.tinyButtonFechar}
             />
             <TinyButton
-              click={() => validateEdit()}
+              click={() => editUpdate().then(() => setChangeState(!changeState))}
               type="primary"
               title="Editar"
               style={styles.tinyButtonEditar}
