@@ -101,7 +101,7 @@ const ListDemandsScreen = () => {
   };
 
   const filterByYear = (demand) => {
-    if (!filterYear || filterYear === 'Sem filtro') {
+    if (!filterYear || filterYear === 'Todos') {
       return true;
     }
     const year = new Date(demand.createdAt).getFullYear().toString();
@@ -111,11 +111,13 @@ const ListDemandsScreen = () => {
   const listYears = () => {
     if (demands) {
       const years = [];
-      years.push('Sem filtro');
       demands?.forEach((demand) => {
-        const year = new Date(demand.createdAt).getFullYear().toString();
+        const year = new Date(demand.createdAt).getFullYear();
         if (!years.some((y) => y === year)) years.push(year);
       });
+      years.sort((a, b) => b - a);
+      years.map((y) => y.toString());
+      years.splice(0, 0, 'Todos');
       setDropdownYears(years);
     }
   };
