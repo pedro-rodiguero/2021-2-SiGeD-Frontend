@@ -14,7 +14,8 @@ const UserDropdown = ({
   externalStyles = {},
   setUsername = () => {},
   initialValue,
-  noSelectedLabel = 'Usuário',
+  placeholder = 'Usuário',
+  label = 'Usuário:',
 }) => {
   const [currentOption, setCurrentOption] = useState({});
   const [users, setUsers] = useState([]);
@@ -68,10 +69,10 @@ const UserDropdown = ({
   return (
     <UserSearchDiv style={externalStyles}>
       <Label style={labelStyles}>
-        Usuário:
+        {label}
       </Label>
       <Select
-        placeholder={noSelectedLabel}
+        placeholder={placeholder}
         styles={customStyles}
         options={users?.map((user) => ({ label: user.name, value: user._id }))}
         key={currentOption.name}

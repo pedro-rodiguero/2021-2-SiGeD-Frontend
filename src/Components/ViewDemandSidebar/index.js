@@ -160,7 +160,8 @@ const ViewDemandSidebar = ({
           value={sectorOption}
         />
         <UserDropdown
-          noSelectedLabel="Usuário Setor (opcional)"
+          placeholder="Responsável setor (opcional)"
+          label="Responsável"
           externalFilters={{ sector: selectedSectorObj?._id, open: 'any' }}
           externalStyles={{ marginTop: '10px' }}
           labelStyles={{

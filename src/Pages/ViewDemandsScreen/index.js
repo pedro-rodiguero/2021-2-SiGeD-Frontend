@@ -181,7 +181,7 @@ const ViewDemandsScreen = () => {
                 {value?.responsibleUserName
                   && (
                   <p style={{ marginTop: '5px' }}>
-                    {'Usuário: '}
+                    {'Responsável: '}
                     {value?.responsibleUserName}
                   </p>
                   )}
