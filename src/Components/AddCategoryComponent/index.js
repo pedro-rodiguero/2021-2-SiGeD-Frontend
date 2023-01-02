@@ -78,8 +78,8 @@ const CategoryDiv = ({ pushCategory }) => {
         setStatusBox(false);
       }}
     >
-      <P>Categorias:</P>
-      <AddIcon onClick={toggleBox} />
+      <P style={{ marginTop: '10px' }}>Categorias:</P>
+      <AddIcon onClick={toggleBox} style={{ marginTop: '10px' }} />
       {statusBox && true ? (
         <CategoriesBox>
           <List>
