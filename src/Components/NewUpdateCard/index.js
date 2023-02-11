@@ -19,7 +19,7 @@ const NewUpdateCard = ({
   const [description, setDescription] = useState('');
   const [visibilityRestriction, setVisibilityRestriction] = useState(true);
   const [important, setImportant] = useState(false);
-  const [uploadFile, setUploadFile] = useState();
+  const [uploadFile, setUploadFile] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const { user, startModal } = useProfileUser();
 
@@ -35,26 +35,25 @@ const NewUpdateCard = ({
       const info = {
         userName: user.name,
         userSector: user.sector,
-        userId: user._id,
+        userID: user._id,
         description: uploadFile.name,
         important,
         visibility: visibilityRestriction,
       };
 
       DemandUploadFile(demand._id, startModal, uploadFile, info);
-      setUploadFile();
+      setUploadFile('');
       setOpenModal(false);
 
       setTimeout(() => {
         getDemandApi();
         setDescription('');
       }, 1500);
-
-      // setDescription('');
     } else {
       setOpenModal(true);
     }
   };
+
   const cancelSubmitForm = (event) => {
     event.preventDefault();
     setOpenModal(false);
@@ -112,7 +111,11 @@ const NewUpdateCard = ({
           && (
           <ModalContainer>
             <Form onSubmit={submitForm}>
-              <UploadInput accept=".pdf" fileName={uploadFile ? uploadFile.name : ''} type="file" onChange={(e) => setUploadFile(e.target.files[0])} />
+              <UploadInput
+                accept=".pdf"
+                fileName={(uploadFile && uploadFile?.name) || ''}
+                type="file"
+                onChange={(e) => setUploadFile(e.target.files[0])} />
               <ButtonsContainer>
                 <AlternativeButton
                   type="button"
@@ -121,8 +124,7 @@ const NewUpdateCard = ({
                     background: `${colors.alertMessages}`,
                     width: '100%',
                     padding: '0% 3% 0% 3%',
-                  }}
-                >
+                  }}>
                   Cancelar
                 </AlternativeButton>
 
@@ -131,8 +133,7 @@ const NewUpdateCard = ({
                   style={{
                     width: '100%',
                     padding: '0% 3% 0% 3%',
-                  }}
-                >
+                  }}>
                   Enviar
                 </AlternativeButton>
 

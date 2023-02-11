@@ -43,17 +43,18 @@ const UpdateCard = ({
     },
   };
 
+  const isUpdateFromLoggedUser = () => user._id === update.userID;
+
   const deleteUpdate = async () => {
     await deleteDemandUpdate(demand._id, update._id, startModal)
       .then(() => setChangeState(!changeState));
   };
 
-  const validateDelete = () => {
+  const validateDateOnDelete = () => {
     const dataNow = moment(moment.tz('America/Sao_Paulo').format('YYYY-MM-DDTHH:mm:ss')).toDate();
     const deleteData = moment(update.createdAt, 'YYYY-MM-DDTHH:mm:ss').toDate();
     const timeLimitData = moment(deleteData).add(30, 'minutes').format('YYYY-MM-DDTHH:mm:ss');
     const dateFormatTimeLimitData = moment(timeLimitData, 'YYYY-MM-DDTHH:mm:ss').toDate();
-
     if (moment(dataNow).isAfter(dateFormatTimeLimitData)) {
       startModal('Não é possível apagar essa atualização.');
     } else {
@@ -61,21 +62,9 @@ const UpdateCard = ({
     }
   };
 
-  const catchUser = () => {
-    if (user._id === update.userID) {
-      setShow(true);
-    } else {
-      startModal('Você não pode editar essa atualização.');
-    }
-  };
+  const catchUser = () => (isUpdateFromLoggedUser() ? setShow(true) : startModal('Você não pode apagar essa atualização.'));
 
-  const deleteCall = () => {
-    if (user._id === update.userID) {
-      validateDelete();
-    } else {
-      startModal('Você não pode apagar essa atualização.');
-    }
-  };
+  const deleteCall = () => (isUpdateFromLoggedUser() ? validateDateOnDelete() : startModal('Você não pode apagar essa atualização.'));
 
   const pdfViewer = () => (
     <PDFViwerContainer>
@@ -156,18 +145,21 @@ const UpdateCard = ({
               <AiFillEye style={{ marginRight: '10px' }} />
             </EditIcon>
           ) : (
+            isUpdateFromLoggedUser()
+            && (
             <EditIcon
               onClick={() => { catchUser(); }}
-              style={{ cursor: 'pointer' }}
-            >
+              style={{ cursor: 'pointer' }}>
               <BsPencil style={{ marginRight: '10px' }} />
             </EditIcon>
+            )
           )}
-          <TrashIcon
-            onClick={() => { deleteCall(); }}
-          >
-            <BiTrash style={styles.deleteIconStyle} />
-          </TrashIcon>
+          { isUpdateFromLoggedUser()
+            && (
+            <TrashIcon onClick={() => { deleteCall(); }}>
+              <BiTrash style={styles.deleteIconStyle} />
+            </TrashIcon>
+            )}
         </IconsContainer>
       </TopSide>
       <BottomSide>
@@ -196,7 +188,7 @@ const UpdateCard = ({
         show={confirm}
         handleClose={handleConfirm}
         submit={deleteUpdate}
-        actionName=" deletar essa atualização d"
+        actionName="Deseja excluir a atualização?"
       />
     </Card>
   );

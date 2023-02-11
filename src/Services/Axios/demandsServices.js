@@ -320,7 +320,7 @@ export async function DemandUploadFile(
 
     dataArray.append('userName', info.userName);
     dataArray.append('userSector', info.userSector);
-    dataArray.append('userId', info.userId);
+    dataArray.append('userID', info.userID);
     dataArray.append('description', info.description);
     dataArray.append('important', info.important);
     dataArray.append('visibility', info.visibility);
