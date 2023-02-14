@@ -117,7 +117,6 @@ export const HighPriorityIcon = styled.div`
 export const EditIcon = styled.div`
   float: right;
   font-size: 100%;
-  width: 20%;
   margin-left: 5%;
   margin-right: 5%;
   @media(max-width: 750px){
@@ -128,7 +127,6 @@ export const EditIcon = styled.div`
 export const LockIcon = styled.div`
   float: right;
   font-size: 100%;
-  width: 20%;
   @media(max-width: 750px){
     font-size: 100%;
 }
@@ -137,7 +135,6 @@ export const LockIcon = styled.div`
 export const TrashIcon = styled.div`
   float: right;
   font-size: 100%;
-  width: 20%;
   cursor: pointer;
   @media(max-width: 750px){
     font-size: 100%;
