@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useProfileUser } from '../../Context';
 import { AllDemandsReport } from '../../Utils/reports/printDemandReport';
 import { Button } from './Style';
+import axios from 'axios';
 
 export default function ReportModal({ allDemands, filterSector, filterCategory }) {
   const { user, startModal } = useProfileUser();
@@ -40,9 +41,25 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
   const handleGeneratePdf = async () => {
     setIsGeneratingPdf(true);
     try {
+      // Call the API endpoint to generate statistics
+      const response = await axios.get('/api/demandsSectorsStatistic', {
+        params: {
+          isDemandActive: demandStatus === 'Ativas' ? 'true' : 'false',
+          idSector: currentSector,
+          idCategory: currentCategory === 'Todas' ? null : currentCategory,
+          initialDate,
+          finalDate,
+        },
+      });
+
+      // Process the response and perform any necessary actions
+      console.log(response.data); // Do something with the statistics data
+
+      // Generate the PDF report
       await AllDemandsReport(currentDemands, user, startModal, {
         initialDate, finalDate, demandStatus, currentCategory,
       });
+
       setIsGeneratingPdf(false);
     } catch (error) {
       toast.error('Houve um problema ao gerar o pdf 😬');
@@ -134,6 +151,9 @@ export default function ReportModal({ allDemands, filterSector, filterCategory }
       <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0px' }}>
         <Button onClick={() => handleGeneratePdf()}>
           Baixar relatório
+        </Button>
+        <Button onClick={() => handleGenerateStatistics()}>
+          Gerar Estatísticas por Setor
         </Button>
       </div>
       {
